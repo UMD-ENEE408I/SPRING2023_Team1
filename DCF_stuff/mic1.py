@@ -1,4 +1,5 @@
 # Source: https://fazals.ddns.net/spectrum-analyser-part-2/
+# This code creates a spectogram based on one channel coming in from the microphone
 
 import numpy as np #importing Numpy with an alias np
 import pyaudio as pa 
