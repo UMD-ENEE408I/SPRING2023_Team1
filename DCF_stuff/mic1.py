@@ -36,7 +36,7 @@ ax1.set_ylim(0,1)
 fig.show()
 
 while 1:
-    data = stream.read(CHUNK)
+    data = stream.read(CHUNK, exception_on_overflow=False)
     dataInt = struct.unpack(str(CHUNK) + 'h', data)
     line.set_ydata(dataInt)
     line_fft.set_ydata(np.abs(np.fft.fft(dataInt))*2/(11000*CHUNK))
