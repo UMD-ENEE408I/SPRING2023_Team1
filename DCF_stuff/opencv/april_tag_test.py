@@ -33,7 +33,7 @@ def plotText(image, center, color, text):
 # setup and the main loop
 # Orignal code had 'tag36h11'. This may be slower to process, so we should use tag16h5
 # Regardless, this line makes a new 'Detector' object and sets any parameters we want -DCF
-detector = apriltag.Detector(families='tag16h5')
+detector = apriltag.Detector(families='tag36h11')
 
 # Open the cam
 cam = cv2.VideoCapture(0)
@@ -60,7 +60,7 @@ while looping:
             for corner in detect.corners:
                 image = plotPoint(image, corner, CORNER_COLOR)
 # refresh the camera image
-    cv2.imshow('Result', grayimg)
+    cv2.imshow('Result', image)
 # let the system event loop do its thing
     key = cv2.waitKey(100)
 # terminate the loop if the 'Return' key his hit
