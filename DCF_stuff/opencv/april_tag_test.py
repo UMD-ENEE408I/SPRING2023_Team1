@@ -8,10 +8,16 @@ LINE_LENGTH = 5
 CENTER_COLOR = (0, 255, 0)
 CORNER_COLOR = (255, 0, 255)
 
-### Some utility functions to simplify drawing on the camera feed
-# draw a crosshair
+# Some utility functions to simplify drawing on the camera feed
+
+# This function is used to draw a crosshair
+# Sig: (cam.read() result, float[1], RGB color)
+
+
 def plotPoint(image, center, color):
+    # parse center elements as integers
     center = (int(center[0]), int(center[1]))
+    # cv2.line(image, start_point, end_point, color, thickness)
     image = cv2.line(image,
                      (center[0] - LINE_LENGTH, center[1]),
                      (center[0] + LINE_LENGTH, center[1]),
@@ -25,15 +31,20 @@ def plotPoint(image, center, color):
     return image
 
 # plot a little text
+
+
 def plotText(image, center, color, text):
+    # Write test to the right by a little
     center = (int(center[0]) + 4, int(center[1]) - 4)
+    # cv2.putText(image, text, coords desired, font, fontScale, color, thickness)
     return cv2.putText(image, str(text), center, cv2.FONT_HERSHEY_SIMPLEX,
                        1, color, 3)
 
+
 # setup and the main loop
-# Orignal code had 'tag36h11'. This may be slower to process, so we should use tag16h5
-# Regardless, this line makes a new 'Detector' object and sets any parameters we want -DCF
-detector = apriltag.Detector(families='tag36h11')
+# This line makes a new 'Detector' object and sets any parameters we want -DCF
+# families='tag36h11' by default
+detector = apriltag.Detector()
 
 # Open the cam
 cam = cv2.VideoCapture(0)
@@ -52,13 +63,14 @@ while looping:
     if not detections:
         print("Nothing")
     else:
-   # found some tags, report them and update the camera image
-        for detect in detections:
-            print("tag_id: %s, center: %s" % (detect.tag_id, detect.center))
-            image = plotPoint(image, detect.center, CENTER_COLOR)
-            image = plotText(image, detect.center, CENTER_COLOR, detect.tag_id)
-            for corner in detect.corners:
-                image = plotPoint(image, corner, CORNER_COLOR)
+        detect = detections
+        # found some tags, report them and update the camera image
+        # for detect in detections:
+        print("tag_id: %s, center: %s" % (detect.tag_id, detect.center))
+        image = plotPoint(image, detect.center, CENTER_COLOR)
+        image = plotText(image, detect.center, CENTER_COLOR, detect.tag_id)
+        for corner in detect.corners:
+            image = plotPoint(image, corner, CORNER_COLOR)
 # refresh the camera image
     cv2.imshow('Result', image)
 # let the system event loop do its thing
@@ -70,4 +82,3 @@ while looping:
 # loop over; clean up and dump the last updated frame for convenience of debugging
 cv2.destroyAllWindows()
 cv2.imwrite("final.png", image)
-
