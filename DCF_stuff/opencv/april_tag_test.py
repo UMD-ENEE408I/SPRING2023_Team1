@@ -63,14 +63,13 @@ while looping:
     if not detections:
         print("Nothing")
     else:
-        detect = detections
         # found some tags, report them and update the camera image
-        # for detect in detections:
-        print("tag_id: %s, center: %s" % (detect.tag_id, detect.center))
-        image = plotPoint(image, detect.center, CENTER_COLOR)
-        image = plotText(image, detect.center, CENTER_COLOR, detect.tag_id)
-        for corner in detect.corners:
-            image = plotPoint(image, corner, CORNER_COLOR)
+        for detect in detections:
+            print("tag_id: %s, center: %s" % (detect.tag_id, detect.center))
+            image = plotPoint(image, detect.center, CENTER_COLOR)
+            image = plotText(image, detect.center, CENTER_COLOR, detect.tag_id)
+            for corner in detect.corners:
+                image = plotPoint(image, corner, CORNER_COLOR)
 # refresh the camera image
     cv2.imshow('Result', image)
 # let the system event loop do its thing
