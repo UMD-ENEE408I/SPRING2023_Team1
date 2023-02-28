@@ -1,10 +1,14 @@
 import cv2
-
+import os
 cam = cv2.VideoCapture(0)
 
 cv2.namedWindow("test")
 
 img_counter = 0
+
+# Change directory to a folder that will contain the chessboard pics
+dir = r"/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cam_cal"
+os.chdir(dir)
 
 while True:
     ret, frame = cam.read()

@@ -4,7 +4,7 @@ import glob
 
 # Outputs camera calibration parameters from photos.
 
-name = "melissa" # Pictures to process
+name = "" # Pictures to process
 
 # Get corners from pictures of checkerboard
 
@@ -16,11 +16,12 @@ objp[:,:2] = np.mgrid[0:7,0:7].T.reshape(-1,2)
 # Arrays to store object points and image points from all the images.
 objpoints = [] # 3d point in real world space
 imgpoints = [] # 2d points in image plane.
-images = glob.glob('photos/' + name + '/*.jpg')
+images = glob.glob('/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal' + '/*.jpg')
 
 _img_shape = None
 
 i = 0 # Iteration number
+global gray
 
 for fname in images:
     img = cv.imread(fname)
@@ -28,7 +29,10 @@ for fname in images:
     if _img_shape == None:
         _img_shape = img.shape[:2]
 
+
     gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+
+
     # Find the chess board corners
     ret, corners = cv.findChessboardCorners(gray, (7,7), None)
     # If found, add object points, image points (after refining them)
@@ -79,6 +83,6 @@ K = K.tolist()
 D = D.tolist()
 
 # Save outputs to files
-np.save("parameters/" + name + "/DIM", DIM)
-np.save("parameters/" + name + "/K", K)
-np.save("parameters/" + name + "/D", D)
+np.save("/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/op/DIM", DIM)
+np.save("/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/op/K", K)
+np.save("/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/op/D", D)
