@@ -1,4 +1,4 @@
-import cv2
+import cv2 
 # The original code used the default apriltag library. Since we're using the pupil
 # variant, importing as apriltag means we dont have to go through and change each
 # call to the apriltag library -DCF
@@ -47,7 +47,7 @@ def plotText(image, center, color, text):
 detector = apriltag.Detector()
 
 # Open the cam
-cam = cv2.VideoCapture(0)
+cam = cv2.VideoCapture(1)
 
 # ??? just say while true dude -DCF
 looping = True
