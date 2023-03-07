@@ -11,17 +11,20 @@ name = "" # Pictures to process
 # termination criteria
 criteria = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 50, 0.001)
 # prepare object points, like (0,0,0), (1,0,0), (2,0,0) ....,(6,6,0)
-objp = np.zeros((7*7,3), np.float32)
-objp[:,:2] = np.mgrid[0:7,0:7].T.reshape(-1,2)
+objp = np.zeros((9*6,3), np.float32)
+objp[:,:2] = np.mgrid[0:9,0:6].T.reshape(-1,2)
 # Arrays to store object points and image points from all the images.
 objpoints = [] # 3d point in real world space
 imgpoints = [] # 2d points in image plane.
-images = glob.glob('/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal' + '/*.jpg')
+
+jetson = '/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal/'
+laptop = 'C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\raw\\set1\\'
+images = glob.glob(laptop + '*.png')
 
 _img_shape = None
 
 i = 0 # Iteration number
-global gray
+#global gray
 
 for fname in images:
     img = cv.imread(fname)
@@ -31,16 +34,17 @@ for fname in images:
 
 
     gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
-
+ 
 
     # Find the chess board corners
-    ret, corners = cv.findChessboardCorners(gray, (7,7), None)
+    par = cv.CALIB_CB_ADAPTIVE_THRESH + cv.CALIB_CB_NORMALIZE_IMAGE
+    ret, corners = cv.findChessboardCorners(gray, (9,6), par)
     # If found, add object points, image points (after refining them)
 
     # Print iteration number
-    i = i + 1
+    
     print("Image", i, end=" ")
-
+    i = i + 1
     if ret == True:
         print("(SUCCESS!)") # Indicate if that picture was processed successfully
 
@@ -48,9 +52,10 @@ for fname in images:
         corners2 = cv.cornerSubPix(gray,corners, (11,11), (-1,-1), criteria)
         imgpoints.append(corners)
         # Draw and display the corners
-        cv.drawChessboardCorners(img, (7,7), corners2, ret)
+        cv.drawChessboardCorners(img, (9,6), corners2, ret)
         cv.imshow('img', img)
         cv.waitKey(500)
+
     else:
         print("(FAILED)") # Indicate failure
 cv.destroyAllWindows()
@@ -83,6 +88,15 @@ K = K.tolist()
 D = D.tolist()
 
 # Save outputs to files
-np.save("/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/op/DIM", DIM)
-np.save("/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/op/K", K)
-np.save("/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/op/D", D)
+
+jetson_DIM = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/op/DIM"
+jetson_K = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/op/K"
+jetson_D = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/op/D"
+# ----------------------- Jetson Directory v. Laptop directory------------------------
+laptop_DIM = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op\\DIM.npy"
+laptop_K = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op\\K.npy"
+laptop_D = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op\\D.npy"
+
+np.save(laptop_DIM, DIM)
+np.save(laptop_K, K)
+np.save(laptop_D, D)

@@ -5,13 +5,21 @@ import glob
 # Straightens an image given camera calibration parameters.
 
 name = "melissa" # Params to use
-target = "photos/leo/target.jpg" # Picture to straighten
-output = "result_melissa2.png" # Output file
+target = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\target1.png" # Picture to straighten
+output = "result.png" # Output file
+
+jetson_DIM = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/op/DIM"
+jetson_K = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/op/K"
+jetson_D = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/op/D"
+# ----------------------- Jetson Directory v. Laptop directory------------------------
+laptop_DIM = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op\\DIM.npy"
+laptop_K = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op\\K.npy"
+laptop_D = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op\\D.npy"
 
 # Get params
-DIM = np.load("parameters/" + name + "/DIM.npy")
-K = np.load("parameters/" + name + "/K.npy")
-D = np.load("parameters/" + name + "/D.npy")
+DIM = np.load(laptop_DIM)
+K = np.load(laptop_K)
+D = np.load(laptop_D)
 
 img = cv.imread(target)
 h,w = img.shape[:2]
