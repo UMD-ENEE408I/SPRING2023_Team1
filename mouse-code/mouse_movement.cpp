@@ -137,21 +137,6 @@ float update_pid(float dt, float kp, float ki, float kd,
   return u;
 }
 
-// Signed angle from (x0, y0) to (x1, y1)
-// assumes norms of these quantities are precomputed
-float signed_angle(float x0, float y0, float n0, float x1, float y1, float n1) {
-  float normed_dot = (x1 * x0 + y1 * y0) / (n1 * n0);
-  if (normed_dot > 1.0) normed_dot = 1.0; // Possible because of numerical error
-  float angle = acosf(normed_dot);
-
-  // use cross product to find direction of rotation
-  // https://en.wikipedia.org/wiki/Cross_product#Coordinate_notation
-  float s3 = x0 * y1 - x1 * y0;
-  if (s3 < 0) angle = -angle;
-
-  return angle;
-}
-
 void setup() {
   Serial.begin(115200);
 
