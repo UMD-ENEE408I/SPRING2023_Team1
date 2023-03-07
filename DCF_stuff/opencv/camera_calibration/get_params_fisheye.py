@@ -85,6 +85,7 @@ rms, _, _, _, _ = \
 print("Found " + str(N_OK) + " valid images for calibration.")
 DIM = _img_shape[::-1]
 K = K.tolist()
+# PRINT THIS OUT!! -DCF
 D = D.tolist()
 
 # Save outputs to files
