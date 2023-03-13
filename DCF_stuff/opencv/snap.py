@@ -27,7 +27,7 @@ def draw_grid(img, grid_shape, color=(0, 255, 0), thickness=1):
 
 
 # Change directory to a folder that will contain the chessboard pics
-laptop = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\raw\\set1"
+laptop = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\raw\\set3"
 jetson = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cam_cal"
 
 # dir = r"C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv"
@@ -35,7 +35,7 @@ os.chdir(laptop)
 
 while True:
     ret0, frame0 = cam.read()
-    draw_grid(frame0, (3,3))
+    draw_grid(frame0, (3, 3))
     ret1, frame1 = cam.read()
     if not ret0:
         print("failed to grab frame")
@@ -43,11 +43,12 @@ while True:
     cv2.imshow("test", frame0)
 
     k = cv2.waitKey(1)
+    # print(k)
     if k % 256 == 27:
         # ESC pressed
         print("Escape hit, closing...")
         break
-    elif k % 256 == 32:
+    elif k % 256 == 0:
         # SPACE pressed
         img_name = "opencv_frame_{}.png".format(img_counter)
         cv2.imwrite(img_name, frame1)

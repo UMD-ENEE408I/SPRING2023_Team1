@@ -18,7 +18,7 @@ objpoints = [] # 3d point in real world space
 imgpoints = [] # 2d points in image plane.
 
 jetson = '/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal/'
-laptop = 'C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\raw\\set1\\'
+laptop = 'C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\raw\\set3\\'
 images = glob.glob(laptop + '*.png')
 
 _img_shape = None
@@ -67,7 +67,7 @@ calibration_flags = cv.fisheye.CALIB_RECOMPUTE_EXTRINSIC+cv.fisheye.CALIB_FIX_SK
 
 N_OK = len(objpoints)
 K = np.zeros((3, 3))
-D = np.zeros((4, 1))
+D = np.zeros((4, 1)) # Look up docs for fisheye_calibrate models
 rvecs = [np.zeros((1, 1, 3), dtype=np.float64) for i in range(N_OK)]
 tvecs = [np.zeros((1, 1, 3), dtype=np.float64) for i in range(N_OK)]
 rms, _, _, _, _ = \
@@ -85,6 +85,8 @@ rms, _, _, _, _ = \
 print("Found " + str(N_OK) + " valid images for calibration.")
 DIM = _img_shape[::-1]
 K = K.tolist()
+print("K array: ")
+print(K)
 # PRINT THIS OUT!! -DCF
 D = D.tolist()
 

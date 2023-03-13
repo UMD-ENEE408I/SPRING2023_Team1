@@ -3,6 +3,8 @@ import cv2
 import numpy as np
 import time
 
+
+
 at_detector = Detector(
     families="tag36h11",
     nthreads=1,
@@ -52,7 +54,7 @@ if __name__ == '__main__':
             # it has to be calibrated per camera model, these numbers
             # are not correct for a robot mouse or any student's
             # particular laptop
-            K=np.array([[184.752, 0, 320], [0, 184.752, 180], [0, 0, 1]])
+            K=np.array([[203.71832715762605, 0.0, 319.5], [0.0, 203.71832715762605, 239.5], [0.0, 0.0, 1.0]])
 
             results = at_detector.detect(gray, estimate_tag_pose=False)
 
