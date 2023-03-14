@@ -69,7 +69,10 @@ if __name__ == '__main__':
     while True:
         try:
             ret, img = vid.read()
-            gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            # Undistorted image
+            ud_img = cv.remap(
+                    img, map1, map2, interpolation=cv.INTER_LINEAR, borderMode=cv.BORDER_CONSTANT)
+            gray = cv2.cvtColor(ud_img, cv2.COLOR_BGR2GRAY)
             gray.astype(np.uint8)
 
             # The K matrix below is the result of running camera calibration
@@ -86,16 +89,15 @@ if __name__ == '__main__':
                 print(rot)
 
                 pts = res.corners.reshape((-1, 1, 2)).astype(np.int32)
-                img = cv2.polylines(
-                    img, [pts], isClosed=True, color=(0, 0, 255), thickness=5)
-                cv2.circle(img, tuple(res.center.astype(np.int32)),
+                ud_img = cv2.polylines(
+                    ud_img, [pts], isClosed=True, color=(0, 0, 255), thickness=5)
+                cv2.circle(ud_img, tuple(res.center.astype(np.int32)),
                            5, (0, 0, 255), -1)
-                undistorted_img = cv.remap(
-                    img, map1, map2, interpolation=cv.INTER_LINEAR, borderMode=cv.BORDER_CONSTANT)
+                
 
                 print(pose)
 
-            cv2.imshow("img", undistorted_img)
+            cv2.imshow("img", ud_img)
             cv2.waitKey(10)
 
         except KeyboardInterrupt:
