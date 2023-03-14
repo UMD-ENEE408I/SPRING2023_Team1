@@ -27,7 +27,7 @@ h,w = img.shape[:2]
 
 # See https://medium.com/@kennethjiang/calibrate-fisheye-lens-using-opencv-part-2-13990f1b157f
 
-balance = 1 # Set to 1 to show black space. Set to 0 to crop
+balance = 0 # Set to 1 to show black space. Set to 0 to crop
 new_K = cv.fisheye.estimateNewCameraMatrixForUndistortRectify(K, D, DIM, np.eye(3), balance=balance) # Need this step if we don't want to crop
 
 map1, map2 = cv.fisheye.initUndistortRectifyMap(K, D, np.eye(3), new_K, DIM, cv.CV_16SC2)

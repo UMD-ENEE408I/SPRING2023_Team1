@@ -15,6 +15,26 @@ at_detector = Detector(
     debug=0
 )
 
+# Straightening the camera feed
+
+jetson_DIM =	"/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal/op/DIM.npy"
+jetson_K =	"/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal/op/K.npy"
+jetson_D =	"/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal/op/D.npy"
+# ----------------------- Jetson Directory v. Laptop directory------------------------
+laptop_DIM =	"C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op\\DIM.npy"
+laptop_K =	"C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op\\K.npy"
+laptop_D =	"C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op\\D.npy"
+
+# Get params
+DIM = np.load(jetson_DIM)
+K = np.load(jetson_K)
+D = np.load(jetson_D)
+
+balance = 0 # Set to 1 to show black space. Set to 0 to crop
+new_K = cv.fisheye.estimateNewCameraMatrixForUndistortRectify(K, D, DIM, np.eye(3), balance=balance) # Need this step if we don't want to crop
+map1, map2 = cv.fisheye.initUndistortRectifyMap(K, D, np.eye(3), new_K, DIM, cv.CV_16SC2)
+
+
 def find_pose_from_tag(K, detection):
     m_half_size = tag_size / 2
 
@@ -54,7 +74,7 @@ if __name__ == '__main__':
             # it has to be calibrated per camera model, these numbers
             # are not correct for a robot mouse or any student's
             # particular laptop
-            K=np.array([[203.71832715762605, 0.0, 319.5], [0.0, 203.71832715762605, 239.5], [0.0, 0.0, 1.0]])
+            # K=np.array([[207.9878620183829, 0.0, 338.10802140849563], [0.0, 208.9172074014061, 229.54749116130657], [0.0, 0.0, 1.0]])
 
             results = at_detector.detect(gray, estimate_tag_pose=False)
 
@@ -66,10 +86,11 @@ if __name__ == '__main__':
                 pts = res.corners.reshape((-1, 1, 2)).astype(np.int32)
                 img = cv2.polylines(img, [pts], isClosed=True, color=(0, 0, 255), thickness=5)
                 cv2.circle(img, tuple(res.center.astype(np.int32)), 5, (0, 0, 255), -1)
+		undistorted_img = cv.remap(img, map1, map2, interpolation=cv.INTER_LINEAR, borderMode=cv.BORDER_CONSTANT)
 
                 print(pose)
 
-            cv2.imshow("img", img)
+            cv2.imshow("img", undistorted_img)
             cv2.waitKey(10)
 
         except KeyboardInterrupt:
