@@ -2,6 +2,7 @@ import numpy as np
 import cv2 as cv
 import glob
 
+# Hello there
 # Outputs camera calibration parameters from photos.
 
 name = "" # Pictures to process
