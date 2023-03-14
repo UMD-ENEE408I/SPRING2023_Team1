@@ -62,7 +62,7 @@ def find_pose_from_tag(K, detection):
 
 
 if __name__ == '__main__':
-    vid = cv2.VideoCapture(1)
+    vid = cv2.VideoCapture(0)
 
     tag_size = 0.16  # tag size in meters
 
