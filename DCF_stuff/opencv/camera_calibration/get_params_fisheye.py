@@ -17,15 +17,22 @@ objp[:,:2] = np.mgrid[0:9,0:6].T.reshape(-1,2)
 # Arrays to store object points and image points from all the images.
 objpoints = [] # 3d point in real world space
 imgpoints = [] # 2d points in image plane.
+<<<<<<< Updated upstream
 
 jetson = '/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal/'
 laptop = 'C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\raw\\set0\\'
 images = glob.glob(laptop + '*.png')
+=======
+images = glob.glob('/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal/*.png')
+>>>>>>> Stashed changes
 
 _img_shape = None
 
 i = 0 # Iteration number
+<<<<<<< Updated upstream
 #global gray
+=======
+>>>>>>> Stashed changes
 
 for fname in images:
     img = cv.imread(fname)

@@ -5,8 +5,8 @@ import glob
 # Straightens an image given camera calibration parameters.
 
 name = "melissa" # Params to use
-target = "photos/brandon/target2.jpg" # Picture to straighten
-output = "result_brandon.png" # Output file
+target = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal/opencv_frame_0.png"  # Picture to straighten
+output = "res.png" # Output file
 
 # Read camera distortion params
 

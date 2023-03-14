@@ -4,6 +4,7 @@ import glob
 
 # Straightens an image given camera calibration parameters.
 
+<<<<<<< Updated upstream
 name = "melissa" # Params to use
 target = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\target1.png" # Picture to straighten
 output = "result.png" # Output file
@@ -20,6 +21,15 @@ laptop_D = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\op
 DIM = np.load(laptop_DIM)
 K = np.load(laptop_K)
 D = np.load(laptop_D)
+=======
+target = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal/opencv_frame_0.png" # Picture to straighten
+output = "res.jpg" # Output file
+
+# Get params
+DIM = np.load("/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/op/DIM.npy")
+K = np.load("/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/op/K.npy")
+D = np.load("/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/op/D.npy")
+>>>>>>> Stashed changes
 
 img = cv.imread(target)
 h,w = img.shape[:2]
