@@ -4,7 +4,6 @@ import numpy as np
 import time
 
 
-
 at_detector = Detector(
     families="tag36h11",
     nthreads=1,
@@ -17,22 +16,24 @@ at_detector = Detector(
 
 # Straightening the camera feed
 
-jetson_DIM =	"/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal/op/DIM.npy"
-jetson_K =	"/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal/op/K.npy"
-jetson_D =	"/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal/op/D.npy"
+jetson_DIM = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal/op/DIM.npy"
+jetson_K = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal/op/K.npy"
+jetson_D = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal/op/D.npy"
 # ----------------------- Jetson Directory v. Laptop directory------------------------
-laptop_DIM =	"C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op\\DIM.npy"
-laptop_K =	"C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op\\K.npy"
-laptop_D =	"C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op\\D.npy"
+laptop_DIM = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op\\DIM.npy"
+laptop_K = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op\\K.npy"
+laptop_D = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op\\D.npy"
 
 # Get params
 DIM = np.load(jetson_DIM)
 K = np.load(jetson_K)
 D = np.load(jetson_D)
 
-balance = 0 # Set to 1 to show black space. Set to 0 to crop
-new_K = cv.fisheye.estimateNewCameraMatrixForUndistortRectify(K, D, DIM, np.eye(3), balance=balance) # Need this step if we don't want to crop
-map1, map2 = cv.fisheye.initUndistortRectifyMap(K, D, np.eye(3), new_K, DIM, cv.CV_16SC2)
+balance = 0  # Set to 1 to show black space. Set to 0 to crop
+new_K = cv.fisheye.estimateNewCameraMatrixForUndistortRectify(
+    K, D, DIM, np.eye(3), balance=balance)  # Need this step if we don't want to crop
+map1, map2 = cv.fisheye.initUndistortRectifyMap(
+    K, D, np.eye(3), new_K, DIM, cv.CV_16SC2)
 
 
 def find_pose_from_tag(K, detection):
@@ -41,15 +42,16 @@ def find_pose_from_tag(K, detection):
     marker_center = np.array((0, 0, 0))
     marker_points = []
     marker_points.append(marker_center + (-m_half_size, m_half_size, 0))
-    marker_points.append(marker_center + ( m_half_size, m_half_size, 0))
-    marker_points.append(marker_center + ( m_half_size, -m_half_size, 0))
+    marker_points.append(marker_center + (m_half_size, m_half_size, 0))
+    marker_points.append(marker_center + (m_half_size, -m_half_size, 0))
     marker_points.append(marker_center + (-m_half_size, -m_half_size, 0))
     _marker_points = np.array(marker_points)
 
     object_points = _marker_points
     image_points = detection.corners
 
-    pnp_ret = cv2.solvePnP(object_points, image_points, K, distCoeffs=None,flags=cv2.SOLVEPNP_IPPE_SQUARE)
+    pnp_ret = cv2.solvePnP(object_points, image_points,
+                           K, distCoeffs=None, flags=cv2.SOLVEPNP_IPPE_SQUARE)
     if pnp_ret[0] == False:
         raise Exception('Error solving PnP')
 
@@ -62,7 +64,7 @@ def find_pose_from_tag(K, detection):
 if __name__ == '__main__':
     vid = cv2.VideoCapture(1)
 
-    tag_size=0.16 # tag size in meters
+    tag_size = 0.16  # tag size in meters
 
     while True:
         try:
@@ -84,9 +86,12 @@ if __name__ == '__main__':
                 print(rot)
 
                 pts = res.corners.reshape((-1, 1, 2)).astype(np.int32)
-                img = cv2.polylines(img, [pts], isClosed=True, color=(0, 0, 255), thickness=5)
-                cv2.circle(img, tuple(res.center.astype(np.int32)), 5, (0, 0, 255), -1)
-		undistorted_img = cv.remap(img, map1, map2, interpolation=cv.INTER_LINEAR, borderMode=cv.BORDER_CONSTANT)
+                img = cv2.polylines(
+                    img, [pts], isClosed=True, color=(0, 0, 255), thickness=5)
+                cv2.circle(img, tuple(res.center.astype(np.int32)),
+                           5, (0, 0, 255), -1)
+                undistorted_img = cv.remap(
+                    img, map1, map2, interpolation=cv.INTER_LINEAR, borderMode=cv.BORDER_CONSTANT)
 
                 print(pose)
 
@@ -96,7 +101,5 @@ if __name__ == '__main__':
         except KeyboardInterrupt:
             vid.release()
             cv2.destroyAllWindows()
-            print ('Exiting')
+            print('Exiting')
             exit(1)
-
-
