@@ -47,7 +47,8 @@ while(True):
     print(clientIP)
 
     #Creating Packet to Send to Mouse
-    offset_pack = struct.pack("f",5)
+    # offset_pack = struct.pack("f",5)
+    offset_pack = struct.pack("fff", 0.0, 0.3, 0.0)
     UDPServerSocket.sendto(offset_pack, address)
 
     # Send a packet to the mouse

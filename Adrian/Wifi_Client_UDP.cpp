@@ -7,7 +7,7 @@
 #include <string.h>
 #include <iostream>
 
-class udpClient {
+class UDPClient {
   // WiFi network name and password:
   const char * networkName = "408ITerps";
   const char * networkPswd = "goterps2022";
@@ -27,7 +27,7 @@ class udpClient {
 
   public:
     //Constructor
-    udpClient(int port){
+    UDPClient(int port){
       udpPort = port;
     }
 
@@ -85,7 +85,7 @@ class udpClient {
       udp.endPacket();
     }
   
-    void loop(){
+    int[] getPacket(){
       //only send data when connected
       if(connected){
         //Send a packet
@@ -100,12 +100,16 @@ class udpClient {
         if(packetSize >= sizeof(float))
         {
           Serial.printf("packet size is %d\n", packetSize);
-          float my_array[1]; 
-          udp.read((char*)my_array, sizeof(my_array)); 
+          // Packets should have 3 values: current_theta, target_theta, and target_v
+          float my_array[3]; 
+          udp.read(my_array, sizeof(my_array)); 
           udp.flush();
           Serial.printf("received value is %f\n", my_array[0]);
           float target = my_array[0];
           Serial.printf("target is %f\n", target);
+          return my_array
         }
+
+      return [0];
     }
 };

@@ -2,6 +2,7 @@
 #include <Adafruit_MCP3008.h>
 #include <Adafruit_MPU6050.h>
 #include <Encoder.h>
+#include "Wifi_Client_UDP.h"
 
 
 // IMU (rotation rate and acceleration)
@@ -43,6 +44,10 @@ const unsigned int MAX_PWM_VALUE = 255; // Max PWM given 8 bit resolution
 
 float METERS_PER_TICK = (3.14159 * 0.031) / 360.0;
 float TURNING_RADIUS_METERS = 4.3 / 100.0; // Wheels are about 4.3 cm from pivot point
+
+// UDP Section
+int udpPort = 3333; // port value is 3333 for Mouse 1, 4444 for Mouse 2, and 5555 for Mouse 3
+UDPClient client(udpPort);
 
 void configure_imu() {
   // Try to initialize!
@@ -153,6 +158,8 @@ void setup() {
   configure_motor_pins();
   configure_imu();
 
+  client.setup();
+
   Serial.println("Starting!");
 }
 
@@ -223,8 +230,9 @@ void loop() {
     // **EVERYTHING ABOVE IS UPDATING THE CURRENT "theta" VALUE FROM THE MOUSE'S PERSPECTIVE**
     // Will have to check if the theta from the calculations/gyroscope is equal to that calculated from the camera/apriltags
 
-    
-
+    int instr_arr = client.getPacket();
+    int target_theta = instr_arr[1];
+    int target_v = instr_arr[2];
 
     // **EVERYTHING BELOW IS REQUIRED TO CALCULATE THE NEXT DIRECTION/VELOCITY GIVEN "target_theta" AND "target_v"**
   
