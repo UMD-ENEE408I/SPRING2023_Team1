@@ -19,9 +19,9 @@ objpoints = [] # 3d point in real world space
 imgpoints = [] # 2d points in image plane.
 
 
-jetson = '/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal/'
-laptop = 'C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\raw\\set0\\'
-images = glob.glob(laptop + '*.png')
+jetson = '/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal/raw/set3/'
+laptop = 'C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\raw\\set3\\'
+images = glob.glob(jetson + '*.png')
 
 
 
@@ -104,6 +104,6 @@ laptop_DIM = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\
 laptop_K = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op\\K.npy"
 laptop_D = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op\\D.npy"
 
-np.save(laptop_DIM, DIM)
-np.save(laptop_K, K)
-np.save(laptop_D, D)
+np.save(jetson_DIM, DIM)
+np.save(jetson_K, K)
+np.save(jetson_D, D)
