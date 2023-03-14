@@ -30,10 +30,10 @@ K = np.load(jetson_K)
 D = np.load(jetson_D)
 
 balance = 0  # Set to 1 to show black space. Set to 0 to crop
-new_K = cv.fisheye.estimateNewCameraMatrixForUndistortRectify(
+new_K = cv2.fisheye.estimateNewCameraMatrixForUndistortRectify(
     K, D, DIM, np.eye(3), balance=balance)  # Need this step if we don't want to crop
-map1, map2 = cv.fisheye.initUndistortRectifyMap(
-    K, D, np.eye(3), new_K, DIM, cv.CV_16SC2)
+map1, map2 = cv2.fisheye.initUndistortRectifyMap(
+    K, D, np.eye(3), new_K, DIM, cv2.CV_16SC2)
 
 
 def find_pose_from_tag(K, detection):
@@ -70,8 +70,8 @@ if __name__ == '__main__':
         try:
             ret, img = vid.read()
             # Undistorted image
-            ud_img = cv.remap(
-                    img, map1, map2, interpolation=cv.INTER_LINEAR, borderMode=cv.BORDER_CONSTANT)
+            ud_img = cv2.remap(
+                    img, map1, map2, interpolation=cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT)
             gray = cv2.cvtColor(ud_img, cv2.COLOR_BGR2GRAY)
             gray.astype(np.uint8)
 
