@@ -9,7 +9,11 @@ Hopefully, this personal log of occurences will prove useful down the line as we
 ### Tasks completed
 *Successfully got the camera calibrated*  
 
-This was pretty challenging, since I had to get into the weeds of how the OpenCV library worked. Regardless, I went ahead and added comments on what certain functions returned, what were their params, etc. This is with the hope that, as the project advances, everyone is on the same page and understands how the technology works.  
+This was pretty challenging, since I had to get into the weeds of how the OpenCV library worked. Regardless, I went ahead and added comments on what certain functions returned, what were their params, etc. This is with the hope that, as the project advances, everyone is on the same page and understands how the technology works. Here are some before and after pics.  
+
+*Insert before and after pics*
+
+Pretty substantial change huh? Like a Proactive commercial. Anyways, the straightening now occurs on the camera live feed, which was done by cropping out the black edges on the frame. This led to a pretty clear (albiet now reduced) representation of what the camera was seeing. 
 
 ### Tasks to be completed
 *Calculate distance between tags IRL*  
