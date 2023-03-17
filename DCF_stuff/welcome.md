@@ -6,9 +6,9 @@ Hopefully, this personal log of occurences will prove useful down
 the line as we work on the final report and the weeklies. *(Also  
 this is just an excuse to learn Markdown xdd)*  
 
-### Week of 3-17-2023
+## Week of 3-17-2023
 
-## Tasks completed
+### Tasks completed
 *Successfully got the camera calibrated*  
 
 This was pretty challenging, since I had to get into the weeds of  
@@ -18,7 +18,7 @@ etc. This is with the hope that, as the project advances, everyone
 is on the same page and understands how the technology works.  
 
 
-## Tasks to be completed
+### Tasks to be completed
 *Calculate distance between tags IRL*  
 
 Now that the camera is properly calibrated, we can move on to the  
@@ -36,9 +36,9 @@ calculations more straightforward.
 
 ---
 
-### Week of 3-10-2023
+## Week of 3-10-2023
 
-## Tasks completed
+### Tasks completed
 *Successfully rectified a still image taken by the camera*  
 
 The `straighten_image_fisheye.py` code now works and rectified a  
@@ -60,5 +60,5 @@ while True:
     ret1, frame1 = cam.read()
 ```
 
-## Tasks to be completed
+### Tasks to be completed
 *Finish calibration of the camera*  
