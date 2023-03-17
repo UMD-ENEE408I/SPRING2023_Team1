@@ -39,8 +39,8 @@ calculations more straightforward.
 ### Week of 3-10-2023
 
 ## Tasks completed
-*None*
-![alt text](https://i.kym-cdn.com/entries/icons/original/000/034/214/Sadge_Emote_Banner.jpg)
+*None*  
+![alt text](https://cdn.frankerfacez.com/emoticon/425196/4)
 
 
 ## Tasks to be completed
