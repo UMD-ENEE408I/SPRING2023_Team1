@@ -35,3 +35,13 @@ calculations more straightforward.
 > -DCF  
 
 ---
+
+### Week of 3-10-2023
+
+## Tasks completed
+*None*
+![alt text](https://i.kym-cdn.com/entries/icons/original/000/034/214/Sadge_Emote_Banner.jpg)
+
+
+## Tasks to be completed
+*Finish calibration of the camera*  
