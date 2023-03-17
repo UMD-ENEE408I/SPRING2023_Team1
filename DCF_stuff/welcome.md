@@ -34,5 +34,13 @@ while True:
     ret1, frame1 = cam.read()
 ```
 
+*Insert photo here*  
+
+Additionally, some versatility has been added in order to ease the switch between the Jetson and my Windows machine when accessing certain directories.  
+
 ### Tasks to be completed
 *Finish calibration of the camera*  
+
+So far, the calibration is almost done. There are some black edges that need to be cropped out (easy) and there needs to be a reliable way to calibrate the live feed of the camera (not so easy). However, with the groundwork set this week, I'm confident that it won't be too bad to integrate. Surely, right?  
+
+![url](https://cdn.frankerfacez.com/emoticon/652079/4)
