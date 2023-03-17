@@ -39,9 +39,25 @@ calculations more straightforward.
 ### Week of 3-10-2023
 
 ## Tasks completed
-*None*  
-![alt text](https://cdn.frankerfacez.com/emoticon/425196/4)
-
+*Successfully rectified a still image taken by the camera*  
+The `straighten_image_fisheye.py` code now works and rectified a  
+still image that was passed to it. Before that, there was a lot of  
+data collection that had to be done. This was done with `snap.py`,  
+a short program that can take pictures and write them to a specific  
+folder. At first, the pictures taken were not the best for the  
+calibration, since they were taken at more or less the same angle  
+and in the same position without consistent variance. To remedy this,  
+`snap.py` was given a grid in the GUI in order to take consistent  
+sample photos for the training. The resulting photos did not include  
+the grid itself, since I had two cam streams open, one for the sample  
+to be collected and one for the user's convenience.  
+  
+```
+while True:
+    ret0, frame0 = cam.read()
+    draw_grid(frame0, (3, 3))
+    ret1, frame1 = cam.read()
+```
 
 ## Tasks to be completed
 *Finish calibration of the camera*  
