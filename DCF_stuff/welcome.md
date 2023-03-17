@@ -2,9 +2,7 @@
 
 Here, I am currently working on the OpenCV portion of the project
 
-Hopefully, this personal log of occurences will prove useful down  
-the line as we work on the final report and the weeklies. *(Also  
-this is just an excuse to learn Markdown xdd)*  
+Hopefully, this personal log of occurences will prove useful down the line as we work on the final report and the weeklies. *(Also this is just an excuse to learn Markdown xdd)*  
 
 ## Week of 3-17-2023
 
