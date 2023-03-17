@@ -13,7 +13,7 @@ This was pretty challenging, since I had to get into the weeds of how the OpenCV
 
 *Insert before and after pics*
 
-Pretty substantial change huh? Like a Proactive commercial. Anyways, the straightening now occurs on the camera live feed, which was done by cropping out the black edges on the frame. This led to a pretty clear (albiet now reduced) representation of what the camera was seeing. 
+Pretty substantial change huh? Like a Proactiv commercial. Anyways, the straightening now occurs on the camera live feed, which was done by cropping out the black edges on the frame. This led to a pretty clear (albiet now reduced) representation of what the camera was seeing. 
 
 ### Tasks to be completed
 *Calculate distance between tags IRL*  
