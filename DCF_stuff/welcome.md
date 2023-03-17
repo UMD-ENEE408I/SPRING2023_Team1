@@ -40,6 +40,7 @@ calculations more straightforward.
 
 ## Tasks completed
 *Successfully rectified a still image taken by the camera*  
+
 The `straighten_image_fisheye.py` code now works and rectified a  
 still image that was passed to it. Before that, there was a lot of  
 data collection that had to be done. This was done with `snap.py`,  
