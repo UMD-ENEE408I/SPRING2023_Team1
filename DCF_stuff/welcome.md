@@ -25,17 +25,7 @@ Now that the camera is properly calibrated, we can move on to the question of di
 ### Tasks completed
 *Successfully rectified a still image taken by the camera*  
 
-The `straighten_image_fisheye.py` code now works and rectified a  
-still image that was passed to it. Before that, there was a lot of  
-data collection that had to be done. This was done with `snap.py`,  
-a short program that can take pictures and write them to a specific  
-folder. At first, the pictures taken were not the best for the  
-calibration, since they were taken at more or less the same angle  
-and in the same position without consistent variance. To remedy this,  
-`snap.py` was given a grid in the GUI in order to take consistent  
-sample photos for the training. The resulting photos did not include  
-the grid itself, since I had two cam streams open, one for the sample  
-to be collected and one for the user's convenience.  
+The `straighten_image_fisheye.py` code now works and rectified a still image that was passed to it. Before that, there was a lot of data collection that had to be done. This was done with `snap.py`, a short program that can take pictures and write them to a specific folder. At first, the pictures taken were not the best for the calibration, since they were taken at more or less the same angle and in the same position without consistent variance. To remedy this, `snap.py` was given a grid in the GUI in order to take consistent sample photos for the training. The resulting photos did not include the grid itself, since I had two cam streams open, one for the sample to be collected and one for the user's convenience.  
   
 ```
 while True:
