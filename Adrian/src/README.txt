@@ -1,0 +1,2 @@
+This approach is extremely convoluted and will require much more high-level coding to accomplish. 
+I decided to ditch it and go with the main approach (merging the UDP client code to the movement code).

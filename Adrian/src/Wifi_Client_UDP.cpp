@@ -7,31 +7,7 @@
 #include <string.h>
 #include <iostream>
 
-class UDPClient {
-  // WiFi network name and password:
-  const char * networkName = "408ITerps";
-  const char * networkPswd = "goterps2022";
-  char pbuff[255];
-
-  // IP address to send UDP data to:
-  // either use the ip address of the server or 
-  // a network broadcast address
-  const char * udpAddress = "192.168.2.102";
-  int udpPort = 3333;
-
-  // Are we currently connected?
-  boolean connected = false;
-
-  // The udp library class
-  WiFiUDP udp;
-
-  public:
-    //Constructor
-    UDPClient(int port){
-      udpPort = port;
-    }
-
-    // Wifi event handler
+// Wifi event handler
     void WiFiEvent(WiFiEvent_t event){
         switch(event) {
           case ARDUINO_EVENT_WIFI_STA_GOT_IP:
@@ -50,7 +26,7 @@ class UDPClient {
           default: break;
         }
     }
-  
+
     void connectToWiFi(const char * ssid, const char * pwd){
       Serial.println("Connecting to WiFi network: " + String(ssid));
   
@@ -63,6 +39,24 @@ class UDPClient {
       WiFi.begin(ssid, pwd);
   
       Serial.println("Waiting for WIFI connection...");
+    }
+
+class UDPClient {
+  // WiFi network name and password:
+  const char * networkName = "408ITerps";
+  const char * networkPswd = "goterps2022";
+  char pbuff[255];
+
+  // IP address to send UDP data to:
+  // either use the ip address of the server or 
+  // a network broadcast address
+  const char * udpAddress = "192.168.2.102";
+  int udpPort = 3333;
+
+  public:
+    //Constructor
+    UDPClient(int port){
+      udpPort = port;
     }
   
     void setup(){
@@ -85,7 +79,7 @@ class UDPClient {
       udp.endPacket();
     }
   
-    int[] getPacket(){
+    float * getPacket(){
       //only send data when connected
       if(connected){
         //Send a packet
@@ -101,15 +95,15 @@ class UDPClient {
         {
           Serial.printf("packet size is %d\n", packetSize);
           // Packets should have 3 values: current_theta, target_theta, and target_v
-          float my_array[3]; 
-          udp.read(my_array, sizeof(my_array)); 
+          float *my_array = new float[3]; 
+          udp.read((char*)my_array, sizeof(my_array)); 
           udp.flush();
           Serial.printf("received value is %f\n", my_array[0]);
           float target = my_array[0];
           Serial.printf("target is %f\n", target);
-          return my_array
+          return my_array;
         }
 
-      return [0];
+      return NULL;
     }
 };

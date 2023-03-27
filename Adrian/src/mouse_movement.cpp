@@ -6,7 +6,9 @@
 
 
 // IMU (rotation rate and acceleration)
-Adafruit_MPU6050 mpu;
+// Adafruit_MPU6050 mpu;
+Adafruit_MCP3008 adc1;
+Adafruit_MCP3008 adc2;
 
 // Buzzer pin which we will use for indicating IMU initialization failure
 const unsigned int BUZZ = 26;
@@ -230,7 +232,7 @@ void loop() {
     // **EVERYTHING ABOVE IS UPDATING THE CURRENT "theta" VALUE FROM THE MOUSE'S PERSPECTIVE**
     // Will have to check if the theta from the calculations/gyroscope is equal to that calculated from the camera/apriltags
 
-    int instr_arr = client.getPacket();
+    float* instr_arr = client.getPacket();
     int target_theta = instr_arr[1];
     int target_v = instr_arr[2];
 
