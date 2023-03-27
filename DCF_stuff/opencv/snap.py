@@ -1,7 +1,10 @@
 import cv2
 import os
 import numpy as np
-cam = cv2.VideoCapture(1)
+cam = cv2.VideoCapture(0)
+
+cam.set(3, 144)
+cam.set(4, 144)
 
 cv2.namedWindow("test")
 
@@ -28,15 +31,15 @@ def draw_grid(img, grid_shape, color=(0, 255, 0), thickness=1):
 
 # Change directory to a folder that will contain the chessboard pics
 laptop = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\raw\\set3"
-jetson = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cam_cal"
+jetson = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal/raw/set4"
 
 # dir = r"C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv"
-os.chdir(laptop)
+os.chdir(jetson)
 
 while True:
     ret0, frame0 = cam.read()
     draw_grid(frame0, (3, 3))
-    ret1, frame1 = cam.read()
+#    ret1, frame1 = cam.read()
     if not ret0:
         print("failed to grab frame")
         break
