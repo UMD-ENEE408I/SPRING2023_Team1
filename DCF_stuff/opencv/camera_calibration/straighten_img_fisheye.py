@@ -4,25 +4,24 @@ import glob
 
 # Straightens an image given camera calibration parameters.
 
-name =		"melissa" # Params to use
-target_laptop =	"C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\target1.png" # Picture to straighten
+target_laptop =	"C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\target2.png" # Picture to straighten
 target_jetson =	"/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal/target1.png"
-output =	"result.png" # Output file
+output =	"result1.png" # Output file
 
 jetson_DIM =	"/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal/op/DIM.npy"
 jetson_K =	"/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal/op/K.npy"
 jetson_D =	"/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal/op/D.npy"
 # ----------------------- Jetson Directory v. Laptop directory------------------------
-laptop_DIM =	"C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op\\DIM.npy"
-laptop_K =	"C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op\\K.npy"
-laptop_D =	"C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op\\D.npy"
+laptop_DIM =	"C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op_webcam\\DIM.npy"
+laptop_K =	    "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op_webcam\\K.npy"
+laptop_D =	    "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op_webcam\\D.npy"
 
 # Get params
-DIM = np.load(jetson_DIM)
-K = np.load(jetson_K)
-D = np.load(jetson_D)
+DIM = np.load(laptop_DIM)
+K = np.load(laptop_K)
+D = np.load(laptop_D)
 
-img = cv.imread(target_jetson)
+img = cv.imread(target_laptop)
 h,w = img.shape[:2]
 
 # See https://medium.com/@kennethjiang/calibrate-fisheye-lens-using-opencv-part-2-13990f1b157f
