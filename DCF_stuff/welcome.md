@@ -25,7 +25,11 @@ Started work on the webcam calibration. We took some very rough measurements of 
 
 This was pretty challenging, since I had to get into the weeds of how the OpenCV library worked. Regardless, I went ahead and added comments on what certain functions returned, what were their params, etc. This is with the hope that, as the project advances, everyone is on the same page and understands how the technology works. Here are some before and after pics.  
 
-*Insert before and after pics*
+
+
+![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/f9c6238854030063640d3e1ef9af4b793fa5775f/DCF_stuff/opencv/cal/target1.png "Error yielded")
+![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/f9c6238854030063640d3e1ef9af4b793fa5775f/result.png "Error yielded")
+
 
 Pretty substantial change huh? Like a Proactiv commercial. Anyways, the straightening now occurs on the camera live feed, which was done by cropping out the black edges on the frame. This led to a pretty clear (albiet now reduced) representation of what the camera was seeing. 
 
