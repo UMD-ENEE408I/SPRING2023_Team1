@@ -15,8 +15,11 @@ I took 80 pictures for the calibration of the webcam, however following the same
 
 ![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/cf9013c3e4a4f668f536f4f33edc6f59dd100a57/result1.png "Error yielded")  
 
-Removing the errata does not seem to work...
+Removing the errata does not seem to work... until you remove literally half of the data lol. See for yourself
 
+![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/438a73fac10a19dfd95b820800542e4855eb5da9/DCF_stuff/opencv/cal/target2.png "Before")  
+
+![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/438a73fac10a19dfd95b820800542e4855eb5da9/result1.png "After")  
 ## Week of 3-24-2023
 
 *Spring break, cya next week*  
