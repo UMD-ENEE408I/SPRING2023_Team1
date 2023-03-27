@@ -9,7 +9,7 @@ Hopefully, this personal log of occurences will prove useful down the line as we
 ### Tasks completed
 *Started work on webcam calibration*  
 
-# *3-27*  
+##### *3-27*  
 Started work on the webcam calibration. We took some very rough measurements of the area covered by the webcam from one of those hanging electrical outlet thingies. It's roughly 6x8 ft. I took 80 pictures for the calibration of the webcam, however following the same steps as for the mouse's webcam yielded unusable results. Need to investigate further. 
 
 ![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/584b784548db1bea56bbfb62c7e02a8ab2710868/result1.png "Error yielded")
@@ -27,8 +27,8 @@ This was pretty challenging, since I had to get into the weeds of how the OpenCV
 
 
 
-![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/f9c6238854030063640d3e1ef9af4b793fa5775f/DCF_stuff/opencv/cal/target1.png "Error yielded")
-![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/f9c6238854030063640d3e1ef9af4b793fa5775f/result.png "Error yielded")
+![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/f9c6238854030063640d3e1ef9af4b793fa5775f/DCF_stuff/opencv/cal/target1.png "Before calibration")
+![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/f9c6238854030063640d3e1ef9af4b793fa5775f/result.png "After calibration")
 
 
 Pretty substantial change huh? Like a Proactiv commercial. Anyways, the straightening now occurs on the camera live feed, which was done by cropping out the black edges on the frame. This led to a pretty clear (albiet now reduced) representation of what the camera was seeing. 
@@ -55,8 +55,6 @@ while True:
     draw_grid(frame0, (3, 3))
     ret1, frame1 = cam.read()
 ```
-
-*Insert photo here*  
 
 Additionally, some versatility has been added in order to ease the switch between the Jetson and my Windows machine when accessing certain directories.  
 
