@@ -9,10 +9,10 @@ Hopefully, this personal log of occurences will prove useful down the line as we
 ### Tasks completed
 *Started work on webcam calibration*  
 
-##### *3-27*  
+### *3-27*  
 Started work on the webcam calibration. We took some very rough measurements of the area covered by the webcam from one of those hanging electrical outlet thingies. It's roughly 6x8 ft. I took 80 pictures for the calibration of the webcam, however following the same steps as for the mouse's webcam yielded unusable results. Need to investigate further. 
 
-![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/584b784548db1bea56bbfb62c7e02a8ab2710868/result1.png "Error yielded")
+![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/cf9013c3e4a4f668f536f4f33edc6f59dd100a57/result1.png "Error yielded")
 
 ## Week of 3-24-2023
 
