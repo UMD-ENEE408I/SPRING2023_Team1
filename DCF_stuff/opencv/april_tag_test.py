@@ -47,7 +47,7 @@ def plotText(image, center, color, text):
 detector = apriltag.Detector()
 
 # Open the cam
-cam = cv2.VideoCapture(0)
+cam = cv2.VideoCapture(1)
 
 # ??? just say while true dude -DCF
 looping = True
