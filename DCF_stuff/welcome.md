@@ -4,6 +4,20 @@ Here, I am currently working on the OpenCV portion of the project
 
 Hopefully, this personal log of occurences will prove useful down the line as we work on the final report and the weeklies. *(Also this is just an excuse to learn Markdown xdd)*  
 
+## Week of 3-31-2023
+
+### Tasks completed
+*Started work on webcam calibration*  
+
+# *3-27*  
+Started work on the webcam calibration. We took some very rough measurements of the area covered by the webcam from one of those hanging electrical outlet thingies. It's roughly 6x8 ft. I took 80 pictures for the calibration of the webcam, however following the same steps as for the mouse's webcam yielded unusable results. Need to investigate further. 
+
+![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/584b784548db1bea56bbfb62c7e02a8ab2710868/result1.png "Error yielded")
+
+## Week of 3-24-2023
+
+*Spring break, cya next week*  
+
 ## Week of 3-17-2023
 
 ### Tasks completed
