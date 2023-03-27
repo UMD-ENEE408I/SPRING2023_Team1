@@ -19,7 +19,7 @@ Removing the errata does not seem to work... until you remove literally half of 
 
 ![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/438a73fac10a19dfd95b820800542e4855eb5da9/DCF_stuff/opencv/cal/target2.png "Before")  
 
-![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/438a73fac10a19dfd95b820800542e4855eb5da9/result1.png "After")  
+![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/438a73fac10a19dfd95b820800542e4855eb5da9/result2.png "After")  
 ## Week of 3-24-2023
 
 *Spring break, cya next week*  
