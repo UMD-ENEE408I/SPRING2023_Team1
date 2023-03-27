@@ -21,6 +21,8 @@ Removing the errata does not seem to work... until you remove literally half of 
 
 ![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/f1b578f83a09815abbf7007e0c8e19d16f8180f6/result2.png "After")  
 
+The change is not as significant as with the smaller mouse camera, which is to be expected. The webcams' lens is not as convex as the smaller one. Regardless, this is still important, since the four corners will contain the four tags on the ground that will be used to calculate the distances between the mice.  
+
 ### Tasks to be completed
 *3-27: Start distance calculations*
 
