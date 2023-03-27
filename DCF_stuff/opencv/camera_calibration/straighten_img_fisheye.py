@@ -6,16 +6,15 @@ import glob
 
 target_laptop =	"C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\target2.png" # Picture to straighten
 target_jetson =	"/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal/target1.png"
-output =	"result1.png" # Output file
+output =	    "result1.png" # Output file
 
 jetson_DIM =	"/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal/op/DIM.npy"
-jetson_K =	"/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal/op/K.npy"
-jetson_D =	"/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal/op/D.npy"
+jetson_K =	    "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal/op/K.npy"
+jetson_D =	    "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal/op/D.npy"
 # ----------------------- Jetson Directory v. Laptop directory------------------------
-laptop_DIM =	"C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op_webcam\\DIM.npy"
-laptop_K =	    "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op_webcam\\K.npy"
-laptop_D =	    "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op_webcam\\D.npy"
-
+laptop_DIM =    "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op_webcam\\DIM.npy"
+laptop_K =      "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op_webcam\\K.npy"
+laptop_D =      "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op_webcam\\D.npy"
 # Get params
 DIM = np.load(laptop_DIM)
 K = np.load(laptop_K)
