@@ -2,6 +2,7 @@ from pupil_apriltags import Detector
 import cv2
 import numpy as np
 import time
+import os
 
 # Questions for Levi:
 #       How does find_pose_from_tag work?
@@ -16,15 +17,22 @@ at_detector = Detector(
     debug=0
 )
 
+# Change directory to a folder that will contain the chessboard pics
+laptop = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\misc_img"
+jetson = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/misc_img"
+dir = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\"
+# dir = r"C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv"
+os.chdir(laptop)
+
 # Straightening the camera feed
 # 3-28: Since we're gonna go with the eagle-eye approach, use the K D DIM files from the webcam folder
 jetson_DIM = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal/op/DIM.npy"
 jetson_K = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal/op/K.npy"
 jetson_D = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal/op/D.npy"
 # ----------------------- Jetson Directory v. Laptop directory------------------------
-laptop_DIM =    "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op_webcam\\DIM.npy"
-laptop_K =      "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op_webcam\\K.npy"
-laptop_D =      "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op_webcam\\D.npy"
+laptop_DIM = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op_webcam\\DIM.npy"
+laptop_K = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op_webcam\\K.npy"
+laptop_D = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\op_webcam\\D.npy"
 
 # Get params
 DIM = np.load(laptop_DIM)
@@ -83,6 +91,7 @@ if __name__ == '__main__':
     tag_size = 0.13  # tag size in meters
 
     while True:
+        k = cv2.waitKey(1)
         try:
             ret, img = vid.read()
             # Undistorted image
@@ -100,37 +109,52 @@ if __name__ == '__main__':
             results = at_detector.detect(gray, estimate_tag_pose=False)
 
             for res in results:
-                # print(res)
+                #print(res)
                 # Gets back both the rotation and translation matrices from solvePNP
                 pose = find_pose_from_tag(K, res)
                 # This will take in our translation VECTOR and turn it into a translation MATRIX.
                 # It will then set the value to itself, effectively overwritting the the vertex from before
                 # rot -> rotation matrix from previous
                 # jaco -> jacobian transform or nah (We don't use this)
+
+                # Is "rot" Rwa from the slides?
+                # Where is the translation matrix? Is it in "pose"?
+
                 rot, jaco = cv2.Rodrigues(pose[1], pose[1])
                 # print(rot)
 
                 pts = res.corners.reshape((-1, 1, 2)).astype(np.int32)
-                print("VVVV")
-                print("VVVV")
-                print("VVVV")
-                print(pts)
-                print("^^^")
-                print("^^^")
-                print("^^^")
+                # print("VVVV")
+                # print("VVVV")
+                # print("VVVV")
+                # print(pts)
+                # print("^^^")
+                # print("^^^")
+                # print("^^^")
                 ud_img = cv2.polylines(
                     ud_img, [pts], isClosed=True, color=(0, 0, 255), thickness=5)
                 cv2.circle(ud_img, tuple(res.center.astype(np.int32)),
                            5, (0, 0, 255), -1)
-                
+
+                text_loc = (int(res.center[0]) + 5, int(res.center[1]) + 5)
+
+                cv2.putText(ud_img, "{}".format(text_loc), text_loc,
+                            cv2.FONT_HERSHEY_COMPLEX, .5, (0, 0, 255), 1)
 
                 # print(pose)
 
             cv2.imshow("img", ud_img)
-            cv2.waitKey(10)
+            
+                
 
         except KeyboardInterrupt:
             vid.release()
             cv2.destroyAllWindows()
             print('Exiting')
             exit(1)
+        cv2.waitKey(10)
+        if k % 256 == 0:
+            # SPACE pressed
+            img_name = "putText.png"
+            cv2.imwrite(img_name, ud_img)
+            print("{} written!".format(img_name))
