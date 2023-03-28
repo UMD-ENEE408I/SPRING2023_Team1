@@ -325,10 +325,10 @@ void loop() {
 
     //only send data when connected
     if(connected){
-    //Send a packet
-    udp.beginPacket(udpAddress,udpPort);
-    udp.printf("Seconds since boot: %lu", millis()/1000);
-    udp.endPacket();
+      //Send a packet
+      udp.beginPacket(udpAddress,udpPort);
+      udp.printf("Seconds since boot: %lu", millis()/1000);
+      udp.endPacket();
     }
     //Wait for 1 second
     delay(100);
