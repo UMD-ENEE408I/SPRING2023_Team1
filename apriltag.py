@@ -25,7 +25,7 @@ dir = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\
 os.chdir(laptop)
 
 # Straightening the camera feed
-# 3-28: Since we're gonna go with the eagle-eye approach, use the K D DIM files from the webcam folder
+
 jetson_DIM = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal/op/DIM.npy"
 jetson_K = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal/op/K.npy"
 jetson_D = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal/op/D.npy"
@@ -86,7 +86,7 @@ def find_pose_from_tag(K, detection):
 
 
 if __name__ == '__main__':
-    vid = cv2.VideoCapture(1)
+    vid = cv2.VideoCapture(0)
 
     tag_size = 0.13  # tag size in meters
 

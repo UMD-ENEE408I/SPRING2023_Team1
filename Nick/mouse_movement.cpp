@@ -17,7 +17,7 @@ char pbuff[255];
 // either use the ip address of the server or 
 // a network broadcast address
 const char * udpAddress = "192.168.2.102";
-const int udpPort = 3333;
+const int udpPort = 3333; // Tracker 1: 3333, Tracker 2: 4444, Evader(?): 5555
 
 // Are we currently connected?
 boolean connected = false;
@@ -58,9 +58,6 @@ void connectToWiFi(const char * ssid, const char * pwd){
 
   Serial.println("Waiting for WIFI connection...");
 }
-
-float target = 0;
-float old_target = 0;
 
 // IMU (rotation rate and acceleration)
 Adafruit_MPU6050 mpu;
@@ -197,34 +194,9 @@ float update_pid(float dt, float kp, float ki, float kd,
   return u;
 }
 
-// a smooth and interesting trajectory
-// https://en.wikipedia.org/wiki/Lemniscate_of_Bernoulli
-void leminscate_of_bernoulli(float t, float a, float& x, float& y) {
-  float sin_t = sin(t);
-  float den = 1 + sin_t * sin_t;
-  x = a * cos(t) / den;
-  y = a * sin(t) * cos(t) / den;
-}
-
-// Signed angle from (x0, y0) to (x1, y1)
-// assumes norms of these quantities are precomputed
-float signed_angle(float x0, float y0, float n0, float x1, float y1, float n1) {
-  float normed_dot = (x1 * x0 + y1 * y0) / (n1 * n0);
-  if (normed_dot > 1.0) normed_dot = 1.0; // Possible because of numerical error
-  float angle = acosf(normed_dot);
-
-  // use cross product to find direction of rotation
-  // https://en.wikipedia.org/wiki/Cross_product#Coordinate_notation
-  float s3 = x0 * y1 - x1 * y0;
-  if (s3 < 0) angle = -angle;
-
-  return angle;
-}
-
 void setup() {
-   // Initilize hardware serial:
   Serial.begin(115200);
-  
+
   // Stop the right motor by setting pin 14 low
   // this pin floats high or is pulled
   // high during the bootloader phase for some reason
@@ -239,21 +211,16 @@ void setup() {
   udp.beginPacket(udpAddress, udpPort);
   udp.printf("Hi Jetson");
   udp.endPacket();
-  
-  Serial.begin(115200);
 
   // Disable the lightbar ADC chips so they don't hold the SPI bus used by the IMU
-  /*pinMode(ADC_1_CS, OUTPUT);
+  pinMode(ADC_1_CS, OUTPUT);
   pinMode(ADC_2_CS, OUTPUT);
   digitalWrite(ADC_1_CS, HIGH);
-  digitalWrite(ADC_2_CS, HIGH);*/
+  digitalWrite(ADC_2_CS, HIGH);
 
   ledcAttachPin(BUZZ, BUZZ_CHANNEL);
 
   pinMode(VCC_SENSE, INPUT);
-
-  adc1.begin(ADC_1_CS);  
-  adc2.begin(ADC_2_CS);
 
   configure_motor_pins();
   configure_imu();
@@ -262,7 +229,6 @@ void setup() {
 }
 
 void loop() {
-  
   // Create the encoder objects after the motor has
   // stopped, else some sort exception is triggered
   Encoder enc1(M1_ENC_A, M1_ENC_B);
@@ -270,21 +236,6 @@ void loop() {
 
   // Loop period
   int target_period_ms = 2; // Loop takes about 3 ms so a delay of 2 gives 200 Hz or 5ms
-
-  // States used to calculate target velocity and heading
-  float leminscate_a = 0.5; // Radius
-  float leminscate_t_scale = 2.0; // speedup factor
-  float x0, y0;
-  leminscate_of_bernoulli(0.0, leminscate_a, x0, y0);
-  float last_x, last_y;
-  leminscate_of_bernoulli(-leminscate_t_scale * target_period_ms / 1000.0, leminscate_a, last_x, last_y);
-  float last_dx = (x0 - last_x) / ((float)target_period_ms / 1000.0);
-  float last_dy = (y0 - last_y) / ((float)target_period_ms / 1000.0);
-  float last_target_v = sqrtf(last_dx * last_dx + last_dy * last_dy);
-  float target_theta = 0.0; // This is an integrated quantity
-  float target_v = 0.0;
-
-  //Serial.printf("This loop does indeed occur\n");
 
   // Motors are controlled by a position PID
   // with inputs interpreted in meters and outputs interpreted in volts
@@ -317,11 +268,40 @@ void loop() {
   float ktheta = (2 * 3.14159) / (90.0 * 3.14159 / 180.0);
   est_imu_bias(bias_omega, 500);// Could be expanded for more quantities
 
+  // Initializing cam_theta, target_theta and target_v
+  float cam_theta, target_theta, target_v;
+
   // The real "loop()"
   // time starts from 0
   float start_t = (float)micros() / 1000000.0;
   float last_t = -target_period_ms / 1000.0; // Offset by expected looptime to avoid divide by zero
   while (true) {
+    // Get the time elapsed
+    float t = ((float)micros()) / 1000000.0 - start_t;
+    float dt = ((float)(t - last_t)); // Calculate time since last update
+    // Serial.print("t "); Serial.print(t);
+    Serial.print(" dt "); Serial.print(dt * 1000.0);
+    last_t = t;
+  
+    // TODO Battery voltage compensation, the voltage sense on my mouse is broken for some reason
+    // int counts = analogRead(VCC_SENSE);
+    // float battery_voltage = counts * ADC_COUNTS_TO_VOLTS;
+    // if (battery_voltage <= 0) Serial.println("BATTERY INVALID");
+
+    // Get the distances the wheels have traveled in meters
+    // positive is forward
+    float pos_left  =  (float)enc1.read() * METERS_PER_TICK;
+    float pos_right = -(float)enc2.read() * METERS_PER_TICK; // Take negative because right counts upwards when rotating backwards
+  
+    // Read IMU and update estimate of heading
+    // positive is counter clockwise
+    float omega;
+    read_imu(omega); // Could be expanded to read more things
+    omega -= bias_omega; // Remove the constant bias measured in the beginning
+    theta = theta + omega * dt;
+
+    // **EVERYTHING ABOVE IS UPDATING THE CURRENT "theta" VALUE FROM THE MOUSE'S PERSPECTIVE**
+    // Will have to check if the theta from the calculations/gyroscope is equal to that calculated from the camera/apriltags
 
     //only send data when connected
     if(connected){
@@ -333,104 +313,20 @@ void loop() {
     //Wait for 1 second
     delay(100);
 
+    //Receive new data from Jetson
     int packetSize = udp.parsePacket();
     if(packetSize >= sizeof(float))
     {
       //Serial.printf("packet size is %d\n", packetSize);
-      float my_array[1]; 
+      float my_array[3]; 
       udp.read((char*)my_array, sizeof(my_array)); 
       udp.flush();
-      //Serial.printf("received value is %f\n", my_array[0]);
-      target = 1000*my_array[0];
-      Serial.printf("1st try target is: %f\n", target);
+      cam_theta = my_array[0];
+      target_theta = my_array[1];
+      target_v = my_array[2];
     }
-    Serial.printf("2nd try target is: %f\n", target);
 
-    // Get the time elapsed
-    float t = ((float)micros()) / 1000000.0 - start_t;
-    float dt = ((float)(t - last_t)); // Calculate time since last update
-    // Serial.print("t "); Serial.print(t);
-    //Serial.print(" dt "); Serial.print(dt * 1000.0);
-    last_t = t;
-
-    // Get the distances the wheels have traveled in meters
-    // positive is forward
-    float pos_left  =  (float)enc1.read() * METERS_PER_TICK;
-    float pos_right = -(float)enc2.read() * METERS_PER_TICK; // Take negative because right counts upwards when rotating backwards
-  
-    // TODO Battery voltage compensation, the voltage sense on my mouse is broken for some reason
-    // int counts = analogRead(VCC_SENSE);
-    // float battery_voltage = counts * ADC_COUNTS_TO_VOLTS;
-    // if (battery_voltage <= 0) Serial.println("BATTERY INVALID");
-  
-    // Read IMU and update estimate of heading
-    // positive is counter clockwise
-    float omega;
-    read_imu(omega); // Could be expanded to read more things
-    omega -= bias_omega; // Remove the constant bias measured in the beginning
-    theta = theta + omega * dt;
-    // Serial.print(" omega "); Serial.print(omega);
-    // Serial.print(" theta "); Serial.print(theta);
-
-    // Serial.print(" last_x "); Serial.print(last_x);
-    // Serial.print(" last_y "); Serial.print(last_y);
-    // Serial.print(" last_dx "); Serial.print(last_dx);
-    // Serial.print(" last_dy "); Serial.print(last_dy);
-    // Serial.print(" last tv "); Serial.print(last_target_v);
-
-    // Calculate target forward velocity and target heading to track the leminscate trajectory
-    // of 0.5 meter radius
-    float x, y;
-    leminscate_of_bernoulli(leminscate_t_scale * t, leminscate_a, x, y);
-
-    // Serial.print(" x "); Serial.print(x);
-    // Serial.print(" y "); Serial.print(y);
-
-    float dx = (x - last_x) / dt;
-    float dy = (y - last_y) / dt;
-    //float target_v = sqrtf(dx * dx + dy * dy); // forward velocity
-
-    if (target >= 20) {
-      Serial.printf("TRUE/n");
-      target_theta = 0.0;
-      target_v = 0.2;
-    } else if (target < 20){
-      target_v = 0.0;
-    }
-    Serial.printf("After IF target_v is: %f\n", target_v);
-    
-    /*else if (adc1_buf[0] < 500 && adc2_buf[0] < 500 && adc1_buf[1] < 500 && adc2_buf[1] < 500 && adc1_buf[2] < 500) {
-      //target_v = 0.0;
-      target_theta -= 5.23599 * dt;
-    } else if (adc2_buf[2] < 500 || adc2_buf[3] < 500) {
-      //target_theta = 0.0;
-      target_v = 0.2;
-    } else if (adc1_buf[6] < 500 || adc2_buf[5] < 500 || adc1_buf[5] < 500 || adc2_buf[4] < 500 || adc1_buf[4] < 500) {
-      target_theta += 0.523599 * dt;
-    } else if (adc1_buf[0] < 500 || adc2_buf[0] < 500 || adc1_buf[1] < 500 || adc2_buf[1] < 500 || adc1_buf[2] < 500) {
-      target_theta -= 0.523599 * dt;
-    }*/
-
-    //Serial.print("theta:"); Serial.print(target_theta); Serial.print("\n");
-
-    // Serial.print(" dx "); Serial.print(dx);
-    // Serial.print(" dy "); Serial.print(dy);
-    // Serial.print(" tv "); Serial.print(target_v);
-
-    // Compute the change in heading using the normalized dot product between the current and last velocity vector
-    // using this method instead of atan2 allows easy smooth handling of angles outsides of -pi / pi at the cost of
-    // a slow drift defined by numerical precision
-    float target_omega = signed_angle(last_dx, last_dy, last_target_v, dx, dy, target_v) / dt;
-    //target_theta = target_theta + target_omega * dt;
-
-    // Serial.print(" target_omega "); Serial.print(target_omega);
-    // Serial.print(" t theta "); Serial.print(target_theta);
-
-    last_x = x;
-    last_y = y;
-    last_dx = dx;
-    last_dy = dy;
-    last_target_v = target_v;
+    // **EVERYTHING BELOW IS REQUIRED TO CALCULATE THE NEXT DIRECTION/VELOCITY GIVEN "target_theta" AND "target_v"**
   
     // Calculate target motor speeds from target forward speed and target heading
     // Could also include target path length traveled and target angular velocity
