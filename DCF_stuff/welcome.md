@@ -7,14 +7,20 @@ Hopefully, this personal log of occurences will prove useful down the line as we
 ## Week of 3-31-2023
 
 ### Tasks completed
-*Started work on webcam calibration*  
+*Webcam is calibrted*  
 
 ### *3-28*
-We've finalized how we're gonna use the AprilTags. We will be suspending a camera above the arena, using five tags to denote the four corners of the arena as well as the center point of the arena for th mice to go towards if it gets too close to the outer bounds of the arena. Because we're no longer using sound localization via time delay, we can simply use the camera's frame of reference instead of real world frame of reference, which will make life a whole lot simpler (a rare comodity in these times)
+We've finalized how we're gonna use the AprilTags. We will be suspending a camera above the arena, using five tags to denote the four corners of the arena as well as the center point of the arena for th mice to go towards if it gets too close to the outer bounds of the arena. Because we're no longer using sound localization via time delay, we can simply use the camera's frame of reference instead of real world frame of reference, which will make life a whole lot simpler (a rare comodity in these times)  
+
+Thus, the frame now displays the current coordinates for each AprilTag's center
+
+![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/a7141692349712bfef2966b424e966dc104aeb5c/DCF_stuff/opencv/misc_img/putText.png "Drawing center coordinates on frame")  
+
+The next step would be to find the distance between two tags in the camera frame and hopefully draw lines between the four corners. From here, detecting nw tags on the mice would be the next step for boundary detection.  
 
 ### *3-27*  
 Started work on the webcam calibration. We took some very rough measurements of the area covered by the webcam from one of those hanging electrical outlet thingies. It's roughly 6x8 ft.  
-I took 80 pictures for the calibration of the webcam, however following the same steps as for the mouse's webcam yielded unusable results. Need to investigate further. 
+I took 80 pictures for the calibration of the webcam, however following the same steps as for the mouse's webcam yielded unusable results. Need to investigate further.  
 
 ![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/cf9013c3e4a4f668f536f4f33edc6f59dd100a57/result1.png "Error yielded")  
 
@@ -27,7 +33,12 @@ Removing the errata does not seem to work... until you remove literally half of 
 The change is not as significant as with the smaller mouse camera, which is to be expected. The webcams' lens is not as convex as the smaller one. Regardless, this is still important, since the four corners will contain the four tags on the ground that will be used to calculate the distances between the mice.  
 
 ### Tasks to be completed
-*3-27: Start distance calculations*
+~~*3-27: Start distance calculations*~~  
+*3-28: Real-life distance is no longer necessary, but we still need a reliable way to measure distance between tags in the camera frame*  
+
+> -DCF
+
+---
 
 ## Week of 3-24-2023
 
