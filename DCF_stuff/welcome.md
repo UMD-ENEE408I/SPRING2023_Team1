@@ -16,7 +16,7 @@ Thus, the frame now displays the current coordinates for each AprilTag's center
 
 ![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/a7141692349712bfef2966b424e966dc104aeb5c/DCF_stuff/opencv/misc_img/putText.png "Drawing center coordinates on frame")  
 
-The next step would be to find the distance between two tags in the camera frame and hopefully draw lines between the four corners. From here, detecting nw tags on the mice would be the next step for boundary detection.  
+The next step would be to find the distance between two tags in the camera frame and hopefully draw lines between the four corners. From here, detecting nw tags on the mice would be the next step for boundary detection. Apart from this, I did some grunt work, getting tags from the AprilTag repo, enlargening them in order to not have to rip off the wallpaper from the lab's walls, and some documentation here and there. (Mostly because my memory is like a collander with three inch holes and I forget everything, or as Gen-Z says it, i forgor :skull: )  
 
 ### *3-27*  
 Started work on the webcam calibration. We took some very rough measurements of the area covered by the webcam from one of those hanging electrical outlet thingies. It's roughly 6x8 ft.  
