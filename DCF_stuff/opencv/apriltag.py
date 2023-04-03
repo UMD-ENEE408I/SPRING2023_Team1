@@ -107,10 +107,10 @@ if __name__ == '__main__':
             # K=np.array([[207.9878620183829, 0.0, 338.10802140849563], [0.0, 208.9172074014061, 229.54749116130657], [0.0, 0.0, 1.0]])
 
             results = at_detector.detect(gray, estimate_tag_pose=False)
-            print(results.tag_id[0])
+            # print(results[0].tag_id)
 
             for res in results:
-                #print(res)
+                print(res)
                 # Gets back both the rotation and translation matrices from solvePNP
                 pose = find_pose_from_tag(K, res)
                 # This will take in our translation VECTOR and turn it into a translation MATRIX.
