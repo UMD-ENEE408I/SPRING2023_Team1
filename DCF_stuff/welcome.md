@@ -9,6 +9,9 @@ Hopefully, this personal log of occurences will prove useful down the line as we
 
 ### **Tasks completed**  
 *Started work on the arena drawing*  
+  
+
+### *4-3*  
 So far, we've gotten the webcam calibrated and undistorted (see week 3-31). Today, we start work on the printing of the detections, consequently drawing the box of the arena on the screen. Last week, we managed to print out the coordinates of the tags. Today, we want to use these detections and distinguish between the different tags detected. This is proving difficult because ~~I am a dumbass~~ and the documntation is ~~ass~~ outdated. So far, this is my approach to tag distinction:  
 
 ```
@@ -49,10 +52,30 @@ Now, sets are a bit fussier than arrays, so this may come back to bite me in the
 
 ![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/f8ce17c2d615e337fe25fe60c6739bb798fb000d/DCF_stuff/opencv/misc_img/detect_tags.png "Multiple tags detected")  
 
+
+The real test will be tomorrow, where I plan to print out some tags on paper and try drawing lines between them. However, since the mice will also have tags on them, we need to make sure that only the tags that we have set to be corners (AKA 0 - 3) are the only ones that get lines drawn between them.  I was thinking something along the lines of: 
+
+```
+
+corners = Array of tag numbers 0 - 3
+for res in results loop:
+    If "corners" intersects with "detect_arr":
+        line(center of 0 -> center of 1)
+        line(center of 1 -> center of 2)
+        line(center of 2 -> center of 3)
+        line(center of 3 -> center of 1)
+
+```  
+As is, this looks pretty messy, so I think I may just make this a function to make it a bit cleaner. 
+
+
 ### **Tasks to be completed**  
+*4-3 Finish drawing the arena's box in the frame*
 
 >DCF
----
+
+---  
+
 ## Week of 3-31-2023
 
 ### **Tasks completed**
@@ -90,7 +113,11 @@ The change is not as significant as with the smaller mouse camera, which is to b
 ## Week of 3-24-2023
 
 *Spring break, cya next week*  
-![Alt text](https://media1.giphy.com/media/2uI9paIuAWgaqfyX0Q/giphy.gif?cid=ecf05e476c0a3skc8tlmfyjtl7r656h2j99cncm2r75u8b7s&rid=giphy.gif "he's just like me frfr")
+![Alt text](https://media1.giphy.com/media/2uI9paIuAWgaqfyX0Q/giphy.gif?cid=ecf05e476c0a3skc8tlmfyjtl7r656h2j99cncm2r75u8b7s&rid=giphy.gif "vibin' :sunglasses:")
+
+>DCF
+
+---
 
 ## Week of 3-17-2023
 
