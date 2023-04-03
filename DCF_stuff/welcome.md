@@ -47,7 +47,7 @@ for res in results:
 
 Now, sets are a bit fussier than arrays, so this may come back to bite me in the ass. [But I'll just stick my head in the ground until it becomes too big to ignore.](https://en.wikipedia.org/wiki/Ostrich_algorithm) For now, it seems to work fine, even with more than 2 tags.  
 
-![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/bc752b24b6080a9bb441f6104593d13025a1d84b/DCF_stuff/opencv/misc_img/putText.png "Multiple tags detected")  
+![Alt text](C:\Users\Dilan\Documents\GitHub\SPRING2023_Team1\DCF_stuff\opencv\misc_img\detect_tags.png "Multiple tags detected")  
 
 ### **Tasks to be completed**  
 
