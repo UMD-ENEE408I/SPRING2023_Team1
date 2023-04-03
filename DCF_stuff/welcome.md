@@ -8,8 +8,8 @@ Hopefully, this personal log of occurences will prove useful down the line as we
 ## Week of 4-7-2023
 
 ### **Tasks completed**  
-*Started work on the arena drawing*
-So far, we've gotten the webcam calibrated and undistorted (see week 3-31). Today, we start work on the printing of the detections, consequently drawing the box of the arena on the screen. Last week, we managed to print out the coordinates of the tags. Today, we want to use these detections and distinguish between the different tags detected. This is proving difficult because ~~I am a dumbass~~ the documntation is ~~ass~~ outdated. So far, this is my approach to tag distinction:  
+*Started work on the arena drawing*  
+So far, we've gotten the webcam calibrated and undistorted (see week 3-31). Today, we start work on the printing of the detections, consequently drawing the box of the arena on the screen. Last week, we managed to print out the coordinates of the tags. Today, we want to use these detections and distinguish between the different tags detected. This is proving difficult because ~~I am a dumbass~~ and the documntation is ~~ass~~ outdated. So far, this is my approach to tag distinction:  
 
 ```
 for res in results:
@@ -30,6 +30,24 @@ It bugs me because this isn't the most elegant way to do this, and it's also sti
 ASOASF you get the idea.  
 
 I think it has something to do with the funky way `Detections` are stored / organized. I had hardcoded some limitations on the number of elements that would trigger the code snippet, but 216 taught me that hard-coding is a cardinal sin, so I wanted something more flexible.  
+
+Literally 5 min after writing this I fixed it lol. I changed `detect_arr` to a set, that way duplicates are not allowed.  
+```
+detect_arr = set()
+
+...
+
+for res in results:
+    for x in range(len(results)):
+        if x not in detect_arr:
+            detect_arr.add(results[x].tag_id)
+        print(detect_arr)
+
+```
+
+Now, sets are a bit fussier than arrays, so this may come back to bite me in the ass. [But I'll just stick my head in the ground until it becomes too big to ignore.](https://en.wikipedia.org/wiki/Ostrich_algorithm) For now, it seems to work fine, even with more than 2 tags.  
+
+
 ### **Tasks to be completed**  
 
 >DCF

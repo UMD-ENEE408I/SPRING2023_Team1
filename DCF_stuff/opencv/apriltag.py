@@ -22,7 +22,7 @@ laptop = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\open
 jetson = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/misc_img"
 dir = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\"
 # dir = r"C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv"
-os.chdir(laptop)
+os.chdir(jetson)
 
 # Straightening the camera feed
 
@@ -35,9 +35,9 @@ laptop_K = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\op
 laptop_D = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal_op\\op_webcam\\D.npy"
 
 # Get params
-DIM = np.load(laptop_DIM)
-K = np.load(laptop_K)
-D = np.load(laptop_D)
+DIM = np.load(jetson_DIM)
+K = np.load(jetson_K)
+D = np.load(jetson_D)
 
 balance = 0  # Set to 1 to show black space. Set to 0 to crop
 new_K = cv2.fisheye.estimateNewCameraMatrixForUndistortRectify(
@@ -90,7 +90,7 @@ if __name__ == '__main__':
 
     tag_size = 0.13  # tag size in meters
 
-    detect_arr = []
+    detect_arr = set()
     # These will be the tags that we want for the corners
     corner_tags = [0, 1, 2, 3]
     while True:
@@ -116,7 +116,7 @@ if __name__ == '__main__':
 
                 for x in range(len(results)):
                     if x not in detect_arr:
-                        detect_arr.append(results[x].tag_id)
+                        detect_arr.add(results[x].tag_id)
                     print(detect_arr)
 
                 # Gets back both the rotation and translation matrices from solvePNP
