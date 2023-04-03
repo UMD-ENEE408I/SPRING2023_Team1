@@ -4,8 +4,6 @@ Here, I am currently working on the OpenCV portion of the project
 
 Hopefully, this personal log of occurences will prove useful down the line as we work on the final report and the weeklies. *(Also this is just an excuse to learn Markdown xdd)*  
 
-You can try a number for $n$ to verify. With $n=4$, $$\sum_{i=0}^{\lg{n}-1}1=\sum_{i=0}^{1}1=1+1=2=\lg{4}$$Generally, $$\sum_{i=a}^{b}1=b-a+1$$
-
 ## Week of 3-31-2023
 
 ### **Tasks completed**
@@ -51,7 +49,6 @@ The change is not as significant as with the smaller mouse camera, which is to b
 *Successfully got the camera calibrated*  
 
 This was pretty challenging, since I had to get into the weeds of how the OpenCV library worked. Regardless, I went ahead and added comments on what certain functions returned, what were their params, etc. This is with the hope that, as the project advances, everyone is on the same page and understands how the technology works. Here are some before and after pics.  
-
 
 
 ![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/bc752b24b6080a9bb441f6104593d13025a1d84b/DCF_stuff/opencv/cal_op/target1.png "Before calibration")
