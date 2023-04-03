@@ -96,7 +96,7 @@ I took 80 pictures for the calibration of the webcam, however following the same
 
 Removing the errata does not seem to work... until you remove literally half of the data lol. See for yourself
 
-![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/33333333333333333333bc752b24b6080a9bb441f6104593d13025a1d84b/DCF_stuff/opencv/cal_op/target2.png "Before")  
+![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/37e64de9fca4522aa44ac6d9588f4d121fe72618/DCF_stuff/opencv/cal_op/target2.png "Before")  
 
 ![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/bc752b24b6080a9bb441f6104593d13025a1d84b/DCF_stuff/opencv/rectified_img/result2.png "After")  
 
