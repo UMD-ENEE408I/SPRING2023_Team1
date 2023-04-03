@@ -113,7 +113,7 @@ The change is not as significant as with the smaller mouse camera, which is to b
 ## Week of 3-24-2023
 
 *Spring break, cya next week*  
-![Alt text](https://media1.giphy.com/media/2uI9paIuAWgaqfyX0Q/giphy.gif?cid=ecf05e476c0a3skc8tlmfyjtl7r656h2j99cncm2r75u8b7s&rid=giphy.gif "vibin' :sunglasses:")
+![Alt text](https://media1.giphy.com/media/2uI9paIuAWgaqfyX0Q/giphy.gif?cid=ecf05e476c0a3skc8tlmfyjtl7r656h2j99cncm2r75u8b7s&rid=giphy.gif "vibin'")
 
 >DCF
 
