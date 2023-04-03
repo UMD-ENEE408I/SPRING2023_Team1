@@ -107,6 +107,7 @@ if __name__ == '__main__':
             # K=np.array([[207.9878620183829, 0.0, 338.10802140849563], [0.0, 208.9172074014061, 229.54749116130657], [0.0, 0.0, 1.0]])
 
             results = at_detector.detect(gray, estimate_tag_pose=False)
+            print(results)
 
             for res in results:
                 #print(res)
@@ -140,6 +141,8 @@ if __name__ == '__main__':
 
                 cv2.putText(ud_img, "{}".format(text_loc), text_loc,
                             cv2.FONT_HERSHEY_COMPLEX, .5, (0, 0, 255), 1)
+                
+                # cv2.line(ud_img, )
 
                 # print(pose)
 

@@ -4,6 +4,15 @@ Here, I am currently working on the OpenCV portion of the project
 
 Hopefully, this personal log of occurences will prove useful down the line as we work on the final report and the weeklies. *(Also this is just an excuse to learn Markdown xdd)*  
 
+
+## Week of 4-7-2023
+
+### **Tasks completed**  
+
+
+
+>DCF
+---
 ## Week of 3-31-2023
 
 ### **Tasks completed**
@@ -24,7 +33,7 @@ I took 80 pictures for the calibration of the webcam, however following the same
 
 Removing the errata does not seem to work... until you remove literally half of the data lol. See for yourself
 
-![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/bc752b24b6080a9bb441f6104593d13025a1d84b/DCF_stuff/opencv/cal_op/target2.png "Before")  
+![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/33333333333333333333bc752b24b6080a9bb441f6104593d13025a1d84b/DCF_stuff/opencv/cal_op/target2.png "Before")  
 
 ![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/bc752b24b6080a9bb441f6104593d13025a1d84b/DCF_stuff/opencv/rectified_img/result2.png "After")  
 
