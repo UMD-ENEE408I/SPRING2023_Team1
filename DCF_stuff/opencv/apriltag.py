@@ -18,26 +18,26 @@ at_detector = Detector(
 )
 
 # Change directory to a folder that will contain the chessboard pics
-laptop =    "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\misc_img"
-jetson =    "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/misc_img"
-dir =       "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\"
+laptop = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\misc_img"
+jetson = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/misc_img"
+dir = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\"
 # dir = r"C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv"
-os.chdir(jetson)
+os.chdir(laptop)
 
 # Straightening the camera feed
 
-jetson_DIM =    "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal_op/op_webcam/DIM.npy"
-jetson_K =      "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal_op/op_webcam/K.npy"
-jetson_D =      "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal_op/op_webcam/D.npy"
+jetson_DIM = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal_op/op_webcam/DIM.npy"
+jetson_K = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal_op/op_webcam/K.npy"
+jetson_D = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal_op/op_webcam/D.npy"
 # ----------------------- Jetson Directory v. Laptop directory------------------------
-laptop_DIM ="C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal_op\\op_webcam\\DIM.npy"
-laptop_K =  "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal_op\\op_webcam\\K.npy"
-laptop_D =  "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal_op\\op_webcam\\D.npy"
+laptop_DIM = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal_op\\op_webcam\\DIM.npy"
+laptop_K = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal_op\\op_webcam\\K.npy"
+laptop_D = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal_op\\op_webcam\\D.npy"
 
 # Get params
-DIM = np.load(jetson_DIM)
-K = np.load(jetson_K)
-D = np.load(jetson_D)
+DIM = np.load(laptop_DIM)
+K = np.load(laptop_K)
+D = np.load(laptop_D)
 
 balance = 0  # Set to 1 to show black space. Set to 0 to crop
 new_K = cv2.fisheye.estimateNewCameraMatrixForUndistortRectify(
@@ -86,10 +86,13 @@ def find_pose_from_tag(K, detection):
 
 
 if __name__ == '__main__':
-    vid = cv2.VideoCapture(0)
+    vid = cv2.VideoCapture(1)
 
     tag_size = 0.13  # tag size in meters
 
+    detect_arr = []
+    # These will be the tags that we want for the corners
+    corner_tags = [0, 1, 2, 3]
     while True:
         k = cv2.waitKey(1)
         try:
@@ -110,7 +113,12 @@ if __name__ == '__main__':
             # print(results[0].tag_id)
 
             for res in results:
-                print(res)
+
+                for x in range(len(results)):
+                    if x not in detect_arr:
+                        detect_arr.append(results[x].tag_id)
+                    print(detect_arr)
+
                 # Gets back both the rotation and translation matrices from solvePNP
                 pose = find_pose_from_tag(K, res)
                 # This will take in our translation VECTOR and turn it into a translation MATRIX.
@@ -141,14 +149,12 @@ if __name__ == '__main__':
 
                 cv2.putText(ud_img, "{}".format(text_loc), text_loc,
                             cv2.FONT_HERSHEY_COMPLEX, .5, (0, 0, 255), 1)
-                
+
                 # cv2.line(ud_img, )
 
                 # print(pose)
 
             cv2.imshow("img", ud_img)
-            
-                
 
         except KeyboardInterrupt:
             vid.release()
