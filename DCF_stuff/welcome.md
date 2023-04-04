@@ -9,7 +9,11 @@ Hopefully, this personal log of occurences will prove useful down the line as we
 
 ### **Tasks completed**  
 *Started work on the arena drawing*  
-  
+
+### *4-4*  
+I've implemented the code in order to draw the arena on the frame. As of writing, it seems to work for a split second before commiting sudoku. 
+
+![Alt text]()
 
 ### *4-3*  
 So far, we've gotten the webcam calibrated and undistorted (see week 3-31). Today, we start work on the printing of the detections, consequently drawing the box of the arena on the screen. Last week, we managed to print out the coordinates of the tags. Today, we want to use these detections and distinguish between the different tags detected. This is proving difficult because ~~I am a dumbass and~~ the documntation is ~~ass~~ fussy. So far, this is my approach to tag distinction:  
