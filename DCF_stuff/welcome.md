@@ -51,7 +51,7 @@ while True:
         detect_keys = list(detect_arr.keys())
         detect_keys.sort()
         # Using a codeblock, we can iterate through the array and change 
-        # the indices so that the dedections are ordered by the tags. 
+        # the indices so that the detections are ordered by the tags. 
         sorted_dict = {i: detect_arr[i] for i in detect_keys}
         print(detect_keys)
 
