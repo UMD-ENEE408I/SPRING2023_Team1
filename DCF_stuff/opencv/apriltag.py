@@ -119,8 +119,12 @@ if __name__ == '__main__':
                 for x in range(len(results)):
                     if x in corner_tags:
                         detect_arr.update({results[x].tag_id: results[x]})
-                detect_keys = detect_arr.keys()
-                print(detect_keys)
+                detect_keys = list(detect_arr.keys())
+                detect_keys.sort()
+                # Codeblock Poggers
+                sorted_dict = {i: detect_arr[i] for i in detect_keys}
+                print(sorted_dict)
+
 
                     #if corner_tags.intersection(detect_arr) == corner_tags:
                         # sort results
