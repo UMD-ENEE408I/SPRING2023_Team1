@@ -50,7 +50,7 @@ while True:
         # Turn the keys of the dictionary into a list so we can sort the dictionary
         detect_keys = list(detect_arr.keys())
         detect_keys.sort()
-        # Using a codeblock (PogChamp), we can iterate through the array and change 
+        # Using a codeblock, we can iterate through the array and change 
         # the indices so that the dedections are ordered by the tags. 
         sorted_dict = {i: detect_arr[i] for i in detect_keys}
         print(detect_keys)
