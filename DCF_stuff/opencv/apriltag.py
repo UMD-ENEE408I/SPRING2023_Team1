@@ -117,7 +117,7 @@ if __name__ == '__main__':
             for res in results:
 
                 for x in range(len(results)):
-                    if x not in corner_tags:
+                    if x in corner_tags:
                         detect_arr.update({results[x].tag_id: results[x]})
 
                 print(detect_arr)
