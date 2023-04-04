@@ -92,7 +92,7 @@ if __name__ == '__main__':
 
     detect_arr = set()
     # These will be the tags that we want for the corners
-    corner_tags = set(0, 1, 2, 3)
+    corner_tags = set((0, 1, 2, 3))
     while True:
         k = cv2.waitKey(1)
         try:
