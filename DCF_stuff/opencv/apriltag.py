@@ -90,12 +90,13 @@ if __name__ == '__main__':
 
     tag_size = 0.13  # tag size in meters
 
-    detect_arr = dict()
+    
     # These will be the tags that we want for the corners
     corner_tags = [0,1,2,3]
     while True:
         k = cv2.waitKey(1)
         try:
+            detect_arr = dict()
             ret, img = vid.read()
             # Undistorted image
             ud_img = cv2.remap(
