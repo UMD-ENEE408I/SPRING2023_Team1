@@ -116,7 +116,6 @@ if __name__ == '__main__':
             # when a tag is found that is in corner_tags, add it to the dictionary with tag_id as its index. 
             # use detect_arr 125 - 128
             for res in results:
-
                 for x in range(len(results)):
                     if x in corner_tags:
                         detect_arr.update({results[x].tag_id: results[x]})

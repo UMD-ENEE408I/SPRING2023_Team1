@@ -15,7 +15,7 @@ I've implemented the code in order to draw the arena on the frame. As of writing
 
 ![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/9aa48930798eaac55f0648723f83e0de2751e048/DCF_stuff/opencv/misc_img/draw_arena.png "Drawing arena")
 
-```
+```python
 for res in results:
     for x in range(len(results)):
         if x not in detect_arr:
@@ -30,21 +30,54 @@ for res in results:
 ```
 This is the code that's causing me to age faster. The problem is that `results` is dynamic, and therefore changes depending on how many detections there are. I'm pretty sure I need to adjust the way detections are added and removed to `detect_arr`, that it, to actually remove tags that are no longer in frame / detected.  
 
+*Update*  
+It's finished! With a nudge from Levi, I managed to implement the tag storage as a ~~hash~~ dictionary (sorry, the Ruby programmer in me made an unexpected apperance). Regardless, here's how I managed it
+
+```python
+corner_tags = [0,1,2,3]
+while True:
+...
+    try:
+        detect_arr = dict()
+    ...
+    for res in results:
+        # For however many detections there are, we add the detection 
+        # into the 'detect_arr' dictionary if it is one of the pre-determined
+        # tag numbers for the corners.  
+        for x in range(len(results)):
+            if x in corner_tags:
+                detect_arr.update({results[x].tag_id: results[x]})
+        # Turn the keys of the dictionary into a list so we can sort the dictionary
+        detect_keys = list(detect_arr.keys())
+        detect_keys.sort()
+        # Using a codeblock (PogChamp), we can iterate through the array and change 
+        # the indices so that the dedections are ordered by the tags. 
+        sorted_dict = {i: detect_arr[i] for i in detect_keys}
+        print(detect_keys)
+
+        # Since we have sorted our dictionary, we can go ahead and draw the rectangle 
+        # confident that the indicies shown below will be accurate. 
+        if set(detect_keys) & set(corner_tags) == set(corner_tags):
+            cv2.line(ud_img, (int(sorted_dict[0].center[0]), int(sorted_dict[0].center[1])), (int(sorted_dict[1].center[0]), int(sorted_dict[1].center[1])), color=(0, 255, 0), thickness=5)
+            cv2.line(ud_img, (int(sorted_dict[1].center[0]), int(sorted_dict[1].center[1])), (int(sorted_dict[2].center[0]), int(sorted_dict[2].center[1])), color=(0, 255, 0), thickness=5)
+            cv2.line(ud_img, (int(sorted_dict[2].center[0]), int(sorted_dict[2].center[1])), (int(sorted_dict[3].center[0]), int(sorted_dict[3].center[1])), color=(0, 255, 0), thickness=5)
+            cv2.line(ud_img, (int(sorted_dict[3].center[0]), int(sorted_dict[3].center[1])), (int(sorted_dict[0].center[0]), int(sorted_dict[0].center[1])), color=(0, 255, 0), thickness=5)
+```
+As of right ***now***, this will only work with the tags that are in `corner_tags`. Anyt 
 
 ### *4-3*  
 So far, we've gotten the webcam calibrated and undistorted (see week 3-31). Today, we start work on the printing of the detections, consequently drawing the box of the arena on the screen. Last week, we managed to print out the coordinates of the tags. Today, we want to use these detections and distinguish between the different tags detected. This is proving difficult because ~~I am a dumbass and~~ the documntation is ~~ass~~ fussy. So far, this is my approach to tag distinction:  
 
-```
+```python
 for res in results:
     for x in range(len(results)):
         if x not in detect_arr:
             detect_arr.append(results[x].tag_id)
         print(detect_arr)
-
 ```  
 It bugs me because this isn't the most elegant way to do this, and it's also still not working as intended. When I detect two tags, its works fine-ish, but since I'm currently using my laptop screen to display the tags, sometimes the camera picks up the smaller tags that show up in the cv frame, and it freaks out and starts appending more and more to `detect_arr`.  
 
-```
+```python
 [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
@@ -55,7 +88,7 @@ ASOASF you get the idea.
 I think it has something to do with the funky way `Detections` are stored / organized. I had hardcoded some limitations on the number of elements that would trigger the code snippet, but 216 taught me that hard-coding is a cardinal sin, so I wanted something more flexible.  
 
 Literally 5 min after writing this I fixed it lol. I changed `detect_arr` to a set, that way duplicates are not allowed.  
-```
+```python
 detect_arr = set()
 
 ...
@@ -65,7 +98,6 @@ for res in results:
         if x not in detect_arr:
             detect_arr.add(results[x].tag_id)
         print(detect_arr)
-
 ```
 
 Now, sets are a bit fussier than arrays, so this may come back to bite me in the ass. [But I'll just stick my head in the ground until it becomes too big to ignore.](https://en.wikipedia.org/wiki/Ostrich_algorithm) For now, it seems to work fine, even with more than 2 tags.  
@@ -76,7 +108,6 @@ Now, sets are a bit fussier than arrays, so this may come back to bite me in the
 The real test will be tomorrow, where I plan to print out some tags on paper and try drawing lines between them. However, since the mice will also have tags on them, we need to make sure that only the tags that we have set to be corners (AKA 0 - 3) are the only ones that get lines drawn between them.  I was thinking something along the lines of: 
 
 ```
-
 corners = Array of tag numbers 0 - 3
 for res in results loop:
     If "corners" intersects with "detect_arr":
@@ -84,7 +115,6 @@ for res in results loop:
         line(center of 1 -> center of 2)
         line(center of 2 -> center of 3)
         line(center of 3 -> center of 1)
-
 ```  
 As is, this looks pretty messy, so I think I may just make this a function to make it a bit cleaner. 
 
@@ -169,7 +199,7 @@ Now that the camera is properly calibrated, we can move on to the question of di
 
 The `straighten_image_fisheye.py` code now works and rectified a still image that was passed to it. Before that, there was a lot of data collection that had to be done. This was done with `snap.py`, a short program that can take pictures and write them to a specific folder. At first, the pictures taken were not the best for the calibration, since they were taken at more or less the same angle and in the same position without consistent variance. To remedy this, `snap.py` was given a grid in the GUI in order to take consistent sample photos for the training. The resulting photos did not include the grid itself, since I had two cam streams open, one for the sample to be collected and one for the user's convenience.  
   
-```
+```python
 while True:
     ret0, frame0 = cam.read()
     draw_grid(frame0, (3, 3))
