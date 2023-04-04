@@ -124,7 +124,7 @@ if __name__ == '__main__':
                 detect_keys.sort()
                 # Codeblock Poggers
                 sorted_dict = {i: detect_arr[i] for i in detect_keys}
-                print(sorted_dict)
+                print(detect_keys)
 
 
                     #if corner_tags.intersection(detect_arr) == corner_tags:
