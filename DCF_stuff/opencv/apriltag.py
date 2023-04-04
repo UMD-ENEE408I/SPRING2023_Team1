@@ -117,13 +117,14 @@ if __name__ == '__main__':
                 for x in range(len(results)):
                     if x not in detect_arr:
                         detect_arr.add(results[x].tag_id)
+                        
                     print(detect_arr)
 
-                                if corner_tags.intersection(detect_arr) == corner_tags:
-                    cv2.line(ud_img, (results[0].center[0], results[0].center[1]), (results[1].center[0], results[1].center[1]), color=(0, 255, 0), thickness=5)
-                    cv2.line(ud_img, (results[1].center[0], results[1].center[1]), (results[2].center[0], results[2].center[1]), color=(0, 255, 0), thickness=5)
-                    cv2.line(ud_img, (results[2].center[0], results[2].center[1]), (results[3].center[0], results[3].center[1]), color=(0, 255, 0), thickness=5)
-                    cv2.line(ud_img, (results[3].center[0], results[3].center[1]), (results[0].center[0], results[0].center[1]), color=(0, 255, 0), thickness=5)
+                    if corner_tags.intersection(detect_arr) == corner_tags:
+                        cv2.line(ud_img, (results[0].center[0], results[0].center[1]), (results[1].center[0], results[1].center[1]), color=(0, 255, 0), thickness=5)
+                        cv2.line(ud_img, (results[1].center[0], results[1].center[1]), (results[2].center[0], results[2].center[1]), color=(0, 255, 0), thickness=5)
+                        cv2.line(ud_img, (results[2].center[0], results[2].center[1]), (results[3].center[0], results[3].center[1]), color=(0, 255, 0), thickness=5)
+                        cv2.line(ud_img, (results[3].center[0], results[3].center[1]), (results[0].center[0], results[0].center[1]), color=(0, 255, 0), thickness=5)
 
                 # Gets back both the rotation and translation matrices from solvePNP
                 pose = find_pose_from_tag(K, res)
