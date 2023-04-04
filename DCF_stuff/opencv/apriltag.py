@@ -120,6 +120,8 @@ if __name__ == '__main__':
                     if x not in corner_tags:
                         detect_arr.update({results[x].tag_id: results[x]})
 
+                print(detect_arr)
+
                     #if corner_tags.intersection(detect_arr) == corner_tags:
                         # sort results
                         #cv2.line(ud_img, (int(results[0].center[0]), int(results[0].center[1])), (int(results[1].center[0]), int(results[1].center[1])), color=(0, 255, 0), thickness=5)
