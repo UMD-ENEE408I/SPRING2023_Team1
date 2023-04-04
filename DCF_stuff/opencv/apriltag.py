@@ -92,7 +92,7 @@ if __name__ == '__main__':
 
     detect_arr = set()
     # These will be the tags that we want for the corners
-    corner_tags = [0, 1, 2, 3]
+    corner_tags = set(0, 1, 2, 3)
     while True:
         k = cv2.waitKey(1)
         try:
@@ -118,6 +118,12 @@ if __name__ == '__main__':
                     if x not in detect_arr:
                         detect_arr.add(results[x].tag_id)
                     print(detect_arr)
+
+                if corner_tags.intersection(detect_arr) == corner_tags:
+                    cv2.line(ud_img, results[0].center, results[1].center, color=(0, 255, 0), thickness=5)
+                    cv2.line(ud_img, results[1].center, results[2].center, color=(0, 255, 0), thickness=5)
+                    cv2.line(ud_img, results[2].center, results[3].center, color=(0, 255, 0), thickness=5)
+                    cv2.line(ud_img, results[3].center, results[0].center, color=(0, 255, 0), thickness=5)
 
                 # Gets back both the rotation and translation matrices from solvePNP
                 pose = find_pose_from_tag(K, res)
