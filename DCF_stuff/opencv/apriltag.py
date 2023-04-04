@@ -117,9 +117,9 @@ if __name__ == '__main__':
                 for x in range(len(results)):
                     if x not in detect_arr:
                         detect_arr.add(results[x].tag_id)
-                        
-                    print(detect_arr)
 
+                    print(detect_arr)
+                    print((results[0].center[0], results[0].center[1]))
                     if corner_tags.intersection(detect_arr) == corner_tags:
                         cv2.line(ud_img, (results[0].center[0], results[0].center[1]), (results[1].center[0], results[1].center[1]), color=(0, 255, 0), thickness=5)
                         cv2.line(ud_img, (results[1].center[0], results[1].center[1]), (results[2].center[0], results[2].center[1]), color=(0, 255, 0), thickness=5)
