@@ -15,6 +15,22 @@ I've implemented the code in order to draw the arena on the frame. As of writing
 
 ![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/9aa48930798eaac55f0648723f83e0de2751e048/DCF_stuff/opencv/misc_img/draw_arena.png "Drawing arena")
 
+```
+for res in results:
+    for x in range(len(results)):
+        if x not in detect_arr:
+            detect_arr.add(results[x].tag_id)
+        
+        print(detect_arr)
+        if corner_tags.intersection(detect_arr) == corner_tags:
+            cv2.line(ud_img, (int(results[0].center[0]), int(results[0].center[1])), (int(results[1].center[0]), int(results[1].center[1])), color=(0, 255, 0), thickness=5)
+            cv2.line(ud_img, (int(results[1].center[0]), int(results[1].center[1])), (int(results[2].center[0]), int(results[2].center[1])), color=(0, 255, 0), thickness=5)
+            cv2.line(ud_img, (int(results[2].center[0]), int(results[2].center[1])), (int(results[3].center[0]), int(results[3].center[1])), color=(0, 255, 0), thickness=5)
+            cv2.line(ud_img, (int(results[3].center[0]), int(results[3].center[1])), (int(results[0].center[0]), int(results[0].center[1])), color=(0, 255, 0), thickness=5)
+```
+This is the code that's causing me to age faster. The problem is that `results` is dynamic, and therefore changes depending on how many detections there are. I'm pretty sure I need to adjust the way detections are added and removed to `detect_arr`, that it, to actually remove tags that are no longer in frame / detected.  
+
+
 ### *4-3*  
 So far, we've gotten the webcam calibrated and undistorted (see week 3-31). Today, we start work on the printing of the detections, consequently drawing the box of the arena on the screen. Last week, we managed to print out the coordinates of the tags. Today, we want to use these detections and distinguish between the different tags detected. This is proving difficult because ~~I am a dumbass and~~ the documntation is ~~ass~~ fussy. So far, this is my approach to tag distinction:  
 

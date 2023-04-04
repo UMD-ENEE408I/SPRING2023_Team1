@@ -90,9 +90,9 @@ if __name__ == '__main__':
 
     tag_size = 0.13  # tag size in meters
 
-    detect_arr = set()
+    detect_arr = dict()
     # These will be the tags that we want for the corners
-    corner_tags = set((0, 1, 2, 3))
+    corner_tags = [0,1,2,3]
     while True:
         k = cv2.waitKey(1)
         try:
@@ -111,20 +111,21 @@ if __name__ == '__main__':
 
             results = at_detector.detect(gray, estimate_tag_pose=False)
             # print(results[0].tag_id)
-
+            # make detect_arr a dictionary
+            # when a tag is found that is in corner_tags, add it to the dictionary with tag_id as its index. 
+            # use detect_arr 125 - 128
             for res in results:
 
                 for x in range(len(results)):
-                    if x not in detect_arr:
-                        detect_arr.add(results[x].tag_id)
+                    if x not in corner_tags:
+                        detect_arr.update({results[x].tag_id: results[x]})
 
-                    print(detect_arr)
-                    print((results[0].center[0], results[0].center[1]))
-                    if corner_tags.intersection(detect_arr) == corner_tags:
-                        cv2.line(ud_img, (int(results[0].center[0]), int(results[0].center[1])), (int(results[1].center[0]), int(results[1].center[1])), color=(0, 255, 0), thickness=5)
-                        cv2.line(ud_img, (int(results[1].center[0]), int(results[1].center[1])), (int(results[2].center[0]), int(results[2].center[1])), color=(0, 255, 0), thickness=5)
-                        cv2.line(ud_img, (int(results[2].center[0]), int(results[2].center[1])), (int(results[3].center[0]), int(results[3].center[1])), color=(0, 255, 0), thickness=5)
-                        cv2.line(ud_img, (int(results[3].center[0]), int(results[3].center[1])), (int(results[0].center[0]), int(results[0].center[1])), color=(0, 255, 0), thickness=5)
+                    #if corner_tags.intersection(detect_arr) == corner_tags:
+                        # sort results
+                        #cv2.line(ud_img, (int(results[0].center[0]), int(results[0].center[1])), (int(results[1].center[0]), int(results[1].center[1])), color=(0, 255, 0), thickness=5)
+                        #cv2.line(ud_img, (int(results[1].center[0]), int(results[1].center[1])), (int(results[2].center[0]), int(results[2].center[1])), color=(0, 255, 0), thickness=5)
+                        #cv2.line(ud_img, (int(results[2].center[0]), int(results[2].center[1])), (int(results[3].center[0]), int(results[3].center[1])), color=(0, 255, 0), thickness=5)
+                        #cv2.line(ud_img, (int(results[3].center[0]), int(results[3].center[1])), (int(results[0].center[0]), int(results[0].center[1])), color=(0, 255, 0), thickness=5)
 
                 # Gets back both the rotation and translation matrices from solvePNP
                 pose = find_pose_from_tag(K, res)
