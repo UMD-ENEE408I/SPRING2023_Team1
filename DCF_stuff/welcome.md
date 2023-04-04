@@ -31,7 +31,7 @@ for res in results:
 This is the code that's causing me to age faster. The problem is that `results` is dynamic, and therefore changes depending on how many detections there are. I'm pretty sure I need to adjust the way detections are added and removed to `detect_arr`, that it, to actually remove tags that are no longer in frame / detected.  
 
 *Update*  
-It's finished! With a nudge from Levi, I managed to implement the tag storage as a ~~hash~~ dictionary (sorry, the Ruby programmer in me made an unexpected apperance). Regardless, here's how I managed it
+It's finished! With a nudge from Levi, I managed to implement the tag storage as a ~~hash~~ dictionary (sorry, the Ruby programmer in me made an unexpected apperance). Here's how I managed it
 
 ```python
 corner_tags = [0,1,2,3]
@@ -63,10 +63,12 @@ while True:
             cv2.line(ud_img, (int(sorted_dict[2].center[0]), int(sorted_dict[2].center[1])), (int(sorted_dict[3].center[0]), int(sorted_dict[3].center[1])), color=(0, 255, 0), thickness=5)
             cv2.line(ud_img, (int(sorted_dict[3].center[0]), int(sorted_dict[3].center[1])), (int(sorted_dict[0].center[0]), int(sorted_dict[0].center[1])), color=(0, 255, 0), thickness=5)
 ```
-As of right ***now***, this will only work with the tags that are in `corner_tags`. Anyt 
+As of right ***now***, this will only work with the tags that are in `corner_tags`. Any tag that is not a part of `corners_tags` will not be added to `detect_arr`. I want to change this, since we will need to hold the information from the tags on the mice. That can be implemented later. For now, the camera can now detect the four tags and draw the outline of the arena comfortably.  
+
+The main problem was that `detect_arr` was holding stale data from the previous instance. When a tag was no longer detected, the above code would try to access `result[missing index]`, and thus throw a fit. By placing `detect_arr = dict()` within the while loop, the dictionary is cleared for the new data being processed. 
 
 ### *4-3*  
-So far, we've gotten the webcam calibrated and undistorted (see week 3-31). Today, we start work on the printing of the detections, consequently drawing the box of the arena on the screen. Last week, we managed to print out the coordinates of the tags. Today, we want to use these detections and distinguish between the different tags detected. This is proving difficult because ~~I am a dumbass and~~ the documntation is ~~ass~~ fussy. So far, this is my approach to tag distinction:  
+So far, we've gotten the webcam calibrated and undistorted (see week 3-31). Today, we start work on the printing of the detections, consequently drawing the box of the arena on the screen. Last week, we managed to print out the coordinates of the tags. Today, we want to use these detections and distinguish between the different tags detected. This is proving difficult because ~~I am a dumbass and~~ the documentation is ~~ass~~ fussy. So far, this is my approach to tag distinction:  
 
 ```python
 for res in results:
@@ -120,7 +122,9 @@ As is, this looks pretty messy, so I think I may just make this a function to ma
 
 
 ### **Tasks to be completed**  
-*4-3 Finish drawing the arena's box in the frame*
+~~*4-3 Finish drawing the arena's box in the frame*~~  
+*4-4 Incorporate additional tags for the mice, start work on boundary detection*  
+I expect that adding on the tags for the mice will be a quick affair (![url](https://cdn.betterttv.net/emote/60419081306b602acc5972c9/1x.webp)) and afterwards, the real pain will come with boundary detection. I think it may take some calculus to detect when a collision occurs, since we only have the starting and ending points of the lines that make up the arena. In theory, we could do boundary detection within the frame displayed, but this wouldn't be ideal, since we would need a screen on at all times. Realistically, the drawing on the frame is only really necessary for us humans to understand whats going on and for debugging purposes. Ideally, boundary detection would happen in the background in order to save on computing power (however slim those savings may be).
 
 >DCF
 
