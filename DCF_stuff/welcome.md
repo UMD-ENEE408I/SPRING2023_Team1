@@ -3,11 +3,7 @@
 Here, I am currently working on the OpenCV portion of the project
 
 Hopefully, this personal log of occurences will prove useful down the line as we work on the final report and the weeklies. *(Also this is just an excuse to learn Markdown xdd)*  
-<pre class="line-numbers">
-   <code class="language-css">
-      p { color: red }
-   </code>
-</pre>
+
 ## Week of 4-7-2023
 
 ### **Tasks completed**  
