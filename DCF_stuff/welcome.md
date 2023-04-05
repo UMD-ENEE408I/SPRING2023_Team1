@@ -15,7 +15,7 @@ I've implemented the code in order to draw the arena on the frame. As of writing
 
 ![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/9aa48930798eaac55f0648723f83e0de2751e048/DCF_stuff/opencv/misc_img/draw_arena.png "Drawing arena")
 
-```python class:"LineNo"
+```python {.line-numbers}
 for res in results:
     for x in range(len(results)):
         if x not in detect_arr:
