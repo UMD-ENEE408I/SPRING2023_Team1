@@ -5,6 +5,20 @@ Here, I am currently working on the OpenCV portion of the project
 Hopefully, this personal log of occurences will prove useful down the line as we work on the final report and the weeklies. *(Also this is just an excuse to learn Markdown xdd)*  
 
 
+
+<div class="scaleable-wrapper" id="scaleable-wrapper">
+  <div id="block">
+<pre>
+<code class="javascript">
+var foo = function () {
+  return "hello world";
+}
+foo()
+</code>
+</pre>
+</div>
+</div>
+
 ## Week of 4-7-2023
 
 ### **Tasks completed**  
@@ -15,13 +29,7 @@ I've implemented the code in order to draw the arena on the frame. As of writing
 
 ![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/9aa48930798eaac55f0648723f83e0de2751e048/DCF_stuff/opencv/misc_img/draw_arena.png "Drawing arena")
 
-```mermaid
-graph TD;
-    A-->B;
-    A-->C;
-    B-->D;
-    C-->D;
-```
+
 
 ```python
 for res in results:
