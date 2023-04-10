@@ -22,7 +22,7 @@ laptop = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\open
 jetson = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/misc_img"
 dir = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\"
 # dir = r"C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv"
-os.chdir(jetson)
+os.chdir(laptop)
 
 # Straightening the camera feed
 
@@ -35,9 +35,9 @@ laptop_K = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\op
 laptop_D = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal_op\\op_webcam\\D.npy"
 
 # Get params
-DIM = np.load(jetson_DIM)
-K = np.load(jetson_K)
-D = np.load(jetson_D)
+DIM = np.load(laptop_DIM)
+K = np.load(laptop_K)
+D = np.load(laptop_D)
 
 balance = 0  # Set to 1 to show black space. Set to 0 to crop
 new_K = cv2.fisheye.estimateNewCameraMatrixForUndistortRectify(
@@ -86,7 +86,7 @@ def find_pose_from_tag(K, detection):
 
 
 if __name__ == '__main__':
-    vid = cv2.VideoCapture(0)
+    vid = cv2.VideoCapture(1)
 
     tag_size = 0.13  # tag size in meters
 
@@ -125,12 +125,36 @@ if __name__ == '__main__':
                 sorted_dict = {i: detect_arr[i] for i in detect_keys}
                 print(detect_keys)
 
+                # Finding slopes for each line between points
+                # tag00 -> tag01
+                m1 = (int(sorted_dict[1].center[1]) - int(sorted_dict[0].center[1]))/(int(sorted_dict[1].center[0]) - int(sorted_dict[0].center[0]))
+                # tag01 -> tag02
+                m2 = (int(sorted_dict[2].center[1]) - int(sorted_dict[1].center[1]))/(int(sorted_dict[2].center[0]) - int(sorted_dict[1].center[0]))
+                # tag02 -> tag03
+                m3 = (int(sorted_dict[3].center[1]) - int(sorted_dict[2].center[1]))/(int(sorted_dict[3].center[0]) - int(sorted_dict[2].center[0]))
+                # tag03 -> tag01
+                m4 = (int(sorted_dict[1].center[1]) - int(sorted_dict[3].center[1]))/(int(sorted_dict[1].center[0]) - int(sorted_dict[3].center[0]))
+
+                # Finding the y-intercept for each line
+                # We can do this by using one of our x y coords
+                # tag 00 -> tag01
+                b1 =
+                # tag 01 -> tag02
+                b1 =
+                # tag 02 -> tag03
+                b1 =
+                # tag 03 -> tag01
+                b1 =
+                
 
                 if set(detect_keys) & set(corner_tags) == set(corner_tags):
+                        # Draw box lines
                         cv2.line(ud_img, (int(sorted_dict[0].center[0]), int(sorted_dict[0].center[1])), (int(sorted_dict[1].center[0]), int(sorted_dict[1].center[1])), color=(0, 255, 0), thickness=5)
                         cv2.line(ud_img, (int(sorted_dict[1].center[0]), int(sorted_dict[1].center[1])), (int(sorted_dict[2].center[0]), int(sorted_dict[2].center[1])), color=(0, 255, 0), thickness=5)
                         cv2.line(ud_img, (int(sorted_dict[2].center[0]), int(sorted_dict[2].center[1])), (int(sorted_dict[3].center[0]), int(sorted_dict[3].center[1])), color=(0, 255, 0), thickness=5)
                         cv2.line(ud_img, (int(sorted_dict[3].center[0]), int(sorted_dict[3].center[1])), (int(sorted_dict[0].center[0]), int(sorted_dict[0].center[1])), color=(0, 255, 0), thickness=5)
+
+                        # Draw normal vectors for each line
 
                 # Gets back both the rotation and translation matrices from solvePNP
                 pose = find_pose_from_tag(K, res)

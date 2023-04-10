@@ -2,7 +2,22 @@
 
 Here, I am currently working on the OpenCV portion of the project
 
-Hopefully, this personal log of occurences will prove useful down the line as we work on the final report and the weeklies. *(Also this is just an excuse to learn Markdown xdd)*  
+Hopefully, this personal log of occurences will prove useful down the line as we work on the final report and the weeklies. *(Also this is just an excuse to learn Markdown xdd)* 
+
+## Week of 4-14-2023
+
+### **Tasks Completed**
+ 
+
+### *4-10*
+Relearning algebra :smile:  
+
+So far, I only have a skeleton of an implementation. I need to find the functions of all the lines and draw a vector onto the screen based on that.  
+
+### **Tasks to be completed**
+*4-10 plot normal vectors in order to implement boundary detection*
+
+As of now, Levi has suggested a way to implement boundary detection by using vectors and vector spaces. In short, if a tag is detected outside of a given vector space, we should be able to tell and send some kind of signal in order to correct the mouse. 
 
 ## Week of 4-7-2023
 
