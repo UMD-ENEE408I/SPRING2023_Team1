@@ -92,7 +92,19 @@ mid3 = (int((sorted_dict[3].center[0] + sorted_dict[0].center[0])/2), int((sorte
 
 Now, with the parentheses around the quantity of the two coordinates, the computer draws the midpoints accurately  
 
-![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/173b0e232e0d2888216c598cd8ac126f06793855/DCF_stuff/opencv/misc_img/midpoints.PNG)
+![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/173b0e232e0d2888216c598cd8ac126f06793855/DCF_stuff/opencv/misc_img/midpoints.PNG)  
+
+-1 hour Aware  
+
+~~Now, with what time I have left, I'll try drawing the vectors for the vector space. Once this math is done, I can use it to detect when a tag is outside of this vector space.~~
+
+Nevermind, turns out what I had to do was even more straightforward than that. Apparently, all I need to do is take the dot product of the mouse tuple and the midpoint, which will tell me implicitly on which side of the norm the mouse is on.  
+
+
+
+Additionally, I will sometimes get a `Divide by zero` error. I expect that, since the math is pretty slapped together. So I think it can be solved pretty easily as long as it doesn't involve ***parentheses***.  
+
+
 
 ### *4-10*
 Relearning algebra :smile:  
