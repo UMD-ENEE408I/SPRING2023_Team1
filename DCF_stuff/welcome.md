@@ -8,6 +8,91 @@ Hopefully, this personal log of occurences will prove useful down the line as we
 
 ### **Tasks Completed**
  
+### *4-11*
+>Relearning algebra :smile:  
+
+Yeah... that's not going so well  
+
+Right now, I'm having trouble finding the correct midpoint for the normal vector. The equation for finding the midpoint between two points is usually:  
+
+$\begin{equation}
+M({x_1 + x_2 \above{0.5pt} 2},{y_1 + y_2 \above{0.5pt} 2})
+\end{equation}$
+
+But since the coordinate plane that we're using is kinda flipped, with the top left corner being the minimum, and the bottom right being the maximum, I think that it's throwing things off. So far, my code for finding the midpoint (and other necessary variables) looks as the following:  
+
+```python
+# Finding slopes for each line between points
+# tag00 -> tag01
+m0 = (int(sorted_dict[1].center[1]) - int(sorted_dict[0].center[1]))/(int(sorted_dict[1].center[0]) - int(sorted_dict[0].center[0]))
+# tag01 -> tag02
+m1 = (int(sorted_dict[2].center[1]) - int(sorted_dict[1].center[1]))/(int(sorted_dict[2].center[0]) - int(sorted_dict[1].center[0]))
+# tag02 -> tag03
+m2 = (int(sorted_dict[3].center[1]) - int(sorted_dict[2].center[1]))/(int(sorted_dict[3].center[0]) - int(sorted_dict[2].center[0]))
+# tag03 -> tag00
+m3 = (int(sorted_dict[0].center[1]) - int(sorted_dict[3].center[1]))/(int(sorted_dict[0].center[0]) - int(sorted_dict[3].center[0]))
+
+# Finding the y-intercept for each line
+# We can do this by using one of our x y coords
+# y = mx + b
+# bi = yi - mi(xi)
+# tag 00 -> tag01
+b0 = int(sorted_dict[1].center[1]) - (m0 * int(sorted_dict[1].center[0]))
+# tag 01 -> tag02
+b1 = int(sorted_dict[2].center[1]) - (m1 * int(sorted_dict[2].center[0]))
+# tag 02 -> tag03
+b2 = int(sorted_dict[3].center[1]) - (m2 * int(sorted_dict[3].center[0]))
+# tag 03 -> tag00
+b3 = int(sorted_dict[0].center[1]) - (m3 * int(sorted_dict[0].center[0]))
+
+# Finally, we need the midpoints in order to find the normal vector
+mid0 = (int(sorted_dict[0].center[0] + sorted_dict[1].center[0]/2), int(sorted_dict[0].center[1] + sorted_dict[1].center[1]/2))
+mid1 = (int(sorted_dict[1].center[0] + sorted_dict[2].center[0]/2), int(sorted_dict[1].center[1] + sorted_dict[2].center[1]/2))
+mid2 = (int(sorted_dict[2].center[0] + sorted_dict[3].center[0]/2), int(sorted_dict[2].center[1] + sorted_dict[3].center[1]/2))
+mid3 = (int(sorted_dict[3].center[0] + sorted_dict[0].center[0]/2), int(sorted_dict[3].center[1] + sorted_dict[0].center[1]/2))
+
+
+tag00 = (int(sorted_dict[0].center[0]), int(sorted_dict[0].center[1]))
+tag01 = (int(sorted_dict[1].center[0]), int(sorted_dict[1].center[1]))
+tag02 = (int(sorted_dict[2].center[0]), int(sorted_dict[2].center[1]))
+tag03 = (int(sorted_dict[3].center[0]), int(sorted_dict[3].center[1]))
+```  
+
+Note that as of now, the `tagxx` variables are just used for debugging, as I want to make sure that I am doing the math correctly. By looking at th output, I apparently am not.  
+
+```
+Tag coord
+(347, 169)
+(525, 157)
+(544, 369)
+(345, 364)
+Midpoints
+(610, 247)
+(797, 341)
+(716, 551)
+(519, 448)
+```  
+
+## :bangbang: ALERT! I AM AN IDIOT :bangbang:
+```python
+mid0 = (int(sorted_dict[0].center[0] + sorted_dict[1].center[0]/2), int(sorted_dict[0].center[1] + sorted_dict[1].center[1]/2))
+mid1 = (int(sorted_dict[1].center[0] + sorted_dict[2].center[0]/2), int(sorted_dict[1].center[1] + sorted_dict[2].center[1]/2))
+mid2 = (int(sorted_dict[2].center[0] + sorted_dict[3].center[0]/2), int(sorted_dict[2].center[1] + sorted_dict[3].center[1]/2))
+mid3 = (int(sorted_dict[3].center[0] + sorted_dict[0].center[0]/2), int(sorted_dict[3].center[1] + sorted_dict[0].center[1]/2))
+```  
+
+See what's missing from this picture? I'll give you a hint: it rhymes with "harentheses"  
+
+```python
+mid0 = (int((sorted_dict[0].center[0] + sorted_dict[1].center[0])/2), int((sorted_dict[0].center[1] + sorted_dict[1].center[1])/2))
+mid1 = (int((sorted_dict[1].center[0] + sorted_dict[2].center[0])/2), int((sorted_dict[1].center[1] + sorted_dict[2].center[1])/2))
+mid2 = (int((sorted_dict[2].center[0] + sorted_dict[3].center[0])/2), int((sorted_dict[2].center[1] + sorted_dict[3].center[1])/2))
+mid3 = (int((sorted_dict[3].center[0] + sorted_dict[0].center[0])/2), int((sorted_dict[3].center[1] + sorted_dict[0].center[1])/2))
+```  
+
+Now, with the parentheses around the quantity of the two coordinates, the computer draws the midpoints accurately  
+
+
 
 ### *4-10*
 Relearning algebra :smile:  

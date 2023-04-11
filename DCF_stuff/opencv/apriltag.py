@@ -90,9 +90,8 @@ if __name__ == '__main__':
 
     tag_size = 0.13  # tag size in meters
 
-    
     # These will be the tags that we want for the corners
-    corner_tags = [0,1,2,3]
+    corner_tags = [0, 1, 2, 3]
     while True:
         k = cv2.waitKey(1)
         try:
@@ -113,48 +112,94 @@ if __name__ == '__main__':
             results = at_detector.detect(gray, estimate_tag_pose=False)
             # print(results[0].tag_id)
             # make detect_arr a dictionary
-            # when a tag is found that is in corner_tags, add it to the dictionary with tag_id as its index. 
+            # when a tag is found that is in corner_tags, add it to the dictionary with tag_id as its index.
             # use detect_arr 125 - 128
             for res in results:
                 for x in range(len(results)):
-                    if x in corner_tags:
-                        detect_arr.update({results[x].tag_id: results[x]})
+                    # if x in corner_tags:
+                    detect_arr.update({results[x].tag_id: results[x]})
                 detect_keys = list(detect_arr.keys())
                 detect_keys.sort()
                 # Codeblock Poggers
                 sorted_dict = {i: detect_arr[i] for i in detect_keys}
                 print(detect_keys)
 
-                # Finding slopes for each line between points
-                # tag00 -> tag01
-                m1 = (int(sorted_dict[1].center[1]) - int(sorted_dict[0].center[1]))/(int(sorted_dict[1].center[0]) - int(sorted_dict[0].center[0]))
-                # tag01 -> tag02
-                m2 = (int(sorted_dict[2].center[1]) - int(sorted_dict[1].center[1]))/(int(sorted_dict[2].center[0]) - int(sorted_dict[1].center[0]))
-                # tag02 -> tag03
-                m3 = (int(sorted_dict[3].center[1]) - int(sorted_dict[2].center[1]))/(int(sorted_dict[3].center[0]) - int(sorted_dict[2].center[0]))
-                # tag03 -> tag01
-                m4 = (int(sorted_dict[1].center[1]) - int(sorted_dict[3].center[1]))/(int(sorted_dict[1].center[0]) - int(sorted_dict[3].center[0]))
-
                 # Finding the y-intercept for each line
                 # We can do this by using one of our x y coords
                 # tag 00 -> tag01
-                b1 =
+                # b0 =
                 # tag 01 -> tag02
-                b1 =
+                # b1 =
                 # tag 02 -> tag03
-                b1 =
+                # b2 =
                 # tag 03 -> tag01
-                b1 =
-                
+                # b3 =
 
+                # Idea: Use the dictionary that we made eariler and pass it as an argument in a draw_frame function
                 if set(detect_keys) & set(corner_tags) == set(corner_tags):
-                        # Draw box lines
-                        cv2.line(ud_img, (int(sorted_dict[0].center[0]), int(sorted_dict[0].center[1])), (int(sorted_dict[1].center[0]), int(sorted_dict[1].center[1])), color=(0, 255, 0), thickness=5)
-                        cv2.line(ud_img, (int(sorted_dict[1].center[0]), int(sorted_dict[1].center[1])), (int(sorted_dict[2].center[0]), int(sorted_dict[2].center[1])), color=(0, 255, 0), thickness=5)
-                        cv2.line(ud_img, (int(sorted_dict[2].center[0]), int(sorted_dict[2].center[1])), (int(sorted_dict[3].center[0]), int(sorted_dict[3].center[1])), color=(0, 255, 0), thickness=5)
-                        cv2.line(ud_img, (int(sorted_dict[3].center[0]), int(sorted_dict[3].center[1])), (int(sorted_dict[0].center[0]), int(sorted_dict[0].center[1])), color=(0, 255, 0), thickness=5)
+                    # Draw box lines
+                    cv2.line(ud_img, (int(sorted_dict[0].center[0]), int(sorted_dict[0].center[1])), (int(sorted_dict[1].center[0]), int(sorted_dict[1].center[1])), color=(0, 255, 0), thickness=5)
+                    cv2.line(ud_img, (int(sorted_dict[1].center[0]), int(sorted_dict[1].center[1])), (int(sorted_dict[2].center[0]), int(sorted_dict[2].center[1])), color=(0, 255, 0), thickness=5)
+                    cv2.line(ud_img, (int(sorted_dict[2].center[0]), int(sorted_dict[2].center[1])), (int(sorted_dict[3].center[0]), int(sorted_dict[3].center[1])), color=(0, 255, 0), thickness=5)
+                    cv2.line(ud_img, (int(sorted_dict[3].center[0]), int(sorted_dict[3].center[1])), (int(sorted_dict[0].center[0]), int(sorted_dict[0].center[1])), color=(0, 255, 0), thickness=5)
 
-                        # Draw normal vectors for each line
+                    # Finding slopes for each line between points
+                    # tag00 -> tag01
+                    m0 = (int(sorted_dict[1].center[1]) - int(sorted_dict[0].center[1]))/(int(sorted_dict[1].center[0]) - int(sorted_dict[0].center[0]))
+                    # tag01 -> tag02
+                    m1 = (int(sorted_dict[2].center[1]) - int(sorted_dict[1].center[1]))/(int(sorted_dict[2].center[0]) - int(sorted_dict[1].center[0]))
+                    # tag02 -> tag03
+                    m2 = (int(sorted_dict[3].center[1]) - int(sorted_dict[2].center[1]))/(int(sorted_dict[3].center[0]) - int(sorted_dict[2].center[0]))
+                    # tag03 -> tag00
+                    m3 = (int(sorted_dict[0].center[1]) - int(sorted_dict[3].center[1]))/(int(sorted_dict[0].center[0]) - int(sorted_dict[3].center[0]))
+
+                    # Finding the y-intercept for each line
+                    # We can do this by using one of our x y coords
+                    # y = mx + b
+                    # bi = yi - mi(xi)
+                    # tag 00 -> tag01
+                    b0 = int(sorted_dict[1].center[1]) - (m0 * int(sorted_dict[1].center[0]))
+                    # tag 01 -> tag02
+                    b1 = int(sorted_dict[2].center[1]) - (m1 * int(sorted_dict[2].center[0]))
+                    # tag 02 -> tag03
+                    b2 = int(sorted_dict[3].center[1]) - (m2 * int(sorted_dict[3].center[0]))
+                    # tag 03 -> tag00
+                    b3 = int(sorted_dict[0].center[1]) - (m3 * int(sorted_dict[0].center[0]))
+
+                    # Finally, we need the midpoints in order to find the normal vector
+                    mid0 = (int((sorted_dict[0].center[0] + sorted_dict[1].center[0])/2), int((sorted_dict[0].center[1] + sorted_dict[1].center[1])/2))
+                    
+                    mid1 = (int((sorted_dict[1].center[0] + sorted_dict[2].center[0])/2), int((sorted_dict[1].center[1] + sorted_dict[2].center[1])/2))
+                    
+                    mid2 = (int((sorted_dict[2].center[0] + sorted_dict[3].center[0])/2), int((sorted_dict[2].center[1] + sorted_dict[3].center[1])/2))
+                    
+                    mid3 = (int((sorted_dict[3].center[0] + sorted_dict[0].center[0])/2), int((sorted_dict[3].center[1] + sorted_dict[0].center[1])/2))
+
+
+                    tag00 = (int(sorted_dict[0].center[0]), int(sorted_dict[0].center[1]))
+                    tag01 = (int(sorted_dict[1].center[0]), int(sorted_dict[1].center[1]))
+                    tag02 = (int(sorted_dict[2].center[0]), int(sorted_dict[2].center[1]))
+                    tag03 = (int(sorted_dict[3].center[0]), int(sorted_dict[3].center[1]))
+
+                    cv2.circle(ud_img,mid0,5,(255,0,0),5)
+                    cv2.circle(ud_img,mid1,5,(255,0,0),5)
+                    cv2.circle(ud_img,mid2,5,(255,0,0),5)
+                    cv2.circle(ud_img,mid3,5,(255,0,0),5)
+
+                    print("Tag coord")
+                    print(tag00)
+                    print(tag01)
+                    print(tag02)
+                    print(tag03)
+
+
+                    print("Midpoints")
+                    print(mid0)
+                    print(mid1)
+                    print(mid2)
+                    print(mid3)
+
+                    # Draw normal vectors for each line
 
                 # Gets back both the rotation and translation matrices from solvePNP
                 pose = find_pose_from_tag(K, res)
