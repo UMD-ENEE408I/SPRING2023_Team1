@@ -15,9 +15,9 @@ Yeah... that's not going so well
 
 Right now, I'm having trouble finding the correct midpoint for the normal vector. The equation for finding the midpoint between two points is usually:  
 
-$\begin{equation}
+$$\begin{equation}
 M({x_1 + x_2 \above{0.5pt} 2},{y_1 + y_2 \above{0.5pt} 2})
-\end{equation}$
+\end{equation}$$
 
 But since the coordinate plane that we're using is kinda flipped, with the top left corner being the minimum, and the bottom right being the maximum, I think that it's throwing things off. So far, my code for finding the midpoint (and other necessary variables) looks as the following:  
 
