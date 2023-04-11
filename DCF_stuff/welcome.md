@@ -9,7 +9,7 @@ Hopefully, this personal log of occurences will prove useful down the line as we
 ### **Tasks Completed**
  
 ### *4-11*
->Relearning algebra :smile:  
+> Relearning algebra :smile:  
 
 Yeah... that's not going so well  
 
@@ -112,14 +112,24 @@ Relearning algebra :smile:
 So far, I only have a skeleton of an implementation. I need to find the functions of all the lines and draw a vector onto the screen based on that.  
 
 ### **Tasks to be completed**
-*4-10 plot normal vectors in order to implement boundary detection*
+~~*4-10 plot normal vectors in order to implement boundary detection*~~
 
 As of now, Levi has suggested a way to implement boundary detection by using vectors and vector spaces. In short, if a tag is detected outside of a given vector space, we should be able to tell and send some kind of signal in order to correct the mouse. 
+
+*4-11 Implement boundary detection by way of projections*
+Now that I have a clearer picture of how to approach this problem, I think I'll have more success in implementation. The most important part is defining what we consider "In" and what we consider "Out", as well as how to best offload this information to the different parts of the project that need it. Nick mentioned that he needed some information from the tags for the evasion algorithm, so I need to make sure that whatever `apriltag.py` returns, it will be in a succint and readable manner for him/ anyone else who uses this code. You know what they say:  
+
+> A programmer is only as good as their documentation  
+&emsp;&emsp;-They  
+
 
 ## Week of 4-7-2023
 
 ### **Tasks completed**  
 *Started work on the arena drawing*  
+
+*Midpoints are drawn*
+
 
 ### *4-4*  
 I've implemented the code in order to draw the arena on the frame. As of writing, it seems to work for a split second before commiting sudoku. 
