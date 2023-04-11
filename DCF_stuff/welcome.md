@@ -7,6 +7,7 @@ Hopefully, this personal log of occurences will prove useful down the line as we
 ## Week of 4-14-2023
 
 ### **Tasks Completed**
+*Midpoints are drawn*
  
 ### *4-11*
 > Relearning algebra :smile:  
@@ -102,7 +103,9 @@ Nevermind, turns out what I had to do was even more straightforward than that. A
 
 
 
-Additionally, I will sometimes get a `Divide by zero` error. I expect that, since the math is pretty slapped together. So I think it can be solved pretty easily as long as it doesn't involve ***parentheses***.  
+Additionally, I will sometimes get a `Divide by zero` error. I expect that, since the math is slapped together pretty haphazardly. So I think it can be solved pretty easily as long as it doesn't involve ***parentheses***.  
+
+![Alt text](https://imgflip.com/i/7ht71u)
 
 
 
@@ -116,19 +119,20 @@ So far, I only have a skeleton of an implementation. I need to find the function
 
 As of now, Levi has suggested a way to implement boundary detection by using vectors and vector spaces. In short, if a tag is detected outside of a given vector space, we should be able to tell and send some kind of signal in order to correct the mouse. 
 
-*4-11 Implement boundary detection by way of projections*
+*4-11 Implement boundary detection by way of projections*  
+
 Now that I have a clearer picture of how to approach this problem, I think I'll have more success in implementation. The most important part is defining what we consider "In" and what we consider "Out", as well as how to best offload this information to the different parts of the project that need it. Nick mentioned that he needed some information from the tags for the evasion algorithm, so I need to make sure that whatever `apriltag.py` returns, it will be in a succint and readable manner for him/ anyone else who uses this code. You know what they say:  
 
 > A programmer is only as good as their documentation  
 &emsp;&emsp;-They  
 
+Apart from that, 
 
 ## Week of 4-7-2023
 
 ### **Tasks completed**  
 *Started work on the arena drawing*  
 
-*Midpoints are drawn*
 
 
 ### *4-4*  
