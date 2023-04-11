@@ -95,7 +95,7 @@ Now, with the parentheses around the quantity of the two coordinates, the comput
 
 ![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/173b0e232e0d2888216c598cd8ac126f06793855/DCF_stuff/opencv/misc_img/midpoints.PNG)  
 
--1 hour Aware  
+-1 hour ![Alt text](https://cdn.frankerfacez.com/emoticon/676592/1)  
 
 ~~Now, with what time I have left, I'll try drawing the vectors for the vector space. Once this math is done, I can use it to detect when a tag is outside of this vector space.~~
 
@@ -124,9 +124,14 @@ As of now, Levi has suggested a way to implement boundary detection by using vec
 Now that I have a clearer picture of how to approach this problem, I think I'll have more success in implementation. The most important part is defining what we consider "In" and what we consider "Out", as well as how to best offload this information to the different parts of the project that need it. Nick mentioned that he needed some information from the tags for the evasion algorithm, so I need to make sure that whatever `apriltag.py` returns, it will be in a succint and readable manner for him/ anyone else who uses this code. You know what they say:  
 
 > A programmer is only as good as their documentation  
-&emsp;&emsp;-They  
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;-They  
 
-Apart from that, 
+
+I really want to get this working by the end of the week, mostly to offset lost time from today, and hopefully start integration hopefully next week, week after next at the latest.  
+
+> DCF
+
+---
 
 ## Week of 4-7-2023
 
