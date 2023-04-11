@@ -103,7 +103,7 @@ Nevermind, turns out what I had to do was even more straightforward than that. A
 
 
 
-Additionally, I will sometimes get a `Divide by zero` error. I expect that, since the math is slapped together pretty haphazardly. So I think it can be solved pretty easily as long as it doesn't involve ***parentheses***.  
+Additionally, I will sometimes get a `Divide by zero` error. I expected that, since the math is slapped together pretty haphazardly. So I think it can be solved pretty easily as long as it doesn't involve ***parentheses***.  
 
 ![Alt text](https://i.imgflip.com/7ht71u.jpg)
 
