@@ -92,7 +92,7 @@ mid3 = (int((sorted_dict[3].center[0] + sorted_dict[0].center[0])/2), int((sorte
 
 Now, with the parentheses around the quantity of the two coordinates, the computer draws the midpoints accurately  
 
-
+![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/173b0e232e0d2888216c598cd8ac126f06793855/DCF_stuff/opencv/misc_img/midpoints.PNG)
 
 ### *4-10*
 Relearning algebra :smile:  
