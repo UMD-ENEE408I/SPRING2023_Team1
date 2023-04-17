@@ -26,7 +26,7 @@ Essentially, the cosine graph remains positive while it is less than 90 degrees,
 
 Knowing these things, we will be able to take the dot product and, based on how wide the angle is between the vectors, we will know where the mouse tag is.  
 
-![Alt text]()  
+![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/58325ab92128125fd3d1cb237f7fe0bcac946d27/DCF_stuff/opencv/misc_img/bod%20plot.PNG)  
 
 Here, the green circle represents the position of the mouse in space, the blue line is the boundry we are taking into account, the lime arrow is the vector of the norm, and finally the pink arrow is the vector of the mouse from the line. As we can see, the norm is at a 90 degree angle with the line. If the angle from the norm (lime arrow) to the vector of the mouse (pink arrow) is greater than 90, we understand that it will be on the opposite side of the norm, whereas if the angle is less than 90, we can interpret that to mean that the mouse is on the same side as the norm. Depending on how we define the boundaries, we can simply look at the sign of the result and determine on which side we are on.  
 
