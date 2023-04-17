@@ -13,10 +13,57 @@ Hopefully, this personal log of occurences will prove useful down the line as we
 So far, there isn't much to say in the way of boundary detection except that I finally understand how matrices work. It all essentially boils down to the following equation:  
 
 $$\begin{equation}
-a \cdot b = \|a\|\|b\|cos(\theta)
+a \cdot b = \|a\|\|b\|\cos(\theta)
 \end{equation}$$  
 
-Where $\|a\|\|b\|$ is essentially a scalar, which does not hold as much relevance for our purposes. 
+Where $\|a\|\|b\|$ is essentially a scalar, which does not hold as much relevance for our purposes. What we really care is the $\cos(\theta)$ part. 
+
+![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/469567dda700423c3dfc1eaf03462c42bcd80788/DCF_stuff/opencv/misc_img/cos.PNG)  
+
+Essentially, the cosine graph remains positive while it is less than 90 degrees, negativ otherwise, and this repeats infinitely. The nice part about this is that it will work work no matter where in space the points are. A few things that need to be attended to are
+1. The norm of the line that will be our boundary
+2. The vector from a point on the line to our mouse  
+
+Knowing these things, we will be able to take the dot product and, based on how wide the angle is between the vectors, we will know where the mouse tag is.  
+
+![Alt text]()  
+
+Here, the green circle represents the position of the mouse in space, the blue line is the boundry we are taking into account, the lime arrow is the vector of the norm, and finally the pink arrow is the vector of the mouse from the line. As we can see, the norm is at a 90 degree angle with the line. If the angle from the norm (lime arrow) to the vector of the mouse (pink arrow) is greater than 90, we understand that it will be on the opposite side of the norm, whereas if the angle is less than 90, we can interpret that to mean that the mouse is on the same side as the norm. Depending on how we define the boundaries, we can simply look at the sign of the result and determine on which side we are on.  
+
+The fine details were a bit hard to follow since I haven't studied linear algebra in a brick, so let's break it down step by step:  
+
+First, let's look back at equation $(1)$:  
+
+$$
+a \cdot b = \|a\|\|b\|\cos(\theta)
+$$  
+
+The point (pun intended) of having the $\cos(\theta)$ in the equivalence is so that we understand where the negative is coming from, and how it allows us to make the distinction between "In" and "Out". "$a$" is the norm of the line, which may be found by the following equation: 
+
+$$\begin{equation}
+
+a = 
+\begin{bmatrix}
+0 & -1 \\
+1 & 0 \\
+\end{bmatrix}\cdot
+(d_1 - d_0)
+\end{equation}$$  
+
+Where $(d_1 - d_0)$ is nothing more than the difference between the two endpoints that make up the boundary line. This will yield a $1 * 2$ array which we will need to transpose in order to dot it with the rotation matrix. The rotation matrix works by coorelating the input y with the output x and the input x with the output y by their respective values. In this case, this will yield a 90 degree rotation counter clockwise. Depending on which line we are observing, this rotation matrix will need to be altered.  
+
+Finally, the $b$ vector is nothing more than the vector from a point on the line to the mouse's position, and is given by  
+
+$$\begin{equation}
+b = p_1 - p_0
+\end{equation}$$  
+Where $p_0$ is a point on the boundary line and $p_1$ is the mouse's coordinates. Note that it's crucial to subtract the "Arrowhead" by the "Tail" (or "Nock" if you want to be precious). Note note that $p_0$ could also very well be either $d_0$ or $d_1$. For our purposes, we have done this just to keep things simple. Finally, we dot both $a$ and $b$ as shown in equation $(1)$
+
+
+So far, I have made a simple program that simulates this with a line and a dot on the same coorinate space.  
+
+```python
+```
 
 ## Week of 4-14-2023
 
