@@ -38,7 +38,7 @@ $$
 a \cdot b = \|a\|\|b\|\cos(\theta)
 $$  
 
-The point (pun intended) of having the $\cos(\theta)$ in the equivalence is so that we understand where the negative is coming from, and how it allows us to make the distinction between "In" and "Out". "$a$" is the norm of the line, which may be found by the following equation: 
+The point (pun intended) of having the $\cos(\theta)$ in the equivalence is so that we understand where the negative is coming from, and how it allows us to make the distinction between "In" and "Out". " $a$ " is the norm of the line, which may be found by the following equation: 
 
 $$\begin{equation}
 a = 
@@ -61,7 +61,7 @@ b = p_1 - p_0
 Where $p_0$ is a point on the boundary line and $p_1$ is the mouse's coordinates. Note that it's crucial to subtract the "Arrowhead" by the "Tail" (or "Nock" if you want to be precious). Note note that $p_0$ could also very well be either $d_0$ or $d_1$. For our purposes, we have done this just to keep things simple. Finally, we dot both $a$ and $b$ as shown in equation $(1)$
 
 
-So far, I have made a simple program that simulates this with a line and a dot on the same coorinate space.  
+So far, I have made a simple program that simulates this with a line and a dot on the same coordinate space.  
 
 ```python
 import numpy as np
@@ -90,7 +90,11 @@ b = mouse - endpoint_0
 
 res = np.dot(a,b)
 print(res)
-```
+```  
+
+Simulating this, it works as intended, however the norm is not what I expected. I think it may have to do with my rotation matrix, which is something I'll have to iron out tomorrow.  
+
+The motivation behind this is that we may have some rotation in the camera, which would render the "Compare x and y values of coordinates" useless, since that relies on the points being in an xy plane. This method, however, works regardless of axes, and it's just plain :sparkles: E L E G A N T :sparkles:
 
 ## Week of 4-14-2023
 
