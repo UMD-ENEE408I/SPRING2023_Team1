@@ -88,7 +88,7 @@ while(True):
 
     #Calculate headings for both tracking robots and evading robot
     # headingSet1 = getTrackerHeadings(x1, y1, x2, y2, soundData)
-    # headingSet2 = getEvaderHeading(x1, y1, x2, y2, x3, y3)
+    headingSet2 = getEvaderHeading(x1, y1, x2, y2, x3, y3)
 
     #Creating Packet to Send to Mouse
     #First value sent is the cam theta, the second value is the target_theta, and the third value is the velocity
@@ -163,6 +163,12 @@ def getEvaderHeading(x1, y1, x2, y2, x3, y3):
             target_y = mid3[1]
 
     # Calculate target_v3 and target_theta3 based on target_x and target_y
+    target_v3 = 0.1
+    if(quad3 == nextQuad):
+        target_v3 = 0.0
+        target_theta3 = signedAngle(x3, y3, mid_x, mid_y)
+    else:
+        target_theta3 = signedAngle(x3, y3, target_x, target_y)
 
     return target_v3, target_theta3
 
@@ -183,3 +189,9 @@ def getQuadrant(x, y):
         else:
             # Top Left
             return 0
+        
+#Finds angle of vector from point (x1,y1) to (x2, y2)
+def signedAngle(x1, y1, x2, y2):
+    x = x2 - x1
+    y = y2 - y1
+    return math.tan(y/x)
