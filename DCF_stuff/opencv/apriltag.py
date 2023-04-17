@@ -148,9 +148,14 @@ if __name__ == '__main__':
                     mid1 = (int((sorted_dict[1].center[0] + sorted_dict[2].center[0])/2), int((sorted_dict[1].center[1] + sorted_dict[2].center[1])/2))
                     mid2 = (int((sorted_dict[2].center[0] + sorted_dict[3].center[0])/2), int((sorted_dict[2].center[1] + sorted_dict[3].center[1])/2))
                     mid3 = (int((sorted_dict[3].center[0] + sorted_dict[0].center[0])/2), int((sorted_dict[3].center[1] + sorted_dict[0].center[1])/2))
+
+                    # If there is an additional tag in the array of detected tags, we want to perform boundary detection
                     if 4 in detect_keys:
+                        # Our auxilary tag's x & y coordinates
                         aux_tag = np.array([sorted_dict[4].center[0],sorted_dict[4].center[1]])
+                        # For now, we are testinf along 1 line. Later, we can include the other three for full coverage. 
                         mid0_arr = np.array([int(mid0[0]),int(mid0[1])])
+                        # Does not yield appropriate results VVV
                         fin = np.dot(aux_tag,mid0_arr)
                         print(fin)
 

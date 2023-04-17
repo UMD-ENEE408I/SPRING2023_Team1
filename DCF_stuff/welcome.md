@@ -4,6 +4,20 @@ Here, I am currently working on the OpenCV portion of the project
 
 Hopefully, this personal log of occurences will prove useful down the line as we work on the final report and the weeklies. *(Also this is just an excuse to learn Markdown xdd)* 
 
+## Week of 4-21-2023
+
+### **Tasks Completed**
+*Gained comprehension of boundary detection*
+ 
+### *4-17*
+So far, there isn't much to say in the way of boundary detection except that I finally understand how matrices work. It all essentially boils down to the following equation:  
+
+$$\begin{equation}
+a \cdot b = \|a\|\|b\|cos(\theta)
+\end{equation}$$  
+
+Where $\|a\|\|b\|$ is essentially a scalar, which does not hold as much relevance for our purposes. 
+
 ## Week of 4-14-2023
 
 ### **Tasks Completed**
