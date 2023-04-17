@@ -4,12 +4,27 @@ Here, I am currently working on the OpenCV portion of the project
 
 Hopefully, this personal log of occurences will prove useful down the line as we work on the final report and the weeklies. *(Also this is just an excuse to learn Markdown xdd)* 
 
+## Week of 4-21-2023
+
+### **Tasks Completed**
+*Gained comprehension of boundary detection*
+ 
+### *4-17*
+So far, there isn't much to say in the way of boundary detection except that I finally understand how matrices work. It all essentially boils down to the following equation:  
+
+$$\begin{equation}
+a \cdot b = \|a\|\|b\|cos(\theta)
+\end{equation}$$  
+
+Where $\|a\|\|b\|$ is essentially a scalar, which does not hold as much relevance for our purposes. 
+
 ## Week of 4-14-2023
 
 ### **Tasks Completed**
+*Midpoints are drawn*
  
 ### *4-11*
->Relearning algebra :smile:  
+> Relearning algebra :smile:  
 
 Yeah... that's not going so well  
 
@@ -92,7 +107,21 @@ mid3 = (int((sorted_dict[3].center[0] + sorted_dict[0].center[0])/2), int((sorte
 
 Now, with the parentheses around the quantity of the two coordinates, the computer draws the midpoints accurately  
 
-![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/173b0e232e0d2888216c598cd8ac126f06793855/DCF_stuff/opencv/misc_img/midpoints.PNG)
+![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/173b0e232e0d2888216c598cd8ac126f06793855/DCF_stuff/opencv/misc_img/midpoints.PNG)  
+
+-1 hour ![Alt text](https://cdn.frankerfacez.com/emoticon/676592/1)  
+
+~~Now, with what time I have left, I'll try drawing the vectors for the vector space. Once this math is done, I can use it to detect when a tag is outside of this vector space.~~
+
+Nevermind, turns out what I had to do was even more straightforward than that. Apparently, all I need to do is take the dot product of the mouse tuple and the midpoint, which will tell me implicitly on which side of the norm the mouse is on.  
+
+
+
+Additionally, I will sometimes get a `Divide by zero` error. I expected that, since the math is slapped together pretty haphazardly. So I think it can be solved pretty easily as long as it doesn't involve ***parentheses***.  
+
+![Alt text](https://i.imgflip.com/7ht71u.jpg)
+
+
 
 ### *4-10*
 Relearning algebra :smile:  
@@ -100,14 +129,30 @@ Relearning algebra :smile:
 So far, I only have a skeleton of an implementation. I need to find the functions of all the lines and draw a vector onto the screen based on that.  
 
 ### **Tasks to be completed**
-*4-10 plot normal vectors in order to implement boundary detection*
+~~*4-10 plot normal vectors in order to implement boundary detection*~~
 
 As of now, Levi has suggested a way to implement boundary detection by using vectors and vector spaces. In short, if a tag is detected outside of a given vector space, we should be able to tell and send some kind of signal in order to correct the mouse. 
+
+*4-11 Implement boundary detection by way of projections*  
+
+Now that I have a clearer picture of how to approach this problem, I think I'll have more success in implementation. The most important part is defining what we consider "In" and what we consider "Out", as well as how to best offload this information to the different parts of the project that need it. Nick mentioned that he needed some information from the tags for the evasion algorithm, so I need to make sure that whatever `apriltag.py` returns, it will be in a succint and readable manner for him/ anyone else who uses this code. You know what they say:  
+
+> A programmer is only as good as their documentation  
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;-They  
+
+
+I really want to get this working by the end of the week, mostly to offset lost time from today, and hopefully start integration hopefully next week, week after next at the latest.  
+
+> DCF
+
+---
 
 ## Week of 4-7-2023
 
 ### **Tasks completed**  
 *Started work on the arena drawing*  
+
+
 
 ### *4-4*  
 I've implemented the code in order to draw the arena on the frame. As of writing, it seems to work for a split second before commiting sudoku. 

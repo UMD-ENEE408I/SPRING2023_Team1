@@ -143,23 +143,45 @@ if __name__ == '__main__':
                     cv2.line(ud_img, (int(sorted_dict[2].center[0]), int(sorted_dict[2].center[1])), (int(sorted_dict[3].center[0]), int(sorted_dict[3].center[1])), color=(0, 255, 0), thickness=5)
                     cv2.line(ud_img, (int(sorted_dict[3].center[0]), int(sorted_dict[3].center[1])), (int(sorted_dict[0].center[0]), int(sorted_dict[0].center[1])), color=(0, 255, 0), thickness=5)
 
+                    # Finding slopes for each line between points
+                    # tag00 -> tag01
+                    m0 = (int(sorted_dict[1].center[1]) - int(sorted_dict[0].center[1]))/(int(sorted_dict[1].center[0]) - int(sorted_dict[0].center[0]))
+                    # tag01 -> tag02
+                    m1 = (int(sorted_dict[2].center[1]) - int(sorted_dict[1].center[1]))/(int(sorted_dict[2].center[0]) - int(sorted_dict[1].center[0]))
+                    # tag02 -> tag03
+                    m2 = (int(sorted_dict[3].center[1]) - int(sorted_dict[2].center[1]))/(int(sorted_dict[3].center[0]) - int(sorted_dict[2].center[0]))
+                    # tag03 -> tag00
+                    m3 = (int(sorted_dict[0].center[1]) - int(sorted_dict[3].center[1]))/(int(sorted_dict[0].center[0]) - int(sorted_dict[3].center[0]))
+
+                    # Finding the y-intercept for each line
+                    # We can do this by using one of our x y coords
+                    # y = mx + b
+                    # bi = yi - mi(xi)
+                    # tag 00 -> tag01
+                    b0 = int(sorted_dict[1].center[1]) - (m0 * int(sorted_dict[1].center[0]))
+                    # tag 01 -> tag02
+                    b1 = int(sorted_dict[2].center[1]) - (m1 * int(sorted_dict[2].center[0]))
+                    # tag 02 -> tag03
+                    b2 = int(sorted_dict[3].center[1]) - (m2 * int(sorted_dict[3].center[0]))
+                    # tag 03 -> tag00
+                    b3 = int(sorted_dict[0].center[1]) - (m3 * int(sorted_dict[0].center[0]))
+
                     # Finally, we need the midpoints in order to find the normal vector
                     mid0 = (int((sorted_dict[0].center[0] + sorted_dict[1].center[0])/2), int((sorted_dict[0].center[1] + sorted_dict[1].center[1])/2))
                     mid1 = (int((sorted_dict[1].center[0] + sorted_dict[2].center[0])/2), int((sorted_dict[1].center[1] + sorted_dict[2].center[1])/2))
                     mid2 = (int((sorted_dict[2].center[0] + sorted_dict[3].center[0])/2), int((sorted_dict[2].center[1] + sorted_dict[3].center[1])/2))
                     mid3 = (int((sorted_dict[3].center[0] + sorted_dict[0].center[0])/2), int((sorted_dict[3].center[1] + sorted_dict[0].center[1])/2))
 
-                    # If there is an additional tag in the array of detected tags, we want to perform boundary detection
-                    if 4 in detect_keys:
-                        # Our auxilary tag's x & y coordinates
-                        aux_tag = np.array([sorted_dict[4].center[0],sorted_dict[4].center[1]])
-                        # For now, we are testinf along 1 line. Later, we can include the other three for full coverage. 
-                        mid0_arr = np.array([int(mid0[0]),int(mid0[1])])
-                        # Does not yield appropriate results VVV
-                        fin = np.dot(aux_tag,mid0_arr)
-                        print(fin)
 
-                
+                    tag00 = (int(sorted_dict[0].center[0]), int(sorted_dict[0].center[1]))
+                    tag01 = (int(sorted_dict[1].center[0]), int(sorted_dict[1].center[1]))
+                    tag02 = (int(sorted_dict[2].center[0]), int(sorted_dict[2].center[1]))
+                    tag03 = (int(sorted_dict[3].center[0]), int(sorted_dict[3].center[1]))
+
+                    cv2.circle(ud_img,mid0,5,(255,0,0),5)
+                    cv2.circle(ud_img,mid1,5,(255,0,0),5)
+                    cv2.circle(ud_img,mid2,5,(255,0,0),5)
+                    cv2.circle(ud_img,mid3,5,(255,0,0),5)
 
                 # Gets back both the rotation and translation matrices from solvePNP
                 pose = find_pose_from_tag(K, res)
