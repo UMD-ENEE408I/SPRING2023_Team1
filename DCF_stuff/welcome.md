@@ -41,7 +41,6 @@ $$
 The point (pun intended) of having the $\cos(\theta)$ in the equivalence is so that we understand where the negative is coming from, and how it allows us to make the distinction between "In" and "Out". "$a$" is the norm of the line, which may be found by the following equation: 
 
 $$\begin{equation}
-
 a = 
 \begin{bmatrix}
 0 & -1 \\
@@ -57,12 +56,40 @@ Finally, the $b$ vector is nothing more than the vector from a point on the line
 $$\begin{equation}
 b = p_1 - p_0
 \end{equation}$$  
+
+
 Where $p_0$ is a point on the boundary line and $p_1$ is the mouse's coordinates. Note that it's crucial to subtract the "Arrowhead" by the "Tail" (or "Nock" if you want to be precious). Note note that $p_0$ could also very well be either $d_0$ or $d_1$. For our purposes, we have done this just to keep things simple. Finally, we dot both $a$ and $b$ as shown in equation $(1)$
 
 
 So far, I have made a simple program that simulates this with a line and a dot on the same coorinate space.  
 
 ```python
+import numpy as np
+
+# Coordinates for the line
+endpoint_0 = np.array([15,5])
+endpoint_1 = np.array([5,20])
+
+# Coordinates of the mouse
+mouse = np.array([5,5])
+
+# Find difference from both endpoints for the equation
+# Arrowhead - nock
+d = endpoint_0 - endpoint_1
+d = np.transpose(d)
+
+# Rotation matrix
+rot = np.array([[0,-1],[1,0]])
+
+# Take dot product
+a = np.dot(rot,d)
+print(a)
+
+# Arrowhead - nock
+b = mouse - endpoint_0
+
+res = np.dot(a,b)
+print(res)
 ```
 
 ## Week of 4-14-2023
