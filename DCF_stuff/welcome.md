@@ -13,10 +13,102 @@ Hopefully, this personal log of occurences will prove useful down the line as we
 So far, there isn't much to say in the way of boundary detection except that I finally understand how matrices work. It all essentially boils down to the following equation:  
 
 $$\begin{equation}
-a \cdot b = \|a\|\|b\|cos(\theta)
+a \cdot b = \|a\|\|b\|\cos(\theta)
 \end{equation}$$  
 
-Where $\|a\|\|b\|$ is essentially a scalar, which does not hold as much relevance for our purposes. 
+Where $\|a\|\|b\|$ is essentially a scalar, which does not hold as much relevance for our purposes. What we really care is the $\cos(\theta)$ part. 
+
+![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/469567dda700423c3dfc1eaf03462c42bcd80788/DCF_stuff/opencv/misc_img/cos.PNG "Example cosine graph")  
+
+Essentially, the cosine graph remains positive while it is less than 90 degrees, negativ otherwise, and this repeats infinitely. The nice part about this is that it will work work no matter where in space the points are. A few things that need to be attended to are
+1. The norm of the line that will be our boundary
+2. The vector from a point on the line to our mouse  
+
+Knowing these things, we will be able to take the dot product and, based on how wide the angle is between the vectors, we will know where the mouse tag is.  
+
+![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/58325ab92128125fd3d1cb237f7fe0bcac946d27/DCF_stuff/opencv/misc_img/bod%20plot.PNG "Boundary plot diagram")  
+
+Here, the green circle represents the position of the mouse in space, the blue line is the boundry we are taking into account, the lime arrow is the vector of the norm, and finally the pink arrow is the vector of the mouse from the line. As we can see, the norm is at a 90 degree angle with the line. If the angle from the norm (lime arrow) to the vector of the mouse (pink arrow) is greater than 90, we understand that it will be on the opposite side of the norm, whereas if the angle is less than 90, we can interpret that to mean that the mouse is on the same side as the norm. Depending on how we define the boundaries, we can simply look at the sign of the result and determine on which side we are on.  
+
+The fine details were a bit hard to follow since I haven't studied linear algebra in a brick, so let's break it down step by step:  
+
+First, let's look back at equation $(1)$:  
+
+$$
+a \cdot b = \|a\|\|b\|\cos(\theta)
+$$  
+
+The point (pun intended) of having the $\cos(\theta)$ in the equivalence is so that we understand where the negative is coming from, and how it allows us to make the distinction between "In" and "Out". " $a$ " is the norm of the line, which may be found by the following equation: 
+
+$$\begin{equation}
+a = 
+\begin{bmatrix}
+0 & -1 \\
+1 & 0 \\
+\end{bmatrix}\cdot
+(d_1 - d_0)
+\end{equation}$$  
+
+Where $(d_1 - d_0)$ is nothing more than the difference between the two endpoints that make up the boundary line. This will yield a $2 * 1$ array which we will need to transpose in order to dot it with the rotation matrix. The rotation matrix works by coorelating the input y with the output x and the input x with the output y by their respective values. In this case, this will yield a 90 degree rotation counter clockwise. Depending on which line we are observing, this rotation matrix will need to be altered.  
+
+Finally, the $b$ vector is nothing more than the vector from a point on the line to the mouse's position, and is given by  
+
+$$\begin{equation}
+b = p_1 - p_0
+\end{equation}$$  
+
+
+Where $p_0$ is a point on the boundary line and $p_1$ is the mouse's coordinates. Note that it's crucial to subtract the "Arrowhead" by the "Tail" (or "Nock" if you want to be precious). Note note that $p_0$ could also very well be either $d_0$ or $d_1$. For our purposes, we have done this just to keep things simple. Finally, we dot both $a$ and $b$ as shown in equation $(1)$  
+
+
+
+
+So far, I have made a simple program that simulates this with a line and a dot on the same coordinate space.  
+
+```python
+import numpy as np
+
+# Coordinates for the line
+endpoint_0 = np.array([15,5])
+endpoint_1 = np.array([5,20])
+
+# Coordinates of the mouse
+mouse = np.array([5,5])
+
+# Find difference from both endpoints for the equation
+# Arrowhead - nock
+d = endpoint_0 - endpoint_1
+d = np.transpose(d)
+
+# Rotation matrix
+rot = np.array([[0,-1],[1,0]])
+
+# Take dot product
+a = np.dot(rot,d)
+print(a)
+
+# Arrowhead - nock
+b = mouse - endpoint_0
+
+res = np.dot(a,b)
+print(res)
+```  
+
+Simulating this, it works as intended, however the norm is not what I expected. I think it may have to do with my rotation matrix, which is something I'll have to iron out tomorrow.  
+
+The motivation behind this is that we may have some rotation in the camera, which would render the "Compare x and y values of coordinates" useless, since that relies on the points being in an xy plane. This method, however, works regardless of axes, and it's just plain :sparkles: E L E G A N T :sparkles:
+
+### **Tasks to be completed**
+
+*4-17: Implement boundary detection into `apriltag.py`*  
+
+Since we now know better how to implement the boundary detection on a mathematical level, we can implement it hopefully without much headache, but thinking implementation will be painless is like thinking Evil Geniuses are still a T1 CSGO team: You're either huffing massive amounts of copium, delusional, or both (probably both).  
+
+Also, apparently I've been understanding arrays in `Numpy` incorrectly, but it doesn't seem to matter because I stll got an expected value.  
+
+>DCF
+
+---
 
 ## Week of 4-14-2023
 
