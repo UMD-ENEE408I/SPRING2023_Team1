@@ -8,7 +8,148 @@ Hopefully, this personal log of occurences will prove useful down the line as we
 
 ### **Tasks Completed**
 *Gained comprehension of boundary detection*
- 
+*Started implementation of boundary detection*
+
+### *4-18*
+As expected, implementation is proving to be a pain. However, I did manage to get it working for a single point within the bounaries set by the four corners.  
+
+
+```python
+import numpy as np
+
+# Coordinates of tags
+tag0 = np.array([5,20])
+tag1 = np.array([20,20])
+tag2 = np.array([20,5])
+tag3 = np.array([5,5])
+
+# Coordinates of the mouse
+mouse = np.array([0,10])
+
+# Find difference from each pair of tags
+# Arrowhead - nock
+da = tag1 - tag0
+da = np.transpose(da)
+
+db = tag2 - tag1
+db = np.transpose(db)
+
+dc = tag3 - tag2
+dc = np.transpose(dc)
+
+dd = tag0 - tag3
+dd = np.transpose(dd)
+
+# Rotation matrix
+rot = np.array([[0,-1],[1,0]])
+
+# Take dot product of each difference and the rotation matrix to make the norm (?)
+aa = np.dot(rot,da)
+print(aa)
+
+ab = np.dot(rot,db)
+print(ab)
+
+ac = np.dot(rot,dc)
+print(ac)
+
+ad = np.dot(rot,dd)
+print(ad)
+
+# Take difference between mouse and each tag
+ba = mouse - tag0
+
+bb = mouse - tag1
+
+bc = mouse - tag2
+
+bd = mouse - tag3
+
+# Find the result from each dot product
+res0 = np.dot(aa,ba)
+
+res1 = np.dot(ab,bb)
+
+res2 = np.dot(ac,bc)
+
+res3 = np.dot(ad,bd)
+
+# Print results (Should all have the same sign, I think negative)
+print(res0)
+print(res1)
+print(res2)
+print(res3)
+```  
+
+Output:  
+
+
+```bash
+dilancf@DESKTOP-PIM6G3Q:~$ python3 norms.py
+[ 0 15]
+[15  0]
+[  0 -15]
+[-15   0]
+-150
+-150
+-75
+-75
+```
+
+
+All the results came out to have the same sign (in this case, negative), which is good. This meams that, relative to all the lines making up the boundaries, the point is outside of their plane. If even one of them had a different sign, we would know that the point was no longer inside of the arena, and was instead on the other side of one of the lines. Knowing this, we can act accordingly by sending a signal/ flag to the movement part of our system. I did manage to implement this for one mouse tag, and it worked as expected. The only thing that ws different from the snippet above was that the inside was positive instead of negative. Unfortunately, I didn't manage to get a picture of it working at this stage before moving on. Currently, I am trying to get boundary detection working for all mice. This has led to many `for` loops, since I need to take into account the possibility that mice may come into and out of frame as the program goes on. I almost managed to get it completely working, im just getting an out of bounds error currently:  
+
+```python
+if len(detect_keys) > 4:
+    # Arrays to hold our stuff
+    corners = []
+    mice_tags = []
+    b_arr = []
+    d_arr = []
+    a_arr = []
+    res_arr = []
+    # Coordinates of tags
+    for x in range(len(corner_tags)):
+        corners.append(np.array([int(sorted_dict[x].center[0]), int(sorted_dict[x].center[1])]))
+    
+    # Find difference from each pair of tags
+    # Arrowhead - nock
+    for x in range(3):
+        d_arr.append(corners[x+1] - corners[x])
+        d_arr.append(corners[0] - corners[3])
+            
+    # Rotation matrix
+    rot = np.array([[0, -1], [1, 0]])
+
+    # Take dot product of each difference and the rotation matrix to make the norm (?)
+    for x in range(len(corner_tags)):
+        a_arr.append(np.dot(rot, d_arr[x]))
+
+        print("")
+        #print(a_arr)
+
+    # Coordinates of the mouse
+    for x in range(4, len(detect_keys)):
+        mice_tags.append(np.array([int(sorted_dict[x].center[0]), int(sorted_dict[x].center[1])]))
+    
+    # Take difference between mouse and each tag
+    for x in range(len(mice_tags)):
+        b_arr.append([mice_tags[x] - corners[0], mice_tags[x] - corners[1], mice_tags[x] - corners[2], mice_tags[x] - corners[3]])
+            
+    print(b_arr)
+
+    # Find the result from each dot product
+    for x in range(len(a_arr)):
+        for y in range(len(b_arr)):
+            res_arr.append(np.dot(a_arr[x], b_arr[x][y]))
+
+    for x in len(res_arr):
+        print(res_arr[x])
+
+```
+
+I'm 99% sure that the bug has to do with how im storing the differences between each mouse and each of the four points of each line in `b_arr`, since it doesnt make much sense to store them that way. I think this may be a simple fix, since it's just a matter of sitting down, looking at the code, think of a better implementation, berate myself for the previous implementation, and fix the problem. Jokes aside, once this is done, the last part would be to package this information into a format that can be used by the rest of the group for whatever needs they may have. 
+
 ### *4-17*
 So far, there isn't much to say in the way of boundary detection except that I finally understand how matrices work. It all essentially boils down to the following equation:  
 
@@ -102,11 +243,14 @@ The motivation behind this is that we may have some rotation in the camera, whic
 
 ### **Tasks to be completed**
 
+*4-18: Finish implementation of boundary detection into `apriltag.py` and start packaging for the rest of the team to use*
+This part will be tricky, since we want to send only the most relevant information over the Wi-Fi in order to prevent lag issues, or information taking too long to be sent and processed for the chasing to occur. Once we can confirm that the information regarding the locations and boundary detections of the mice can be communicated and recieved, then we can focus on how to use the information best.
+
 *4-17: Implement boundary detection into `apriltag.py`*  
 
 Since we now know better how to implement the boundary detection on a mathematical level, we can implement it hopefully without much headache, but thinking implementation will be painless is like thinking Evil Geniuses are still a T1 CSGO team: You're either huffing massive amounts of copium, delusional, or both (probably both).  
 
-Also, apparently I've been understanding arrays in `Numpy` incorrectly, but it doesn't seem to matter because I stll got an expected value.  
+Also, apparently I've been understanding arrays in `Numpy` incorrectly, but it doesn't seem to matter because I stll got an expected value. :shrug:
 
 >DCF
 
