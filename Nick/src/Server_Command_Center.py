@@ -1,6 +1,7 @@
 import socket
 import struct
 import time
+import math
 
 localIP = ""
 
@@ -61,52 +62,30 @@ print(clientIP3)
 
 # Get boundary corners
 # bound## tuples' first value is the x-pos, second value is the y-pos
-# boundaries = getBoundaries()
-# bound00 = boundaries[0:2]
-# bound01 = boundaries[2:4]
-# bound10 = boundaries[4:6]
-# bound11 = boundaries[6:8]
+boundaries = getBoundaries()
+bound00 = boundaries[0:2]
+bound01 = boundaries[2:4]
+bound10 = boundaries[4:6]
+bound11 = boundaries[6:8]
 
 # Calculate midpoints for quadrants (notice mid_3 and mid_2 switch for easier calculation)
-# mid_x = (bound00[0]+bound01[0]+bound10[0]+bound11[0])/4
-# mid_y = (bound00[1]+bound01[1]+bound10[1]+bound11[1])/4
-# mid_0 = ((bound00[0]+mid_x)/2,(bound00[1]+mid_y)/2)
-# mid_1 = ((bound01[0]+mid_x)/2,(bound01[1]+mid_y)/2)
-# mid_3 = ((bound10[0]+mid_x)/2,(bound10[1]+mid_y)/2)
-# mid_2 = ((bound11[0]+mid_x)/2,(bound11[1]+mid_y)/2)
+mid_x = (bound00[0]+bound01[0]+bound10[0]+bound11[0])/4
+mid_y = (bound00[1]+bound01[1]+bound10[1]+bound11[1])/4
+mid_0 = ((bound00[0]+mid_x)/2,(bound00[1]+mid_y)/2)
+mid_1 = ((bound01[0]+mid_x)/2,(bound01[1]+mid_y)/2)
+mid_3 = ((bound10[0]+mid_x)/2,(bound10[1]+mid_y)/2)
+mid_2 = ((bound11[0]+mid_x)/2,(bound11[1]+mid_y)/2)
 
 #Give time for mice to setup
 time.sleep(5) 
 
-
-# Listen for incoming datagrams
-
-while(True): 
-    #Get sound data
-
-    #Get locations from apriltags
-
-    #Calculate headings for both tracking robots and evading robot
-    # headingSet1 = getTrackerHeadings(x1, y1, x2, y2, soundData)
-    headingSet2 = getEvaderHeading(x1, y1, x2, y2, x3, y3)
-
-    #Creating Packet to Send to Mouse
-    #First value sent is the cam theta, the second value is the target_theta, and the third value is the velocity
-    offset_pack1 = struct.pack("fff", 0, target_theta, target_v)
-    offset_pack2 = struct.pack("fff", 0, -target_theta, target_v)
-    offset_pack3 = struct.pack("fff", 0, target_theta, target_v)
-
-    UDPServerSocket1.sendto(offset_pack1, address1)
-    UDPServerSocket2.sendto(offset_pack2, address2)
-    UDPServerSocket3.sendto(offset_pack3, address3)
-
-    time.sleep(5)
+#FUNCTIONS TO BE USED IN HEADING CALCULATIONS
 
 #Finds new theta and target_v headings for both tracking robots (should be coordinated with one another)
 #Tracking Robot 1: (x1,y1)
 #Tracking Robot 2: (x2,y2)
 def getTrackerHeadings(x1, y1, x2, y2, soundData):
-    return target_v1, target_theta1, target_v2, target_theta2
+    return target_theta1, target_v1, target_theta2, target_v2
 
 #Finds target_theta and target_v for evader robot
 #Tracking Robot 1: (x1,y1)
@@ -150,27 +129,27 @@ def getEvaderHeading(x1, y1, x2, y2, x3, y3):
             nextQuad = quad3
 
         if(nextQuad == 0):
-            target_x = mid0[0]
-            target_y = mid0[1]
+            target_x = mid_0[0]
+            target_y = mid_0[1]
         elif(nextQuad == 1):
-            target_x = mid1[0]
-            target_y = mid1[1]
+            target_x = mid_1[0]
+            target_y = mid_1[1]
         elif(nextQuad == 2):
-            target_x = mid2[0]
-            target_y = mid2[1]
+            target_x = mid_2[0]
+            target_y = mid_2[1]
         else:
-            target_x = mid3[0]
-            target_y = mid3[1]
+            target_x = mid_3[0]
+            target_y = mid_3[1]
 
     # Calculate target_v3 and target_theta3 based on target_x and target_y
     target_v3 = 0.1
-    if(quad3 == nextQuad):
+    if(quad3 == nextQuad and (not outOfBound(x3,y3))):
         target_v3 = 0.0
         target_theta3 = signedAngle(x3, y3, mid_x, mid_y)
     else:
         target_theta3 = signedAngle(x3, y3, target_x, target_y)
 
-    return target_v3, target_theta3
+    return target_theta3, target_v3
 
 # Gets quadrant the robot is currently in
 # Quadrant number starts at 0 top-left, then add 1 moving clockwise
@@ -195,3 +174,33 @@ def signedAngle(x1, y1, x2, y2):
     x = x2 - x1
     y = y2 - y1
     return math.tan(y/x)
+
+# Listen for incoming datagrams
+
+while(True): 
+    #Get sound data
+
+    #Get locations from apriltags
+
+    #Calculate headings for both tracking robots and evading robot
+    headingSet1 = getTrackerHeadings(x1, y1, x2, y2, soundData)
+    headingSet2 = getEvaderHeading(x1, y1, x2, y2, x3, y3)
+
+    target_theta1 = headingSet1[0]
+    target_v1 = headingSet1[1]
+    target_theta2 = headingSet1[2]
+    target_v2 = headingSet1[3]
+    target_theta3 = headingSet2[0]
+    target_v3 = headingSet2[1]
+
+    #Creating Packet to Send to Mouse
+    #First value sent is the cam theta, the second value is the target_theta, and the third value is the velocity
+    offset_pack1 = struct.pack("fff", 0, target_theta1, target_v1)
+    offset_pack2 = struct.pack("fff", 0, -target_theta2, target_v2)
+    offset_pack3 = struct.pack("fff", 0, target_theta3, target_v3)
+
+    UDPServerSocket1.sendto(offset_pack1, address1)
+    UDPServerSocket2.sendto(offset_pack2, address2)
+    UDPServerSocket3.sendto(offset_pack3, address3)
+
+    time.sleep(5)
