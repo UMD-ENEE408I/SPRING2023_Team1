@@ -58,7 +58,9 @@ b = p_1 - p_0
 \end{equation}$$  
 
 
-Where $p_0$ is a point on the boundary line and $p_1$ is the mouse's coordinates. Note that it's crucial to subtract the "Arrowhead" by the "Tail" (or "Nock" if you want to be precious). Note note that $p_0$ could also very well be either $d_0$ or $d_1$. For our purposes, we have done this just to keep things simple. Finally, we dot both $a$ and $b$ as shown in equation $(1)$  
+Where $p_0$ is a point on the boundary line and $p_1$ is the mouse's coordinates. Note that it's crucial to subtract the "Arrowhead" by the "Tail" (or "Nock" if you want to be precious). Note note that $p_0$ could also very well be either $d_0$ or $d_1$. For our purposes, we have done this just to keep things simple. Finally, we dot both $a$ and $b$ as shown in equation $(1)$.  
+
+Another neat thing about this method is, due to the equivalence from equation $(1)$, we do not need to calculate $\cos(\theta)$ every time. This will save us some computing power, though its not as crucial in our case since our application is so small.  
 
 
 

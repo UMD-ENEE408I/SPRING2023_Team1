@@ -116,50 +116,85 @@ if __name__ == '__main__':
             # use detect_arr 125 - 128
             for res in results:
                 for x in range(len(results)):
-                    # if x in corner_tags:
                     detect_arr.update({results[x].tag_id: results[x]})
                 detect_keys = list(detect_arr.keys())
                 detect_keys.sort()
                 # Codeblock Poggers
                 sorted_dict = {i: detect_arr[i] for i in detect_keys}
-                print(detect_keys)
-
-                # Finding the y-intercept for each line
-                # We can do this by using one of our x y coords
-                # tag 00 -> tag01
-                # b0 =
-                # tag 01 -> tag02
-                # b1 =
-                # tag 02 -> tag03
-                # b2 =
-                # tag 03 -> tag01
-                # b3 =
+                # print(detect_keys)
 
                 # Idea: Use the dictionary that we made eariler and pass it as an argument in a draw_frame function
                 if set(detect_keys) & set(corner_tags) == set(corner_tags):
                     # Draw box lines
-                    cv2.line(ud_img, (int(sorted_dict[0].center[0]), int(sorted_dict[0].center[1])), (int(sorted_dict[1].center[0]), int(sorted_dict[1].center[1])), color=(0, 255, 0), thickness=5)
-                    cv2.line(ud_img, (int(sorted_dict[1].center[0]), int(sorted_dict[1].center[1])), (int(sorted_dict[2].center[0]), int(sorted_dict[2].center[1])), color=(0, 255, 0), thickness=5)
-                    cv2.line(ud_img, (int(sorted_dict[2].center[0]), int(sorted_dict[2].center[1])), (int(sorted_dict[3].center[0]), int(sorted_dict[3].center[1])), color=(0, 255, 0), thickness=5)
-                    cv2.line(ud_img, (int(sorted_dict[3].center[0]), int(sorted_dict[3].center[1])), (int(sorted_dict[0].center[0]), int(sorted_dict[0].center[1])), color=(0, 255, 0), thickness=5)
+                    cv2.line(ud_img, (int(sorted_dict[0].center[0]), int(sorted_dict[0].center[1])), (int(
+                        sorted_dict[1].center[0]), int(sorted_dict[1].center[1])), color=(0, 255, 0), thickness=5)
+                    cv2.line(ud_img, (int(sorted_dict[1].center[0]), int(sorted_dict[1].center[1])), (int(
+                        sorted_dict[2].center[0]), int(sorted_dict[2].center[1])), color=(0, 255, 0), thickness=5)
+                    cv2.line(ud_img, (int(sorted_dict[2].center[0]), int(sorted_dict[2].center[1])), (int(
+                        sorted_dict[3].center[0]), int(sorted_dict[3].center[1])), color=(0, 255, 0), thickness=5)
+                    cv2.line(ud_img, (int(sorted_dict[3].center[0]), int(sorted_dict[3].center[1])), (int(
+                        sorted_dict[0].center[0]), int(sorted_dict[0].center[1])), color=(0, 255, 0), thickness=5)
 
                     # Finally, we need the midpoints in order to find the normal vector
-                    mid0 = (int((sorted_dict[0].center[0] + sorted_dict[1].center[0])/2), int((sorted_dict[0].center[1] + sorted_dict[1].center[1])/2))
-                    mid1 = (int((sorted_dict[1].center[0] + sorted_dict[2].center[0])/2), int((sorted_dict[1].center[1] + sorted_dict[2].center[1])/2))
-                    mid2 = (int((sorted_dict[2].center[0] + sorted_dict[3].center[0])/2), int((sorted_dict[2].center[1] + sorted_dict[3].center[1])/2))
-                    mid3 = (int((sorted_dict[3].center[0] + sorted_dict[0].center[0])/2), int((sorted_dict[3].center[1] + sorted_dict[0].center[1])/2))
+                    mid0 = (int((sorted_dict[0].center[0] + sorted_dict[1].center[0])/2), int(
+                        (sorted_dict[0].center[1] + sorted_dict[1].center[1])/2))
+                    mid1 = (int((sorted_dict[1].center[0] + sorted_dict[2].center[0])/2), int(
+                        (sorted_dict[1].center[1] + sorted_dict[2].center[1])/2))
+                    mid2 = (int((sorted_dict[2].center[0] + sorted_dict[3].center[0])/2), int(
+                        (sorted_dict[2].center[1] + sorted_dict[3].center[1])/2))
+                    mid3 = (int((sorted_dict[3].center[0] + sorted_dict[0].center[0])/2), int(
+                        (sorted_dict[3].center[1] + sorted_dict[0].center[1])/2))
 
                     # If there is an additional tag in the array of detected tags, we want to perform boundary detection
-                    if 4 in detect_keys:
-                        # Our auxilary tag's x & y coordinates
-                        aux_tag = np.array([sorted_dict[4].center[0],sorted_dict[4].center[1]])
-                        # For now, we are testinf along 1 line. Later, we can include the other three for full coverage. 
-                        mid0_arr = np.array([int(mid0[0]),int(mid0[1])])
-                        # Does not yield appropriate results VVV
-                        fin = np.dot(aux_tag,mid0_arr)
-                        print(fin)
+                    if len(detect_keys) > 4:
+                        # Arrays to hold our stuff
+                        corners = []
+                        mice_tags = []
+                        b_arr = []
+                        d_arr = []
+                        a_arr = []
+                        res_arr = []
+                        # Coordinates of tags
+                        for x in range(len(corner_tags)):
+                            corners.append(
+                                np.array([int(sorted_dict[x].center[0]), int(sorted_dict[x].center[1])]))
 
-                
+                        # Find difference from each pair of tags
+                        # Arrowhead - nock
+                        for x in range(3):
+                            d_arr.append(corners[x+1] - corners[x])
+                        d_arr.append(corners[0] - corners[3])
+
+                        # Rotation matrix
+                        rot = np.array([[0, -1], [1, 0]])
+
+                        # Take dot product of each difference and the rotation matrix to make the norm (?)
+                        for x in range(len(corner_tags)):
+                            a_arr.append(np.dot(rot, d_arr[x]))
+
+                        print("")
+                        #print(a_arr)
+
+                        # Coordinates of the mouse
+                        for x in range(4, len(detect_keys)):
+                            mice_tags.append(
+                                np.array([int(sorted_dict[x].center[0]), int(sorted_dict[x].center[1])]))
+
+                        # Take difference between mouse and each tag
+                        for x in range(len(mice_tags)):
+                            b_arr.append(
+                                [mice_tags[x] - corners[0], mice_tags[x] - corners[1], mice_tags[x] - corners[2], mice_tags[x] - corners[3]])
+
+
+                        print(b_arr)
+
+                        # Find the result from each dot product
+                        for x in range(len(a_arr)):
+                            for y in range(len(b_arr)):
+                                res_arr.append(np.dot(a_arr[x], b_arr[x][y]))
+
+                        for x in len(res_arr):
+                            print(res_arr[x])
 
                 # Gets back both the rotation and translation matrices from solvePNP
                 pose = find_pose_from_tag(K, res)
