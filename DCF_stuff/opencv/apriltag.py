@@ -173,7 +173,7 @@ if __name__ == '__main__':
                             a_arr.append(np.dot(rot, d_arr[x]))
 
                         print("")
-                        #print(a_arr)
+                        # print(a_arr)
 
                         # Coordinates of the mouse
                         for x in range(4, len(detect_keys)):
@@ -184,7 +184,6 @@ if __name__ == '__main__':
                         for x in range(len(mice_tags)):
                             b_arr.append(
                                 [mice_tags[x] - corners[0], mice_tags[x] - corners[1], mice_tags[x] - corners[2], mice_tags[x] - corners[3]])
-
 
                         print(b_arr)
 
