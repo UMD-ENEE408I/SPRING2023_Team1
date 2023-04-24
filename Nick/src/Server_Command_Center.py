@@ -94,21 +94,31 @@ def getTrackerHeadings(x1, y1, x2, y2, soundData):
 def getEvaderHeading(x1, y1, x2, y2, x3, y3):
     target_x = mid_x
     target_y = mid_y
+
+    dist1_3 = math.sqrt(pow(abs(x3-x1),2) + pow(abs(y3-y1),2))
+    dist2_3 = math.sqrt(pow(abs(x3-x2),2) + pow(abs(y3-y2),2))
+
+    if(dist1_3 < dist2_3):
+        close_x = x1
+        close_y = y1
+    else:
+        close_x = x2
+        close_y = y2
+    
     if(not outOfBound(x3, y3)):
-        quad1 = getQuadrant(x1, y1) # Quadrant Tracker 1 is in
-        quad2 = getQuadrant(x2, y2) # Quadrant Tracker 2 is in
+        quadClose = getQuadrant(close_x, close_y) # Quadrant Close Tracker is in
         quad3 = getQuadrant(x3, y3) # Quadrant Evader is in
 
-        # Currently only care about Tracker 1 and Evader
-        if((quad1-quad3) == 0):
+        # Currently only care about Close Tracker and Evader
+        if((quadClose-quad3) == 0):
             #Tracker 1 and Evader in same quadrant
             # Find distance between robots and quadrant dividers
-            dist1_x = abs(x1 - mid_x)
-            dist1_y = abs(y1 - mid_y)
+            distClose_x = abs(close_x - mid_x)
+            distClose_y = abs(close_y - mid_y)
             dist3_x = abs(x3 - mid_x)
             dist3_y = abs(y3 - mid_y)
-            diff_x = dist3_x - dist1_x
-            diff_y = dist3_y - dist1_y
+            diff_x = dist3_x - distClose_x
+            diff_y = dist3_y - distClose_y
 
             if(diff_x < diff_y):
                 if(quad3 == 0 or quad3 == 2):
@@ -120,9 +130,9 @@ def getEvaderHeading(x1, y1, x2, y2, x3, y3):
                     nextQuad = (quad3 - 1) % 4
                 else:
                     nextQuad = (quad3 + 1) % 4
-        elif(abs(quad1-quad3) == 1 or abs(quad1-quad3) == 3):
+        elif(abs(quadClose-quad3) == 1 or abs(quadClose-quad3) == 3):
             #Tracker 1 and Evader in lateral quadrants
-            diff = quad1 - quad3
+            diff = quadClose - quad3
             nextQuad = (quad3 - diff) % 4
         else:
             #Tracker 1 and Evader in diagonal quadrants
