@@ -150,19 +150,20 @@ if __name__ == '__main__':
                         # Arrays to hold our stuff
                         corners = []
                         mice_tags = []
-                        b_arr = []
+                        b_arr = {}
                         d_arr = []
                         a_arr = []
                         res_arr = []
                         # Coordinates of tags
-                        for x in range(len(corner_tags)):
+                        for x in corner_tags:
                             corners.append(
                                 np.array([int(sorted_dict[x].center[0]), int(sorted_dict[x].center[1])]))
 
                         # Find difference from each pair of tags
                         # Arrowhead - nock
-                        for x in range(3):
+                        for x in corner_tags:
                             d_arr.append(corners[x+1] - corners[x])
+                        # We then take care of the line from tag 3 back to tag 0, which cannot be handled by the loop.
                         d_arr.append(corners[0] - corners[3])
 
                         # Rotation matrix
@@ -182,8 +183,11 @@ if __name__ == '__main__':
 
                         # Take difference between mouse and each tag
                         for x in range(len(mice_tags)):
-                            b_arr.append(
-                                [mice_tags[x] - corners[0], mice_tags[x] - corners[1], mice_tags[x] - corners[2], mice_tags[x] - corners[3]])
+                            b_arr.update({})
+
+
+                            """ b_arr.append(
+                                [mice_tags[x] - corners[0], mice_tags[x] - corners[1], mice_tags[x] - corners[2], mice_tags[x] - corners[3]]) """
 
                         print(b_arr)
 
