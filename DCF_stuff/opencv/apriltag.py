@@ -146,6 +146,7 @@ if __name__ == '__main__':
                         (sorted_dict[3].center[1] + sorted_dict[0].center[1])/2))
 
                     # If there is an additional tag in the array of detected tags, we want to perform boundary detection
+                    # print("sorted_dict: ", sorted_dict)
                     if len(detect_keys) > 4:
                         # Arrays to hold our stuff
                         corners = []
@@ -154,77 +155,86 @@ if __name__ == '__main__':
                         d_arr = []
                         a_arr = []
                         res_arr = []
-                        # Coordinates of tags
-                        for x in corner_tags:
-                            corners.append(
-                                np.array([int(sorted_dict[x].center[0]), int(sorted_dict[x].center[1])]))
+                        # Coordinates of center of tags
+                        # corner_tags (List) -> [(x_coord, y_coord)]
+                        for x in corner_tags: 
+                            corners.append(np.array([int(sorted_dict[x].center[0]), int(sorted_dict[x].center[1])]))
+                        print("corners: ", corners)
 
                         # Find difference from each pair of tags
                         # Arrowhead - nock
+                        # d_arr (List) -> [()]
                         for x in range(3):
-                             d_arr.append(corners[x+1] - corners[x])
-                             d_arr.append(corners[0] - corners[3])
+                            # print( corners[x+1][0] - corners[x][0],corners[x+1][1] - corners[x][1])
+                            d_arr.append(np.array((corners[x+1][0] - corners[x][0],corners[x+1][1] - corners[x][1])))
+                        d_arr.append(np.array((corners[0][0] - corners[3][0],corners[0][1] - corners[3][1])))
 
+                        
+                        print("d_arr: ", d_arr)
                         # Rotation matrix
                         rot = np.array([[0, -1], [1, 0]])
 
                         # Take dot product of each difference and the rotation matrix to make the norm (?)
                         for x in range(len(corner_tags)):
                             a_arr.append(np.dot(rot, d_arr[x]))
+                        print("a_arr: " ,a_arr)
 
-                        print("")
-                        # print(a_arr)
-
+                        # print("")
                         # Coordinates of the mouse
                         for x in range(4, len(detect_keys)):
-                            mice_tags.append(
-                                np.array([int(sorted_dict[x].center[0]), int(sorted_dict[x].center[1])]))
+                            mice_tags.append(np.array((int(sorted_dict[x].center[0]), int(sorted_dict[x].center[1]))))
+                        print("mice_tags: ", mice_tags)
 
                         
                         match len(mice_tags):
                             case 1:
-                                b_arr.update({1:[(mice_tags[0][0] - corners[0][0],mice_tags[0][1] - corners[0][1]),
-                                                         (mice_tags[0][0] - corners[1][0],mice_tags[0][1] - corners[1][1]),
-                                                         (mice_tags[0][0] - corners[2][0],mice_tags[0][1] - corners[2][1]),
-                                                         (mice_tags[0][0] - corners[3][0],mice_tags[0][1] - corners[3][1])]})
+                                b_arr.update({0:[np.array((mice_tags[0][0] - corners[0][0],mice_tags[0][1] - corners[0][1])),
+                                                 np.array((mice_tags[0][0] - corners[1][0],mice_tags[0][1] - corners[1][1])),
+                                                 np.array((mice_tags[0][0] - corners[2][0],mice_tags[0][1] - corners[2][1])),
+                                                 np.array((mice_tags[0][0] - corners[3][0],mice_tags[0][1] - corners[3][1]))]})
                             case 2:
-                                b_arr.update({1:[(mice_tags[0][0] - corners[0][0],mice_tags[0][1] - corners[0][1]),
-                                                         (mice_tags[0][0] - corners[1][0],mice_tags[0][1] - corners[1][1]),
-                                                         (mice_tags[0][0] - corners[2][0],mice_tags[0][1] - corners[2][1]),
-                                                         (mice_tags[0][0] - corners[3][0],mice_tags[0][1] - corners[3][1])]})
+                                b_arr.update({0:[np.array((mice_tags[0][0] - corners[0][0],mice_tags[0][1] - corners[0][1])),
+                                                 np.array((mice_tags[0][0] - corners[1][0],mice_tags[0][1] - corners[1][1])),
+                                                 np.array((mice_tags[0][0] - corners[2][0],mice_tags[0][1] - corners[2][1])),
+                                                 np.array((mice_tags[0][0] - corners[3][0],mice_tags[0][1] - corners[3][1]))]})
                                 
-                                b_arr.update({2:[(mice_tags[1][0] - corners[0][0],mice_tags[1][1] - corners[0][1]),
-                                                         (mice_tags[1][0] - corners[1][0],mice_tags[1][1] - corners[1][1]),
-                                                         (mice_tags[1][0] - corners[2][0],mice_tags[1][1] - corners[2][1]),
-                                                         (mice_tags[1][0] - corners[3][0],mice_tags[1][1] - corners[3][1])]})
+                                b_arr.update({1:[np.array((mice_tags[1][0] - corners[0][0],mice_tags[1][1] - corners[0][1])),
+                                                 np.array((mice_tags[1][0] - corners[1][0],mice_tags[1][1] - corners[1][1])),
+                                                 np.array((mice_tags[1][0] - corners[2][0],mice_tags[1][1] - corners[2][1])),
+                                                 np.array((mice_tags[1][0] - corners[3][0],mice_tags[1][1] - corners[3][1]))]})
 
                             case 3:
-                                b_arr.update({1:[(mice_tags[0][0] - corners[0][0],mice_tags[0][1] - corners[0][1]),
-                                                         (mice_tags[0][0] - corners[1][0],mice_tags[0][1] - corners[1][1]),
-                                                         (mice_tags[0][0] - corners[2][0],mice_tags[0][1] - corners[2][1]),
-                                                         (mice_tags[0][0] - corners[3][0],mice_tags[0][1] - corners[3][1])]})
+                                b_arr.update({0:[np.array((mice_tags[0][0] - corners[0][0],mice_tags[0][1] - corners[0][1])),
+                                                 np.array((mice_tags[0][0] - corners[1][0],mice_tags[0][1] - corners[1][1])),
+                                                 np.array((mice_tags[0][0] - corners[2][0],mice_tags[0][1] - corners[2][1])),
+                                                 np.array((mice_tags[0][0] - corners[3][0],mice_tags[0][1] - corners[3][1]))]})
                                 
-                                b_arr.update({2:[(mice_tags[1][0] - corners[0][0],mice_tags[1][1] - corners[0][1]),
-                                                         (mice_tags[1][0] - corners[1][0],mice_tags[1][1] - corners[1][1]),
-                                                         (mice_tags[1][0] - corners[2][0],mice_tags[1][1] - corners[2][1]),
-                                                         (mice_tags[1][0] - corners[3][0],mice_tags[1][1] - corners[3][1])]})
+                                b_arr.update({1:[np.array((mice_tags[1][0] - corners[0][0],mice_tags[1][1] - corners[0][1])),
+                                                 np.array((mice_tags[1][0] - corners[1][0],mice_tags[1][1] - corners[1][1])),
+                                                 np.array((mice_tags[1][0] - corners[2][0],mice_tags[1][1] - corners[2][1])),
+                                                 np.array((mice_tags[1][0] - corners[3][0],mice_tags[1][1] - corners[3][1]))]})
                                 
-                                b_arr.update({3:[(mice_tags[2][0] - corners[0][0],mice_tags[2][1] - corners[0][1]),
-                                                         (mice_tags[2][0] - corners[1][0],mice_tags[2][1] - corners[1][1]),
-                                                         (mice_tags[2][0] - corners[2][0],mice_tags[2][1] - corners[2][1]),
-                                                         (mice_tags[2][0] - corners[3][0],mice_tags[2][1] - corners[3][1])]})
-
+                                b_arr.update({2:[np.array((mice_tags[2][0] - corners[0][0],mice_tags[2][1] - corners[0][1])),
+                                                 np.array((mice_tags[2][0] - corners[1][0],mice_tags[2][1] - corners[1][1])),
+                                                 np.array((mice_tags[2][0] - corners[2][0],mice_tags[2][1] - corners[2][1])),
+                                                 np.array((mice_tags[2][0] - corners[3][0],mice_tags[2][1] - corners[3][1]))]})
                             case _:
                                 print("Mouse length array OOB")
                         """ b_arr.append(
                                 [mice_tags[x] - corners[0], mice_tags[x] - corners[1], mice_tags[x] - corners[2], mice_tags[x] - corners[3]]) """
-
-                        print(b_arr)
-
+                        
+                        
+                        print("b_arr: ", b_arr)
+                        print("b_arr[0]: ", b_arr[0])
+                        # print("a_arr: ", a_arr)
                         # Find the result from each dot product
+                        print("a_arr and b_arr (BEFORE): ", a_arr[0], b_arr[0][0])
+                        # a_arr = np.reshape(4,1)
+                        # b_arr = np.reshape(4,1)
                         for x in range(len(a_arr)):
                             for y in range(len(b_arr)):
-                                res_arr.append(np.dot(a_arr[x], b_arr[y]))
+                                print("a_arr and b_arr(AFTER): ", a_arr[x], b_arr[y])
+                                res_arr.append(np.dot(a_arr[x], b_arr[y][x]))
 
                         for x in range(0,len(res_arr)):
                             print(res_arr[x])
