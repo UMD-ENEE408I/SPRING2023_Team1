@@ -13,7 +13,7 @@ IT'S... ALIVE!!!
 
 Boundary detection works for all mice in that may be within the bounds! I submitted and did a bit of hardcoding by way of a switch case, but other than that, it works as it should  
 
-![Alt text]()  
+![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/ecc5d26ca2a862cd0c45acf2acf6ec9729e7a576/DCF_stuff/opencv/misc_img/alive.PNG "Testing with three mice in frame")  
 
 The only issue now is that the display frame's frame rate plummets when there are three mice in the frame, but that should not matter too much since, in the end as I mentioned before, this display frame won't be used, as its simply for debugging purposes right now. Another thing that could be slowing things down is the use of print statements, which should be easily remedied.  
 
@@ -225,7 +225,7 @@ Finally, here we are finding the projection of the mice tags onto the vectors. I
 
 We get back the projections of the mice tags on the vectors, but all we really care about is the sign of the numbers. For example, when all the mice are out of the arena:  
 
-[Alt text]()  
+[Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/ecc5d26ca2a862cd0c45acf2acf6ec9729e7a576/DCF_stuff/opencv/misc_img/oob.PNG "Out of bounds mice")  
 
 We get the following output:  
 
@@ -606,7 +606,7 @@ mid3 = (int((sorted_dict[3].center[0] + sorted_dict[0].center[0])/2), int((sorte
 
 Now, with the parentheses around the quantity of the two coordinates, the computer draws the midpoints accurately  
 
-![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/173b0e232e0d2888216c598cd8ac126f06793855/DCF_stuff/opencv/misc_img/midpoints.PNG)  
+![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/173b0e232e0d2888216c598cd8ac126f06793855/DCF_stuff/opencv/misc_img/midpoints.PNG "Drawing the midpoints")  
 
 -1 hour ![Alt text](https://cdn.frankerfacez.com/emoticon/676592/1)  
 
@@ -618,7 +618,7 @@ Nevermind, turns out what I had to do was even more straightforward than that. A
 
 Additionally, I will sometimes get a `Divide by zero` error. I expected that, since the math is slapped together pretty haphazardly. So I think it can be solved pretty easily as long as it doesn't involve ***parentheses***.  
 
-![Alt text](https://i.imgflip.com/7ht71u.jpg)
+![Alt text](https://i.imgflip.com/7ht71u.jpg "CE btw")
 
 
 
