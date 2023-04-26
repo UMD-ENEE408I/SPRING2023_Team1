@@ -4,6 +4,267 @@ Here, I am currently working on the OpenCV portion of the project
 
 Hopefully, this personal log of occurences will prove useful down the line as we work on the final report and the weeklies. *(Also this is just an excuse to learn Markdown xdd)* 
 
+## Week of 4-28-2023  
+
+### **Tasks Completed**
+*Finished boundary detection*  
+
+IT'S... ALIVE!!! 
+
+Boundary detection works for all mice in that may be within the bounds! I submitted and did a bit of hardcoding by way of a switch case, but other than that, it works as it should  
+
+![Alt text]()  
+
+The only issue now is that the display frame's frame rate plummets when there are three mice in the frame, but that should not matter too much since, in the end as I mentioned before, this display frame won't be used, as its simply for debugging purposes right now. Another thing that could be slowing things down is the use of print statements, which should be easily remedied.  
+
+```python
+
+# If there is an additional tag in the array of detected tags, we want to perform boundary detection
+# print("sorted_dict: ", sorted_dict)
+if len(detect_keys) > 4:
+    # Arrays to hold our stuff
+    corners = []
+    mice_tags = []
+    b_arr = {}
+    d_arr = []
+    a_arr = []
+    res_arr = []
+    # Coordinates of center of tags
+    # # corner_tags (List) -> [(x_coord, y_coord)]
+    for x in corner_tags: 
+        corners.append(np.array([int(sorted_dict[x].center[0]), int(sorted_dict[x].center[1])]))
+    print("corners: ", corners)
+    # Find difference from each pair of tags
+    # Arrowhead - nock
+    #  d_arr (List) -> [()]
+    for x in range(3):
+        # print( corners[x+1][0] - corners[x][0],corners[x+1][1] - corners[x][1])
+        d_arr.append(np.array((corners[x+1][0] - corners[x][0],corners[x+1][1] - corners[x][1])))
+    d_arr.append(np.array((corners[0][0] - corners[3][0],corners[0][1] - corners[3][1])))
+    print("d_arr: ", d_arr)
+    # Rotation matrix
+    rot = np.array([[0, -1], [1, 0]])
+    # Take dot product of each difference and the rotation matrix to make the norm (?)
+    for x in range(len(corner_tags)):
+        a_arr.append(np.dot(rot, d_arr[x]))
+    print("a_arr: " ,a_arr)
+    # print("")
+    # Coordinates of the mouse
+    for x in range(4, len(detect_keys)):
+        mice_tags.append(np.array((int(sorted_dict[x].center[0]), int(sorted_dict[x].center[1]))))
+    print("mice_tags: ", mice_tags)
+    # Hardcoding cases for how many mice are detected instead of dynamically adding them like a pleb :'( 
+    match len(mice_tags):
+        case 1:
+            b_arr.update({0:[np.array((mice_tags[0][0] - corners[0][0],mice_tags[0][1] - corners[0][1])),
+                             np.array((mice_tags[0][0] - corners[1][0],mice_tags[0][1] - corners[1][1])),
+                             np.array((mice_tags[0][0] - corners[2][0],mice_tags[0][1] - corners[2][1])),
+                             np.array((mice_tags[0][0] - corners[3][0],mice_tags[0][1] - corners[3][1]))]})
+        case 2:
+            b_arr.update({0:[np.array((mice_tags[0][0] - corners[0][0],mice_tags[0][1] - corners[0][1])),
+                             np.array((mice_tags[0][0] - corners[1][0],mice_tags[0][1] - corners[1][1])),
+                             np.array((mice_tags[0][0] - corners[2][0],mice_tags[0][1] - corners[2][1])),
+                             np.array((mice_tags[0][0] - corners[3][0],mice_tags[0][1] - corners[3][1]))]})
+                                
+            b_arr.update({1:[np.array((mice_tags[1][0] - corners[0][0],mice_tags[1][1] - corners[0][1])),
+                             np.array((mice_tags[1][0] - corners[1][0],mice_tags[1][1] - corners[1][1])),
+                             np.array((mice_tags[1][0] - corners[2][0],mice_tags[1][1] - corners[2][1])),
+                             np.array((mice_tags[1][0] - corners[3][0],mice_tags[1][1] - corners[3][1]))]})
+
+        case 3:
+            b_arr.update({0:[np.array((mice_tags[0][0] - corners[0][0],mice_tags[0][1] - corners[0][1])),
+                             np.array((mice_tags[0][0] - corners[1][0],mice_tags[0][1] - corners[1][1])),
+                             np.array((mice_tags[0][0] - corners[2][0],mice_tags[0][1] - corners[2][1])),
+                             np.array((mice_tags[0][0] - corners[3][0],mice_tags[0][1] - corners[3][1]))]})
+                                
+            b_arr.update({1:[np.array((mice_tags[1][0] - corners[0][0],mice_tags[1][1] - corners[0][1])),
+                             np.array((mice_tags[1][0] - corners[1][0],mice_tags[1][1] - corners[1][1])),
+                             np.array((mice_tags[1][0] - corners[2][0],mice_tags[1][1] - corners[2][1])),
+                             np.array((mice_tags[1][0] - corners[3][0],mice_tags[1][1] - corners[3][1]))]})
+                                
+            b_arr.update({2:[np.array((mice_tags[2][0] - corners[0][0],mice_tags[2][1] - corners[0][1])),
+                             np.array((mice_tags[2][0] - corners[1][0],mice_tags[2][1] - corners[1][1])),
+                             np.array((mice_tags[2][0] - corners[2][0],mice_tags[2][1] - corners[2][1])),
+                             np.array((mice_tags[2][0] - corners[3][0],mice_tags[2][1] - corners[3][1]))]})
+        case _:
+            print("Mouse length array OOB")
+            
+        print("b_arr: ", b_arr)
+        print("b_arr[0]: ", b_arr[0])
+        # print("a_arr: ", a_arr)
+        # Find the result from each dot product
+        print("a_arr and b_arr (BEFORE): ", a_arr[0], b_arr[0][0])
+        # a_arr = np.reshape(4,1)
+        # b_arr = np.reshape(4,1)
+        for x in range(len(a_arr)):
+            for y in range(len(b_arr)):
+                print("a_arr and b_arr(AFTER): ", a_arr[x], b_arr[y])
+                res_arr.append(np.dot(a_arr[x], b_arr[y][x]))
+        for x in range(0,len(res_arr)):
+            print(res_arr[x])
+
+```
+It's a bit messy, but it takes the main points from the skeleton code I wrote last week and expands it for the purposes of supporting multiple mice that may occur on the field. We store the x and y coordinates of each corner tag's center into arrays, which are then stored into a list since lists are easier to iterate through  
+
+```python
+
+for x in corner_tags: 
+    corners.append(np.array([int(sorted_dict[x].center[0]), int(sorted_dict[x].center[1])]))
+
+```  
+
+The `for` loop iterates over the tag numbers specified in the array `corner_tags`. After that, we find the vectors between tags, and store then in a similar fashion; a List made of numpy arrays  
+
+```python
+
+# Find difference from each pair of tags
+# Arrowhead - nock
+#  d_arr (List) -> [()]
+for x in range(3):
+    # print( corners[x+1][0] - corners[x][0],corners[x+1][1] - corners[x][1])
+    d_arr.append(np.array((corners[x+1][0] - corners[x][0],corners[x+1][1] - corners[x][1])))
+d_arr.append(np.array((corners[0][0] - corners[3][0],corners[0][1] - corners[3][1])))
+
+```  
+
+The reason we only use the `for` loop for three vectors and not all 4 is that the last vector is the one from `tag03` to `tag00`, which could not be cleanly implemented. Again, `d_arr` is a List of numpy arrays.  
+
+```python
+
+# Rotation matrix
+rot = np.array([[0, -1], [1, 0]])
+# Take dot product of each difference and the rotation matrix to make the norm (?)
+for x in range(len(corner_tags)):
+    a_arr.append(np.dot(rot, d_arr[x]))
+
+```  
+
+Here, we rotate the vector in order to get a vector that is normal to the original. This will be used to determine the projection of the mice onto the sides of the arena.  
+
+```python
+
+# Coordinates of the mouse
+for x in range(4, len(detect_keys)):
+    mice_tags.append(np.array((int(sorted_dict[x].center[0]), int(sorted_dict[x].center[1]))))
+
+```  
+
+`detect_keys` is an array that contains the ID numbers of the tags that were detected. Since we know the first four tags are for the corners, we start from tag 4 and work our way till the end of the list, appending these tags to a new list that will store the coordinates as arrays.  
+
+```python
+
+# Hardcoding cases for how many mice are detected instead of dynamically adding them like a pleb :'( 
+match len(mice_tags):
+    case 1:
+        b_arr.update({0:[np.array((mice_tags[0][0] - corners[0][0],mice_tags[0][1] - corners[0][1])),
+                         np.array((mice_tags[0][0] - corners[1][0],mice_tags[0][1] - corners[1][1])),
+                         np.array((mice_tags[0][0] - corners[2][0],mice_tags[0][1] - corners[2][1])),
+                         np.array((mice_tags[0][0] - corners[3][0],mice_tags[0][1] - corners[3][1]))]})
+    case 2:
+        b_arr.update({0:[np.array((mice_tags[0][0] - corners[0][0],mice_tags[0][1] - corners[0][1])),
+                         np.array((mice_tags[0][0] - corners[1][0],mice_tags[0][1] - corners[1][1])),
+                         np.array((mice_tags[0][0] - corners[2][0],mice_tags[0][1] - corners[2][1])),
+                         np.array((mice_tags[0][0] - corners[3][0],mice_tags[0][1] - corners[3][1]))]})
+                            
+        b_arr.update({1:[np.array((mice_tags[1][0] - corners[0][0],mice_tags[1][1] - corners[0][1])),
+                         np.array((mice_tags[1][0] - corners[1][0],mice_tags[1][1] - corners[1][1])),
+                         np.array((mice_tags[1][0] - corners[2][0],mice_tags[1][1] - corners[2][1])),
+                         np.array((mice_tags[1][0] - corners[3][0],mice_tags[1][1] - corners[3][1]))]})
+     case 3:
+        b_arr.update({0:[np.array((mice_tags[0][0] - corners[0][0],mice_tags[0][1] - corners[0][1])),
+                         np.array((mice_tags[0][0] - corners[1][0],mice_tags[0][1] - corners[1][1])),
+                         np.array((mice_tags[0][0] - corners[2][0],mice_tags[0][1] - corners[2][1])),
+                         np.array((mice_tags[0][0] - corners[3][0],mice_tags[0][1] - corners[3][1]))]})
+                              
+        b_arr.update({1:[np.array((mice_tags[1][0] - corners[0][0],mice_tags[1][1] - corners[0][1])),
+                         np.array((mice_tags[1][0] - corners[1][0],mice_tags[1][1] - corners[1][1])),
+                         np.array((mice_tags[1][0] - corners[2][0],mice_tags[1][1] - corners[2][1])),
+                         np.array((mice_tags[1][0] - corners[3][0],mice_tags[1][1] - corners[3][1]))]})
+                                
+        b_arr.update({2:[np.array((mice_tags[2][0] - corners[0][0],mice_tags[2][1] - corners[0][1])),
+                         np.array((mice_tags[2][0] - corners[1][0],mice_tags[2][1] - corners[1][1])),
+                         np.array((mice_tags[2][0] - corners[2][0],mice_tags[2][1] - corners[2][1])),
+                         np.array((mice_tags[2][0] - corners[3][0],mice_tags[2][1] - corners[3][1]))]})
+    case _:
+        print("Mouse length array OOB")
+
+```  
+
+Here's the nasty harcoded part. Within the context of this project, there can be from 1 to 3 mice in the arena. We need to find the differenced between each mice and each of the four corners in order to calculate the projections onto them. `b_arr` is a dictionary, meaning it can be indexed by something other than an integer. I did this mostly for organization, but looking at it now, it may have been simpler to store everything into an array. Oh well.  
+
+```python
+
+for x in range(len(a_arr)):
+    for y in range(len(b_arr)):
+        print("a_arr and b_arr(AFTER): ", a_arr[x], b_arr[y])
+        res_arr.append(np.dot(a_arr[x], b_arr[y][x]))
+for x in range(0,len(res_arr)):
+    print(res_arr[x])
+
+```  
+Finally, here we are finding the projection of the mice tags onto the vectors. If a value comes back positive, we know that the tag is within the vector space, i.e the arena. If a value comes back negative, we know that it is outside of the vector space. Currently, with three mice, we get the following output from this snippet:  
+
+```
+
+...
+
+14349
+13522
+5074
+23803
+9365
+14965
+15748
+16169
+25321
+5702
+20546
+14242
+
+```  
+
+We get back the projections of the mice tags on the vectors, but all we really care about is the sign of the numbers. For example, when all the mice are out of the arena:  
+
+[Alt text]()  
+
+We get the following output:  
+
+
+```
+
+...
+
+10828
+18135
+3938
+35590
+36201
+35537
+13948
+6768
+20732
+-12017
+-12755
+-11858
+
+```  
+As we can see, the output of the program yields 12 total values, each corresponding to the projections as mentioned before. It seems to be in order, vector-wise then mouse-wise. There are four groups of three numbers, each number within the groups represents the first, second, and third mouse respectively. This can be done to pinpoint which mouse is currently out of the bounds.  
+
+The main headache was just getting around how numpy arrays behave compared to Python lists. Conceptually they are the same, however the funcitons associated with them are distinct.  
+
+### **Tasks to be completed**
+*Serialize output*  
+
+Now that this is out of the way, I can focus on serializing the output for my teammates to use. What I have in mind is the following:  
+```
+[Loc. tag00, Loc. tag01, Loc. tag02, Loc. tag03, Loc. mouse00, Loc. mouse01, Loc. mouse02, ...
+|   Tuple  |   Tuple   |   Tuple   |   Tuple   |    Tuple    |    Tuple    |    Tuple    |
+
+... mouse00 OOB, mouse01 OOB, mouse01 OOB]
+   |  Boolean  |   Boolean  |   Boolean  |
+```  
+From here, it would simply be up to the user to parse the information. If we had more time, I would have liked to serialize this as an object, thereby adding functions to make it easier to parse the information. I am tempted to try it, but I feel like that would just lead me down another rabbithole of Geeks4Geeks and documentation that hasn't been updated since Bush was in office. Once serialization is done, I will be able to help with any problems that will inevitablly arise from implementing this into the other portions of the project.
+
 ## Week of 4-21-2023
 
 ### **Tasks Completed**
