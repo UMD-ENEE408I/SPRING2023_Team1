@@ -225,7 +225,7 @@ Finally, here we are finding the projection of the mice tags onto the vectors. I
 
 We get back the projections of the mice tags on the vectors, but all we really care about is the sign of the numbers. For example, when all the mice are out of the arena:  
 
-[Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/ecc5d26ca2a862cd0c45acf2acf6ec9729e7a576/DCF_stuff/opencv/misc_img/oob.PNG "Out of bounds mice")  
+![Alt text](https://github.com/UMD-ENEE408I/SPRING2023_Team1/blob/ecc5d26ca2a862cd0c45acf2acf6ec9729e7a576/DCF_stuff/opencv/misc_img/oob.PNG "Out of bounds mice")  
 
 We get the following output:  
 
