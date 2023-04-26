@@ -263,7 +263,11 @@ Now that this is out of the way, I can focus on serializing the output for my te
 ... mouse00 OOB, mouse01 OOB, mouse01 OOB]
    |  Boolean  |   Boolean  |   Boolean  |
 ```  
-From here, it would simply be up to the user to parse the information. If we had more time, I would have liked to serialize this as an object, thereby adding functions to make it easier to parse the information. I am tempted to try it, but I feel like that would just lead me down another rabbithole of Geeks4Geeks and documentation that hasn't been updated since Bush was in office. Once serialization is done, I will be able to help with any problems that will inevitablly arise from implementing this into the other portions of the project.
+From here, it would simply be up to the user to parse the information. If we had more time, I would have liked to serialize this as an object, thereby adding functions to make it easier to parse the information. I am tempted to try it, but I feel like that would just lead me down another rabbithole of Geeks4Geeks and documentation that hasn't been updated since Bush was in office. Once serialization is done, I will be able to help with any problems that will inevitablly arise from implementing this into the other portions of the project.  
+
+>DCF
+
+---
 
 ## Week of 4-21-2023
 
