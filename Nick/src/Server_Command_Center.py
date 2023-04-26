@@ -2,6 +2,9 @@ import socket
 import struct
 import time
 import math
+import numpy as np
+from scipy.optimize import fsolve
+from gekko import GEKKO
 
 localIP = ""
 
@@ -81,10 +84,46 @@ time.sleep(5)
 
 #FUNCTIONS TO BE USED IN HEADING CALCULATIONS
 
+# Given the tangential line at the midpoint of the two Tracker robots and the circle with the closer
+# Tracker bot at its center, find the intersection
+def getTargetCoordinates(midpt_x, midpt_y, midpt_m, circle_x, circle_y, circle_r):
+    m = GEKKO()
+    x = m.Var(value=circle_x+1)
+    y = m.Var(value=circle_y)
+    m.Equations([midpt_m*(x - midpt_x) == (y - midpt_y), (x-circle_x)**2 + (y-circle_y)**2 == circle_r**2])
+    m.solve(disp=False)
+    return x.VALUE,y.VALUE
+
 #Finds new theta and target_v headings for both tracking robots (should be coordinated with one another)
 #Tracking Robot 1: (x1,y1)
 #Tracking Robot 2: (x2,y2)
 def getTrackerHeadings(x1, y1, x2, y2, soundData):
+    midpt_x = (x1+x2)/2
+    midpt_y = (y1+y2)/2
+
+    # "m" is slope
+    xy_m = (y2-y1)/(x2-x1)
+    midpt_m = -(1/xy_m) 
+    radius_xy = math.sqrt(pow(abs(x2-x1),2) + pow(abs(y2-y1),2))
+
+    # If soundData == 1, Tracker 1 is closer, else Tracker 2 is closer
+    if(soundData == 1):
+        target_x, target_y = getTargetCoordinates(midpt_x, midpt_y, midpt_m, x1, y1, radius_xy)
+    else:
+        target_x, target_y = getTargetCoordinates(midpt_x, midpt_y, midpt_m, x2, y2, radius_xy)
+
+    # Calculates target_v1, target_theta1, target_v2, target_theta2, based on target_x and target_y
+    if(soundData == 1):
+        target_v1 = 0.0
+        target_theta1 = signedAngle(x1, y1, target_x, target_y)
+        target_v2 = 0.2
+        target_theta2 = signedAngle(x2, y2, target_x, target_y)
+    else:
+        target_v1 = 0.2
+        target_theta1 = signedAngle(x1, y1, target_x, target_y)
+        target_v2 = 0.0
+        target_theta2 = signedAngle(x2, y2, target_x, target_y)
+
     return target_theta1, target_v1, target_theta2, target_v2
 
 #Finds target_theta and target_v for evader robot
