@@ -135,14 +135,16 @@ if __name__ == '__main__':
                         sorted_dict[0].center[0]), int(sorted_dict[0].center[1])), color=(0, 255, 0), thickness=5)
 
                     # Finally, we need the midpoints in order to find the normal vector
-                    mid0 = (int((sorted_dict[0].center[0] + sorted_dict[1].center[0])/2), int(
-                        (sorted_dict[0].center[1] + sorted_dict[1].center[1])/2))
-                    mid1 = (int((sorted_dict[1].center[0] + sorted_dict[2].center[0])/2), int(
-                        (sorted_dict[1].center[1] + sorted_dict[2].center[1])/2))
-                    mid2 = (int((sorted_dict[2].center[0] + sorted_dict[3].center[0])/2), int(
-                        (sorted_dict[2].center[1] + sorted_dict[3].center[1])/2))
-                    mid3 = (int((sorted_dict[3].center[0] + sorted_dict[0].center[0])/2), int(
-                        (sorted_dict[3].center[1] + sorted_dict[0].center[1])/2))
+                    # DEPRECATED AS OF 4-27
+
+                    # mid0 = (int((sorted_dict[0].center[0] + sorted_dict[1].center[0])/2), int(
+                    #     (sorted_dict[0].center[1] + sorted_dict[1].center[1])/2))
+                    # mid1 = (int((sorted_dict[1].center[0] + sorted_dict[2].center[0])/2), int(
+                    #     (sorted_dict[1].center[1] + sorted_dict[2].center[1])/2))
+                    # mid2 = (int((sorted_dict[2].center[0] + sorted_dict[3].center[0])/2), int(
+                    #     (sorted_dict[2].center[1] + sorted_dict[3].center[1])/2))
+                    # mid3 = (int((sorted_dict[3].center[0] + sorted_dict[0].center[0])/2), int(
+                    #     (sorted_dict[3].center[1] + sorted_dict[0].center[1])/2))
 
                     # If there is an additional tag in the array of detected tags, we want to perform boundary detection
                     # print("sorted_dict: ", sorted_dict)
@@ -219,25 +221,25 @@ if __name__ == '__main__':
                                                  np.array((mice_tags[2][0] - corners[3][0],mice_tags[2][1] - corners[3][1]))]})
                             case _:
                                 print("Mouse length array OOB")
-                        """ b_arr.append(
-                                [mice_tags[x] - corners[0], mice_tags[x] - corners[1], mice_tags[x] - corners[2], mice_tags[x] - corners[3]]) """
                         
                         
-                        print("b_arr: ", b_arr)
-                        print("b_arr[0]: ", b_arr[0])
+                        
+                        # print("b_arr: ", b_arr)
+                        # print("b_arr[0]: ", b_arr[0])
                         # print("a_arr: ", a_arr)
                         # Find the result from each dot product
-                        print("a_arr and b_arr (BEFORE): ", a_arr[0], b_arr[0][0])
+                        # print("a_arr and b_arr (BEFORE): ", a_arr[0], b_arr[0][0])
                         # a_arr = np.reshape(4,1)
                         # b_arr = np.reshape(4,1)
                         for x in range(len(a_arr)):
                             for y in range(len(b_arr)):
-                                print("a_arr and b_arr(AFTER): ", a_arr[x], b_arr[y])
+                                # print("a_arr and b_arr(AFTER): ", a_arr[x], b_arr[y])
                                 res_arr.append(np.dot(a_arr[x], b_arr[y][x]))
 
                         for x in range(0,len(res_arr)):
                             print(res_arr[x])
-
+                        cv2.putText(ud_img, "{}".format(res_arr), (50,450) ,cv2.FONT_HERSHEY_COMPLEX, .5, (0, 0, 255), 1)
+                        #"{}".format(res_arr)
                 # Gets back both the rotation and translation matrices from solvePNP
                 pose = find_pose_from_tag(K, res)
                 # This will take in our translation VECTOR and turn it into a translation MATRIX.
