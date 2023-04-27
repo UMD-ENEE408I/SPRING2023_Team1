@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 import time
 import os
+import config as con
 
 # Questions for Levi:
 #       How does find_pose_from_tag work?
@@ -44,6 +45,8 @@ new_K = cv2.fisheye.estimateNewCameraMatrixForUndistortRectify(
     K, D, DIM, np.eye(3), balance=balance)  # Need this step if we don't want to crop
 map1, map2 = cv2.fisheye.initUndistortRectifyMap(
     K, D, np.eye(3), new_K, DIM, cv2.CV_16SC2)
+
+
 
 
 def find_pose_from_tag(K, detection):
@@ -95,6 +98,7 @@ if __name__ == '__main__':
     while True:
         k = cv2.waitKey(1)
         try:
+            con.data_arr.clear()
             detect_arr = dict()
             ret, img = vid.read()
             # Undistorted image
@@ -182,12 +186,13 @@ if __name__ == '__main__':
 
                         # print("")
                         # Coordinates of the mouse
+                        # This code breaks if tag 4 is not one of the mice in frame. if only 5 and/or 6 are in frame the code complains
                         for x in range(4, len(detect_keys)):
                             mice_tags.append(np.array((int(sorted_dict[x].center[0]), int(sorted_dict[x].center[1]))))
                         print("mice_tags: ", mice_tags)
 
                         
-                        match len(mice_tags):
+                        match (len(mice_tags)):
                             case 1:
                                 b_arr.update({0:[np.array((mice_tags[0][0] - corners[0][0],mice_tags[0][1] - corners[0][1])),
                                                  np.array((mice_tags[0][0] - corners[1][0],mice_tags[0][1] - corners[1][1])),
@@ -235,8 +240,8 @@ if __name__ == '__main__':
                             for y in range(len(b_arr)):
                                 # print("a_arr and b_arr(AFTER): ", a_arr[x], b_arr[y])
                                 res_arr.append(np.dot(a_arr[x], b_arr[y][x]))
-
                         for x in range(0,len(res_arr)):
+                            con.data_arr.append(res_arr[x])
                             print(res_arr[x])
                         cv2.putText(ud_img, "{}".format(res_arr), (50,450) ,cv2.FONT_HERSHEY_COMPLEX, .5, (0, 0, 255), 1)
                         #"{}".format(res_arr)
