@@ -119,7 +119,6 @@ if __name__ == '__main__':
                     detect_arr.update({results[x].tag_id: results[x]})
                 detect_keys = list(detect_arr.keys())
                 detect_keys.sort()
-                # Codeblock Poggers
                 sorted_dict = {i: detect_arr[i] for i in detect_keys}
                 # print(detect_keys)
 
@@ -253,13 +252,6 @@ if __name__ == '__main__':
                 # print(rot)
 
                 pts = res.corners.reshape((-1, 1, 2)).astype(np.int32)
-                # print("VVVV")
-                # print("VVVV")
-                # print("VVVV")
-                # print(pts)
-                # print("^^^")
-                # print("^^^")
-                # print("^^^")
                 ud_img = cv2.polylines(
                     ud_img, [pts], isClosed=True, color=(0, 0, 255), thickness=5)
                 cv2.circle(ud_img, tuple(res.center.astype(np.int32)),
@@ -269,10 +261,6 @@ if __name__ == '__main__':
 
                 cv2.putText(ud_img, "{}".format(text_loc), text_loc,
                             cv2.FONT_HERSHEY_COMPLEX, .5, (0, 0, 255), 1)
-
-                # cv2.line(ud_img, )
-
-                # print(pose)
 
             cv2.imshow("img", ud_img)
 
