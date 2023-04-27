@@ -47,8 +47,6 @@ map1, map2 = cv2.fisheye.initUndistortRectifyMap(
     K, D, np.eye(3), new_K, DIM, cv2.CV_16SC2)
 
 
-
-
 def find_pose_from_tag(K, detection):
 
     m_half_size = tag_size / 2
@@ -162,8 +160,9 @@ if __name__ == '__main__':
                         res_arr = []
                         # Coordinates of center of tags
                         # corner_tags (List) -> [(x_coord, y_coord)]
-                        for x in corner_tags: 
-                            corners.append(np.array([int(sorted_dict[x].center[0]), int(sorted_dict[x].center[1])]))
+                        for x in corner_tags:
+                            corners.append(
+                                np.array([int(sorted_dict[x].center[0]), int(sorted_dict[x].center[1])]))
                         print("corners: ", corners)
 
                         # Find difference from each pair of tags
@@ -171,10 +170,11 @@ if __name__ == '__main__':
                         # d_arr (List) -> [()]
                         for x in range(3):
                             # print( corners[x+1][0] - corners[x][0],corners[x+1][1] - corners[x][1])
-                            d_arr.append(np.array((corners[x+1][0] - corners[x][0],corners[x+1][1] - corners[x][1])))
-                        d_arr.append(np.array((corners[0][0] - corners[3][0],corners[0][1] - corners[3][1])))
+                            d_arr.append(
+                                np.array((corners[x+1][0] - corners[x][0], corners[x+1][1] - corners[x][1])))
+                        d_arr.append(
+                            np.array((corners[0][0] - corners[3][0], corners[0][1] - corners[3][1])))
 
-                        
                         print("d_arr: ", d_arr)
                         # Rotation matrix
                         rot = np.array([[0, -1], [1, 0]])
@@ -182,53 +182,64 @@ if __name__ == '__main__':
                         # Take dot product of each difference and the rotation matrix to make the norm (?)
                         for x in range(len(corner_tags)):
                             a_arr.append(np.dot(rot, d_arr[x]))
-                        print("a_arr: " ,a_arr)
+                        print("a_arr: ", a_arr)
 
                         # print("")
                         # Coordinates of the mouse
                         # This code breaks if tag 4 is not one of the mice in frame. if only 5 and/or 6 are in frame the code complains
                         for x in range(4, len(detect_keys)):
-                            mice_tags.append(np.array((int(sorted_dict[x].center[0]), int(sorted_dict[x].center[1]))))
+                            mice_tags.append(
+                                np.array((int(sorted_dict[x].center[0]), int(sorted_dict[x].center[1]))))
                         print("mice_tags: ", mice_tags)
 
-                        
-                        match (len(mice_tags)):
+                        mouse_len = len(mice_tags)
+                        match mouse_len:
                             case 1:
-                                b_arr.update({0:[np.array((mice_tags[0][0] - corners[0][0],mice_tags[0][1] - corners[0][1])),
-                                                 np.array((mice_tags[0][0] - corners[1][0],mice_tags[0][1] - corners[1][1])),
-                                                 np.array((mice_tags[0][0] - corners[2][0],mice_tags[0][1] - corners[2][1])),
-                                                 np.array((mice_tags[0][0] - corners[3][0],mice_tags[0][1] - corners[3][1]))]})
+                                b_arr.update({0: [np.array((mice_tags[0][0] - corners[0][0], mice_tags[0][1] - corners[0][1])),
+                                                  np.array(
+                                                      (mice_tags[0][0] - corners[1][0], mice_tags[0][1] - corners[1][1])),
+                                                  np.array(
+                                                      (mice_tags[0][0] - corners[2][0], mice_tags[0][1] - corners[2][1])),
+                                                  np.array((mice_tags[0][0] - corners[3][0], mice_tags[0][1] - corners[3][1]))]})
                             case 2:
-                                b_arr.update({0:[np.array((mice_tags[0][0] - corners[0][0],mice_tags[0][1] - corners[0][1])),
-                                                 np.array((mice_tags[0][0] - corners[1][0],mice_tags[0][1] - corners[1][1])),
-                                                 np.array((mice_tags[0][0] - corners[2][0],mice_tags[0][1] - corners[2][1])),
-                                                 np.array((mice_tags[0][0] - corners[3][0],mice_tags[0][1] - corners[3][1]))]})
-                                
-                                b_arr.update({1:[np.array((mice_tags[1][0] - corners[0][0],mice_tags[1][1] - corners[0][1])),
-                                                 np.array((mice_tags[1][0] - corners[1][0],mice_tags[1][1] - corners[1][1])),
-                                                 np.array((mice_tags[1][0] - corners[2][0],mice_tags[1][1] - corners[2][1])),
-                                                 np.array((mice_tags[1][0] - corners[3][0],mice_tags[1][1] - corners[3][1]))]})
+                                b_arr.update({0: [np.array((mice_tags[0][0] - corners[0][0], mice_tags[0][1] - corners[0][1])),
+                                                  np.array(
+                                                      (mice_tags[0][0] - corners[1][0], mice_tags[0][1] - corners[1][1])),
+                                                  np.array(
+                                                      (mice_tags[0][0] - corners[2][0], mice_tags[0][1] - corners[2][1])),
+                                                  np.array((mice_tags[0][0] - corners[3][0], mice_tags[0][1] - corners[3][1]))]})
+
+                                b_arr.update({1: [np.array((mice_tags[1][0] - corners[0][0], mice_tags[1][1] - corners[0][1])),
+                                                  np.array(
+                                                      (mice_tags[1][0] - corners[1][0], mice_tags[1][1] - corners[1][1])),
+                                                  np.array(
+                                                      (mice_tags[1][0] - corners[2][0], mice_tags[1][1] - corners[2][1])),
+                                                  np.array((mice_tags[1][0] - corners[3][0], mice_tags[1][1] - corners[3][1]))]})
 
                             case 3:
-                                b_arr.update({0:[np.array((mice_tags[0][0] - corners[0][0],mice_tags[0][1] - corners[0][1])),
-                                                 np.array((mice_tags[0][0] - corners[1][0],mice_tags[0][1] - corners[1][1])),
-                                                 np.array((mice_tags[0][0] - corners[2][0],mice_tags[0][1] - corners[2][1])),
-                                                 np.array((mice_tags[0][0] - corners[3][0],mice_tags[0][1] - corners[3][1]))]})
-                                
-                                b_arr.update({1:[np.array((mice_tags[1][0] - corners[0][0],mice_tags[1][1] - corners[0][1])),
-                                                 np.array((mice_tags[1][0] - corners[1][0],mice_tags[1][1] - corners[1][1])),
-                                                 np.array((mice_tags[1][0] - corners[2][0],mice_tags[1][1] - corners[2][1])),
-                                                 np.array((mice_tags[1][0] - corners[3][0],mice_tags[1][1] - corners[3][1]))]})
-                                
-                                b_arr.update({2:[np.array((mice_tags[2][0] - corners[0][0],mice_tags[2][1] - corners[0][1])),
-                                                 np.array((mice_tags[2][0] - corners[1][0],mice_tags[2][1] - corners[1][1])),
-                                                 np.array((mice_tags[2][0] - corners[2][0],mice_tags[2][1] - corners[2][1])),
-                                                 np.array((mice_tags[2][0] - corners[3][0],mice_tags[2][1] - corners[3][1]))]})
+                                b_arr.update({0: [np.array((mice_tags[0][0] - corners[0][0], mice_tags[0][1] - corners[0][1])),
+                                                  np.array(
+                                                      (mice_tags[0][0] - corners[1][0], mice_tags[0][1] - corners[1][1])),
+                                                  np.array(
+                                                      (mice_tags[0][0] - corners[2][0], mice_tags[0][1] - corners[2][1])),
+                                                  np.array((mice_tags[0][0] - corners[3][0], mice_tags[0][1] - corners[3][1]))]})
+
+                                b_arr.update({1: [np.array((mice_tags[1][0] - corners[0][0], mice_tags[1][1] - corners[0][1])),
+                                                  np.array(
+                                                      (mice_tags[1][0] - corners[1][0], mice_tags[1][1] - corners[1][1])),
+                                                  np.array(
+                                                      (mice_tags[1][0] - corners[2][0], mice_tags[1][1] - corners[2][1])),
+                                                  np.array((mice_tags[1][0] - corners[3][0], mice_tags[1][1] - corners[3][1]))]})
+
+                                b_arr.update({2: [np.array((mice_tags[2][0] - corners[0][0], mice_tags[2][1] - corners[0][1])),
+                                                  np.array(
+                                                      (mice_tags[2][0] - corners[1][0], mice_tags[2][1] - corners[1][1])),
+                                                  np.array(
+                                                      (mice_tags[2][0] - corners[2][0], mice_tags[2][1] - corners[2][1])),
+                                                  np.array((mice_tags[2][0] - corners[3][0], mice_tags[2][1] - corners[3][1]))]})
                             case _:
                                 print("Mouse length array OOB")
-                        
-                        
-                        
+
                         # print("b_arr: ", b_arr)
                         # print("b_arr[0]: ", b_arr[0])
                         # print("a_arr: ", a_arr)
@@ -240,11 +251,12 @@ if __name__ == '__main__':
                             for y in range(len(b_arr)):
                                 # print("a_arr and b_arr(AFTER): ", a_arr[x], b_arr[y])
                                 res_arr.append(np.dot(a_arr[x], b_arr[y][x]))
-                        for x in range(0,len(res_arr)):
+                        for x in range(0, len(res_arr)):
                             con.data_arr.append(res_arr[x])
                             print(res_arr[x])
-                        cv2.putText(ud_img, "{}".format(res_arr), (50,450) ,cv2.FONT_HERSHEY_COMPLEX, .5, (0, 0, 255), 1)
-                        #"{}".format(res_arr)
+                        cv2.putText(ud_img, "{}".format(
+                            res_arr), (50, 450), cv2.FONT_HERSHEY_COMPLEX, .5, (0, 0, 255), 1)
+                        # "{}".format(res_arr)
                 # Gets back both the rotation and translation matrices from solvePNP
                 pose = find_pose_from_tag(K, res)
                 # This will take in our translation VECTOR and turn it into a translation MATRIX.
