@@ -19,7 +19,8 @@ stream = p.open(
     rate = RATE,
     input=True,
     output=True,
-    frames_per_buffer=CHUNK
+    frames_per_buffer=CHUNK,
+    input_device_index=1
 )
 
 fig, ax = plt.subplots()
