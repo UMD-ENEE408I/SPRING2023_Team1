@@ -5,25 +5,23 @@ import matplotlib.pyplot as plt
 import socket
 import time
 
+
+# Start of PyAudio code which will record sound from two microphones
 p = pa.PyAudio()
 
+# Defines microphone parameters such as chunk size, frequency rate of mic, and data format 
 CHUNK = 1024
 FORMAT = pa.paInt16
 CHANNELS = 1
 RATE = 48000
 
-#for i in range(p.get_device_count()):
-#    print(p.get_device_info_by_index(i))
+# Checks to see how many audio input devices are being recognized by PyAudio
+# for i in range(p.get_device_count()):
+#     print(p.get_device_info_by_index(i))
 
-#def callback1(in_data, frame_count, time_info, flag):
-#   input_wave1 = np.fromstring(in_data, 'float32')
-#   return (input_wave1, pa.paContinue)
-
-#def callback2(in_data, frame_count, time_info, flag):
-#   input_wave2 = np.fromstring(in_data, 'float32')
-#   return (input_wave2, pa.paContinue)
-
-stream = p.open(
+# Starts two audio streams "stream1" and "stream2" corresponding to the two microphones
+# and sets the different parameters previously declared
+stream1 = p.open(
     format = FORMAT,
     channels = CHANNELS,
     rate = RATE,
@@ -41,11 +39,12 @@ stream2 = p.open(
     output = True,
     frames_per_buffer = CHUNK,
     input_device_index = 2,
-    #stream_callback = callback2
 )
 
+# Creates a matplotlib figure which will display the decibel rating of the two
+# sound intensities and their respective frequencies
 fig, (ax1, ax2) = plt.subplots(1, 2)
-ax1.set_title("Sound intensity1 Recorded from Robot 1")
+ax1.set_title("Sound Intensity Recorded from Robot 1")
 ax1.set_xlabel("Frequency (Hz)")
 ax1.set_ylabel("Magnitude (dB)")
 x_fft = np.linspace(0, RATE, CHUNK)
@@ -53,7 +52,7 @@ line_fft1, = ax1.semilogx(x_fft, np.random.rand(CHUNK), 'b')
 ax1.set_xlim(20, RATE/2)
 ax1.set_ylim(-90, 5)
 
-ax2.set_title("Sound intensity1 Recorded from Robot 2")
+ax2.set_title("Sound Intensity Recorded from Robot 2")
 ax2.set_xlabel("Frequency (Hz)")
 ax2.set_ylabel("Magnitude (dB)")
 x_fft = np.linspace(0, RATE, CHUNK)
@@ -63,10 +62,17 @@ ax2.set_ylim(-90, 5)
 
 fig.show()
 
-# Home
-#localIP = "192.168.1.249"
-#localPort = 3333
-# School
+# START OF NETWORK CODE
+# 
+# The following code involves the networking aspect which communicates with the robot
+# by creating packets to send to the robot
+
+# Home network settings
+# localIP = "192.168.1.249"
+# localPort = 3333
+# bufferSize = 1024
+
+# School network settings
 localIP = "192.168.2.102"
 localPort = 3333
 bufferSize = 1024
@@ -90,6 +96,12 @@ UDPServerSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
 UDPServerSocket.bind((localIP, localPort))
 print("UDP server up and ready to send a packet")"""
 
+# END OF NETWORK CODE
+
+# START OF TIME DELAY CALCULATION
+#
+# The following code calculates the time delay between two different microphones
+
 mic1_buffer = []
 mic2_buffer = []
 
@@ -109,19 +121,33 @@ index = 0
 final_time_delay = 0.0
 dB_sound_threshold = -45
 
-# Listen for incoming datagrams
-print('hi')
+# Start of main loop
 while True:
-    print('hi2')
+
+    # Start of second loop
+    #
+    # This while loop will only run if any of the following four conditions are true:
+    # 1. Mic 1's start beep index has not been set
+    # 2. Mic 2's start beep index has not been set
+    # 3. Less than two seconds have passed since (current time) - (time at which mic 1's beep was recorded)
+    # 4. Less than two seconds have passed since (current time) - (time at which mic 2's beep was recorded)
     while (mic1_start_index < 0 or mic2_start_index < 0 
            or time.time() - mic1_start_of_beep < 2 or time.time() - mic2_start_of_beep < 2):
         
         print(f"{mic1_start_index} & {mic2_start_index}")
         print(f"{mic1_end_index} & {mic2_end_index}")
 
-        data1 = stream.read(CHUNK)
-        dataInt = struct.unpack(str(CHUNK) + 'h', data1)
-        intensity1 = np.abs(np.fft.fft(dataInt))*2/(11000*CHUNK)
+        # The variables data1 and data2 receive the bytes which contain actual sound data
+        # from the two microphones
+        # 
+        # This is then unpacked into dataInt1 and dataInt2
+        # 
+        # Intensity is then calculated by taking the fft of this sound data
+        # 
+        # Intensities not between 937.5 Hz to 1078.125 Hz are set to 0
+        data1 = stream1.read(CHUNK)
+        dataInt1 = struct.unpack(str(CHUNK) + 'h', data1)
+        intensity1 = np.abs(np.fft.fft(dataInt1))*2/(11000*CHUNK)
         intensity1[0:20] = 0.0001
         intensity1[24:] = 0.0001
         # line_fft1.set_ydata(20*np.log10(intensity1))
@@ -133,38 +159,35 @@ while True:
         intensity2[24:] = 0.0001
         # line_fft2.set_ydata(20*np.log10(intensity2))
 
-        mic1_buffer.append(dataInt)
+        # Arrays which contain the unpacked sound data from the microphones
+        mic1_buffer.append(dataInt1)
         mic2_buffer.append(dataInt2)
 
         # fig.canvas.draw()
         # fig.canvas.flush_events()
 
-        # Sound Intensity 1 & 2 from 937.5 Hz to 1078.125 Hz
+        # Average sound intensities 1 & 2 from 937.5 Hz to 1078.125 Hz
         sum1 = (intensity1[20] + intensity1[21] + intensity1[22] + intensity1[23]) / 4
         dB_sum1 = 20*np.log10(sum1)
 
         sum2 = (intensity2[20] + intensity2[21] + intensity2[22] + intensity2[23]) / 4
         dB_sum2 = 20*np.log10(sum2)
 
+        # Records the start of the beep for both mic 1 and mic 2
+        # In addition, it stores the index of the buffer arrays at which this occured
         if (mic1_start_of_beep < 0.0 and dB_sum1 >= dB_sound_threshold):
             mic1_start_of_beep = time.time()
             mic1_start_index = index
-        #elif (mic1_end_of_beep < 0.0 and dB_sum1 < dB_sound_threshold and mic1_start_of_beep > 0.0):
-        #    mic1_end_of_beep = time.time()
-        #    mic1_end_index = index
 
         if (mic2_start_of_beep < 0.0 and dB_sum2 >= dB_sound_threshold):
             mic2_start_of_beep = time.time()
             mic2_start_index = index
-        #elif (mic2_end_of_beep < 0.0 and dB_sum2 < dB_sound_threshold and mic2_start_of_beep > 0.0):
-        #    mic2_end_of_beep = time.time()
-        #    mic2_end_index = index
+        index += 1 # This index is used to calculate at what index do the microphones record the start of the beep
 
-        index += 1
 
+    # START OF CORRELATION CODE
     print(f"The correlation code is executing\n")
 
-    # CHECK THIS
     T = 2
     dt = 1/44100
     N_before = int(0.5 / dt)
@@ -173,8 +196,8 @@ while True:
     print(f"Mic 1 start index is {mic1_start_index} and mic 2 start index is {mic2_start_index}")
     print(f"Mic 1 end index is {mic1_end_index} and mic 2 end index is {mic2_end_index}")
 
-    mic1_start_index = (mic1_start_index * len(dataInt))
-    mic2_start_index = (mic2_start_index * len(dataInt))
+    mic1_start_index = (mic1_start_index * len(dataInt1))
+    mic2_start_index = (mic2_start_index * len(dataInt1))
 
     mic1_buffer = np.concatenate(mic1_buffer)
     mic2_buffer = np.concatenate(mic2_buffer)
@@ -184,15 +207,11 @@ while True:
     signal1 = mic1_buffer[mic1_start_index - N_before: mic2_start_index + N_after]
     signal2 = mic2_buffer[mic2_start_index - N_before: mic2_start_index + N_after]
 
+    # Test plots to ensure functionality
     plt.figure()
     plt.plot(signal1)
     plt.plot(signal2)
     plt.show()
-
-    #mic1_buffer.pop(0)
-    #mic1_buffer.append(sum1)
-    #mic2_buffer.pop(0)
-    #mic2_buffer.append(sum2)
 
     x1 = np.array(signal1)
     x2 = np.array(signal2)
@@ -200,9 +219,9 @@ while True:
     x1 = x1 / np.linalg.norm(x1) # normalize the signals
     x2 = x2 / np.linalg.norm(x2)
 
-    print(f"The x1 array is {x1}")
-    print('\n')
-    print(f"The x2 array is {x2}")
+    # print(f"The x1 array is {x1}") # These are test print statements to confirm functionality
+    # print('\n')
+    # print(f"The x2 array is {x2}")
 
     # Calculate the correlation and the corresponding timeshift corresponding to each index
     C_x1x2 = np.correlate(x1, x2, mode='full')
@@ -213,16 +232,6 @@ while True:
     # each element of the correlation
     i_max_C = np.argmax(C_x1x2)
     t_shift_hat = t_shift_C[i_max_C]
-
-    # Without the per sample normalization there will be an error of
-    # several samples in the estimated timeshift.
-    # This is because the maximum of the correlation only corresponds
-    # to the maximum match if the signals correlated have equal magnitude
-    # at each shift
-    #error = t_shift_hat - t_shift_gt
-    #print('Estimated time shift without per shift normalization')
-    #print('gt time shift {:0.3f} est time shift {:0.3f} error {:0.4f} s {} samples'
-    #    .format(t_shift_gt, t_shift_hat, error, int(np.round(error/dt))))
 
     # Calculate the magnitude of the portion of x1 that overlapped with x2
     # and vice versa for each sample in C_x1x2
@@ -254,30 +263,33 @@ while True:
     print('indices shifted', i_max_C_normalized - center_index)
     t_shift_hat_normalized = t_shift_C[i_max_C_normalized]
 
-    #error_normalized = t_shift_hat_normalized - t_shift_gt
-    #print('Estimated time shift with per shift normalization')
-    #print('gt time shift {:0.3f} est time shift {:0.3f} error {:0.4f} s {} samples'
-    #        .format(t_shift_gt, t_shift_hat_normalized, error_normalized, int(np.round(error_normalized/dt))))
-
     final_time_delay = t_shift_hat_normalized + abs(mic1_start_of_beep - mic2_start_of_beep)
 
+    # END OF CORRELATION CODE
+
+    # START OF NETWORK CODE
+    # 
     # Creating Packet to Send to Mouse
-    #bytesAddressPair = UDPServerSocket.recvfrom(bufferSize)
-    #message = bytesAddressPair[0]
-    #address = bytesAddressPair[1]
-    #clientMsg = "Message from Client: {}".format(message.decode())
-    #clientIP  = "Client IP Address: {}".format(address)
-    #print(clientMsg)
-    #print(clientIP)
+    # bytesAddressPair = UDPServerSocket.recvfrom(bufferSize)
+    # message = bytesAddressPair[0]
+    # address = bytesAddressPair[1]
+    # clientMsg = "Message from Client: {}".format(message.decode())
+    # clientIP  = "Client IP Address: {}".format(address)
+    # print(clientMsg)
+    # print(clientIP)
+    # offset_pack = struct.pack("ff", float(dB_sum1), final_time_delay)
+    # UDPServerSocket.sendto(offset_pack, address)
+    #
+    # END OF NETWORK CODE
 
-    #offset_pack = struct.pack("ff", float(dB_sum1), final_time_delay)
-    #UDPServerSocket.sendto(offset_pack, address)
-
-
-    print(f"Mic 1 beep start is {mic1_start_of_beep} and mic 2 beep start is {mic2_start_of_beep}")
-    print(f"Mic 1 beep start - mic 2 beep start is {mic1_start_of_beep - mic2_start_of_beep}")
-    print(f"The final time delay is {final_time_delay} and t_shift_hat_normalized is {t_shift_hat_normalized}\n")
-        
+    # Print statements which test functionality
+    # print(f"Mic 1 beep start is {mic1_start_of_beep} and mic 2 beep start is {mic2_start_of_beep}")
+    # print(f"Mic 1 beep start - mic 2 beep start is {mic1_start_of_beep - mic2_start_of_beep}")
+    # print(f"The final time delay is {final_time_delay} and t_shift_hat_normalized is {t_shift_hat_normalized}\n")
+    
+    # The following code only executes after the final time delay is calculated
+    # After this occurs everything is reset so the 2nd while loop (which populates the buffer arrays)
+    # can start fresh to calculate a new final time delay
     mic1_buffer.clear()
     mic2_buffer.clear()
 
@@ -295,4 +307,4 @@ while True:
 
     index = 0
 
-    break
+    break # Ends the script, but is only in place to test functionality
