@@ -28,9 +28,6 @@ I made the `tags_oob` function in order to parse the projections into a more hum
 
 I've also decided to make `fin_arr` a list of lists. That way, each relevant array may be pulled with ease, i.e the array indicating whether a certain mouse is in bounds is at index 1 and so on.  
 
->DCF
-
----
 
 ```python
 def tags_oob(arr):
@@ -55,6 +52,9 @@ def tags_oob(arr):
 `tags_oob` will look through the projections array and look for a negative number. If a negative number is detected, we must identify which mouse it corresponds to, and change the array accordingly. 
 
 
+>DCF
+
+---
 
 ## Week of 4-28-2023  
 
