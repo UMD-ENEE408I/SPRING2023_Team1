@@ -2,7 +2,53 @@
 
 Here, I am currently working on the OpenCV portion of the project
 
-Hopefully, this personal log of occurences will prove useful down the line as we work on the final report and the weeklies. *(Also this is just an excuse to learn Markdown xdd)* 
+Hopefully, this personal log of occurences will prove useful down the line as we work on the final report and the weeklies. *(Also this is just an excuse to learn Markdown xdd)*  
+
+
+## Week of 4-28-2023  
+
+### **Tasks Completed**
+*Finished serialization*  
+
+### *5-1*  
+Serialization is finished. Integration will start tomorrow.  
+
+```python
+mouse_tt = tags_oob(res_arr)
+mice_tags = list(map(tuple, mice_tags))
+corners = list(map(tuple, corners))
+cv2.putText(ud_img, "{}".format(mouse_tt),    (5, 350), cv2.FONT_HERSHEY_COMPLEX, .5, (0, 0, 255), 1)
+cv2.putText(ud_img, "{}".format(mice_tags),   (5, 400), cv2.FONT_HERSHEY_COMPLEX, .5, (0, 0, 255), 1)
+cv2.putText(ud_img, "{}".format(corners),     (5, 450), cv2.FONT_HERSHEY_COMPLEX, .5, (0, 0, 255), 1)
+fin_arr = [mouse_tt] + [mice_tags] + [corners]
+print(fin_arr)
+```  
+
+I made the `tags_oob` function in order to parse the projections into a more human-readable format  
+
+```python
+def tags_oob(arr):
+    tag00_i = [0, 3, 6, 9]
+    tag01_i = [1, 4, 7, 10]
+    tag02_i = [2, 5, 8, 11]
+
+    res = [True, True, True]
+    for x in range(len(arr)):
+        # We have detected a tag to be outside of the arena, check for which tag it is.
+        if arr[x] < 0:
+            # Check which index x corresponds to
+            if x in tag00_i:
+                res[0] = False
+            if x in tag01_i:
+                res[1] = False
+            if x in tag02_i:
+                res[2] = False
+    return res
+```  
+
+`tags_oob` will look through the projections array and look for a negative number. If a negative number is detected, we must identify which mouse it corresponds to, and change the array accordingly. 
+
+
 
 ## Week of 4-28-2023  
 
