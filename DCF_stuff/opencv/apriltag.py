@@ -22,6 +22,7 @@ at_detector = Detector(
 laptop = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\misc_img"
 jetson = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/misc_img"
 dir = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\"
+dir_wsl = "/mnt/c/Users/Dilan/Documents/GitHub/SPRING2023_Team1/DCF_stuff/opencv/data/raw/set_webcam"
 # dir = r"C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv"
 os.chdir(laptop)
 
@@ -34,6 +35,10 @@ jetson_D = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/ope
 laptop_DIM = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal_op\\op_webcam\\DIM.npy"
 laptop_K = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal_op\\op_webcam\\K.npy"
 laptop_D = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal_op\\op_webcam\\D.npy"
+
+wsl_DIM = "/mnt/c/Users/Dilan/Documents/GitHub/SPRING2023_Team1/DCF_stuff/opencv/cal_op/op_webcam/DIM.npy"
+wsl_K = "/mnt/c/Users/Dilan/Documents/GitHub/SPRING2023_Team1/DCF_stuff/opencv/cal_op/op_webcam/K.npy"
+wsl_D = "/mnt/c/Users/Dilan/Documents/GitHub/SPRING2023_Team1/DCF_stuff/opencv/cal_op/op_webcam/D.npy"
 
 # Get params
 DIM = np.load(laptop_DIM)
