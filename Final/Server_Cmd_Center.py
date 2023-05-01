@@ -1,8 +1,6 @@
 import socket
 import struct
 import time
-import math
-from gekko import GEKKO
 import Trajectory_Utility as util
 
 localIP = ""
