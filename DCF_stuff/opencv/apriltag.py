@@ -52,6 +52,25 @@ map1, map2 = cv2.fisheye.initUndistortRectifyMap(
     K, D, np.eye(3), new_K, DIM, cv2.CV_16SC2)
 
 
+def tags_oob(arr):
+    tag00_i = [0, 3, 6, 9]
+    tag01_i = [1, 4, 7, 10]
+    tag02_i = [2, 5, 8, 11]
+
+    res = [True, True, True]
+    for x in range(len(arr)):
+        # We have detected a tag to be outside of the arena, check for which tag it is.
+        if arr[x] < 0:
+            # Check which index x corresponds to
+            if x in tag00_i:
+                res[0] = False
+            if x in tag01_i:
+                res[1] = False
+            if x in tag02_i:
+                res[2] = False
+    return res
+
+
 def find_pose_from_tag(K, detection):
 
     m_half_size = tag_size / 2
@@ -92,7 +111,7 @@ def find_pose_from_tag(K, detection):
 
 
 if __name__ == '__main__':
-    vid = cv2.VideoCapture(1)
+    vid = cv2.VideoCapture(0)
 
     tag_size = 0.13  # tag size in meters
 
@@ -140,18 +159,6 @@ if __name__ == '__main__':
                         sorted_dict[3].center[0]), int(sorted_dict[3].center[1])), color=(0, 255, 0), thickness=5)
                     cv2.line(ud_img, (int(sorted_dict[3].center[0]), int(sorted_dict[3].center[1])), (int(
                         sorted_dict[0].center[0]), int(sorted_dict[0].center[1])), color=(0, 255, 0), thickness=5)
-
-                    # Finally, we need the midpoints in order to find the normal vector
-                    # DEPRECATED AS OF 4-27
-
-                    # mid0 = (int((sorted_dict[0].center[0] + sorted_dict[1].center[0])/2), int(
-                    #     (sorted_dict[0].center[1] + sorted_dict[1].center[1])/2))
-                    # mid1 = (int((sorted_dict[1].center[0] + sorted_dict[2].center[0])/2), int(
-                    #     (sorted_dict[1].center[1] + sorted_dict[2].center[1])/2))
-                    # mid2 = (int((sorted_dict[2].center[0] + sorted_dict[3].center[0])/2), int(
-                    #     (sorted_dict[2].center[1] + sorted_dict[3].center[1])/2))
-                    # mid3 = (int((sorted_dict[3].center[0] + sorted_dict[0].center[0])/2), int(
-                    #     (sorted_dict[3].center[1] + sorted_dict[0].center[1])/2))
 
                     # If there is an additional tag in the array of detected tags, we want to perform boundary detection
                     # print("sorted_dict: ", sorted_dict)
@@ -259,8 +266,20 @@ if __name__ == '__main__':
                         for x in range(0, len(res_arr)):
                             con.data_arr.append(res_arr[x])
                             print(res_arr[x])
+
+                        mouse_tt = tags_oob(res_arr)
+                        mice_tags = list(map(tuple, mice_tags))
+                        corners = list(map(tuple, corners))
+
                         cv2.putText(ud_img, "{}".format(
-                            res_arr), (50, 450), cv2.FONT_HERSHEY_COMPLEX, .5, (0, 0, 255), 1)
+                            mouse_tt),    (5, 350), cv2.FONT_HERSHEY_COMPLEX, .5, (0, 0, 255), 1)
+                        cv2.putText(ud_img, "{}".format(
+                            mice_tags),   (5, 400), cv2.FONT_HERSHEY_COMPLEX, .5, (0, 0, 255), 1)
+                        cv2.putText(ud_img, "{}".format(
+                            corners),     (5, 450), cv2.FONT_HERSHEY_COMPLEX, .5, (0, 0, 255), 1)
+
+                        fin_arr = [mouse_tt] + [mice_tags] + [corners]
+                        print(fin_arr)
                         # "{}".format(res_arr)
                 # Gets back both the rotation and translation matrices from solvePNP
                 pose = find_pose_from_tag(K, res)
