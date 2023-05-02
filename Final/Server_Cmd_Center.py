@@ -231,6 +231,7 @@ while (True):
                         d_arr = []
                         a_arr = []
                         res_arr = []
+                        mouse_tt = []
                         # Coordinates of center of tags
                         # corner_tags (List) -> [(x_coord, y_coord)]
                         for x in corner_tags:
