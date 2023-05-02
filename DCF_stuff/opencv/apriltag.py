@@ -27,7 +27,6 @@ dir_wsl = "/mnt/c/Users/Dilan/Documents/GitHub/SPRING2023_Team1/DCF_stuff/opencv
 os.chdir(laptop)
 
 # Straightening the camera feed
-
 jetson_DIM = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal_op/op_webcam/DIM.npy"
 jetson_K = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal_op/op_webcam/K.npy"
 jetson_D = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal_op/op_webcam/D.npy"
@@ -279,6 +278,10 @@ if __name__ == '__main__':
                             corners),     (5, 450), cv2.FONT_HERSHEY_COMPLEX, .5, (0, 0, 255), 1)
 
                         fin_arr = [mouse_tt] + [mice_tags] + [corners]
+                        # fin_arr a list of lists. That way, each relevant array may be pulled with ease, 
+                        # i.e the array indicating whether a certain mouse is in bounds is at index 0 and so on.
+                        # [[bool, bool, bool],[(tuple), (tuple), (tuple)],[(tuple), (tuple), (tuple), (tuple)]]
+                        # [[m1_oob, m2_oob, m3_oob], [(m1_coords), (m2_coords), (m3_coords)], [(corner0_coords), (corner1_coords), (corner2_coords), (corner3_coords)]]
                         print(fin_arr)
                         # "{}".format(res_arr)
                 # Gets back both the rotation and translation matrices from solvePNP
