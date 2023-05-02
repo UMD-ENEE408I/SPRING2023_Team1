@@ -268,6 +268,7 @@ while (True):
                         print("mice_tags: ", mice_tags)
 
                         mouse_len = len(mice_tags)
+<<<<<<< HEAD
                         
                         if mouse_len == 1:
                             b_arr.update({0: [np.array((mice_tags[0][0] - corners[0][0], mice_tags[0][1] - corners[0][1])),
@@ -276,6 +277,15 @@ while (True):
                                                   np.array(
                                                       (mice_tags[0][0] - corners[2][0], mice_tags[0][1] - corners[2][1])),
                                                   np.array((mice_tags[0][0] - corners[3][0], mice_tags[0][1] - corners[3][1]))]})
+=======
+                        if mouse_len == 1:
+                            b_arr.update({0: [np.array((mice_tags[0][0] - corners[0][0], mice_tags[0][1] - corners[0][1])),
+                                              np.array(
+                                                  (mice_tags[0][0] - corners[1][0], mice_tags[0][1] - corners[1][1])),
+                                              np.array(
+                                                  (mice_tags[0][0] - corners[2][0], mice_tags[0][1] - corners[2][1])),
+                                              np.array((mice_tags[0][0] - corners[3][0], mice_tags[0][1] - corners[3][1]))]})
+>>>>>>> b4ff927baf7621449bd4de30f9cc4fa516edb306
                         elif mouse_len == 2:
                             b_arr.update({0: [np.array((mice_tags[0][0] - corners[0][0], mice_tags[0][1] - corners[0][1])),
                                               np.array(
@@ -291,7 +301,11 @@ while (True):
                                                   (mice_tags[1][0] - corners[2][0], mice_tags[1][1] - corners[2][1])),
                                               np.array((mice_tags[1][0] - corners[3][0], mice_tags[1][1] - corners[3][1]))]})
 
+<<<<<<< HEAD
                         elif mouse_len ==  3:
+=======
+                        elif mouse_len == 3:
+>>>>>>> b4ff927baf7621449bd4de30f9cc4fa516edb306
                             b_arr.update({0: [np.array((mice_tags[0][0] - corners[0][0], mice_tags[0][1] - corners[0][1])),
                                               np.array(
                                                   (mice_tags[0][0] - corners[1][0], mice_tags[0][1] - corners[1][1])),
@@ -304,15 +318,28 @@ while (True):
                                                   (mice_tags[1][0] - corners[1][0], mice_tags[1][1] - corners[1][1])),
                                               np.array(
                                                   (mice_tags[1][0] - corners[2][0], mice_tags[1][1] - corners[2][1])),
+<<<<<<< HEAD
                                               np.array((mice_tags[1][0] - corners[3][0], mice_tags[1][1] - corners[3][1]))]
+=======
+                                              np.array((mice_tags[1][0] - corners[3][0], mice_tags[1][1] - corners[3][1]))]})
+
+>>>>>>> b4ff927baf7621449bd4de30f9cc4fa516edb306
                             b_arr.update({2: [np.array((mice_tags[2][0] - corners[0][0], mice_tags[2][1] - corners[0][1])),
                                               np.array(
                                                   (mice_tags[2][0] - corners[1][0], mice_tags[2][1] - corners[1][1])),
                                               np.array(
+<<<<<<< HEAD
                                                    (mice_tags[2][0] - corners[2][0], mice_tags[2][1] - corners[2][1])),
                                                np.array((mice_tags[2][0] - corners[3][0], mice_tags[2][1] - corners[3][1]))]})
                         else:
                             print("Mouse length array OOB")
+=======
+                                                  (mice_tags[2][0] - corners[2][0], mice_tags[2][1] - corners[2][1])),
+                                              np.array((mice_tags[2][0] - corners[3][0], mice_tags[2][1] - corners[3][1]))]})
+                        else:
+                            print("Mouse length array OOB")
+
+>>>>>>> b4ff927baf7621449bd4de30f9cc4fa516edb306
                         # print("b_arr: ", b_arr)
                         # print("b_arr[0]: ", b_arr[0])
                         # print("a_arr: ", a_arr)
