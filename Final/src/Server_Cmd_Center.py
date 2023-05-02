@@ -16,7 +16,7 @@ jetson = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/openc
 # dir_wsl = "/mnt/c/Users/Dilan/Documents/GitHub/SPRING2023_Team1/DCF_stuff/opencv/data/raw/set_webcam"
 # dir = r"C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv"
 nick = "/Users/nicholasboomsma/Documents/ENEE408I/SPRING2023_Team1/DCF_stuff/opencv/data/raw/set_webcam"
-os.chdir(nick)
+os.chdir(jetson)
 
 # Straightening the camera feed
 jetson_DIM = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal_op/op_webcam/DIM.npy"
@@ -28,9 +28,9 @@ nick_K = "/Users/nicholasboomsma/Documents/ENEE408I/SPRING2023_Team1/DCF_stuff/o
 nick_D = "/Users/nicholasboomsma/Documents/ENEE408I/SPRING2023_Team1/DCF_stuff/opencv/cal_op/op_webcam/D.npy"
 
 # Get params (APRILTAGS)
-DIM = np.load(nick_DIM)
-K = np.load(nick_K)
-D = np.load(nick_D)
+DIM = np.load(jetson_DIM)
+K = np.load(jetson_K)
+D = np.load(jetson_D)
 
 vid = cv2.VideoCapture(0)
 
@@ -130,14 +130,14 @@ at_detector = Detector(
 # Create a datagram socket
 
 UDPServerSocket1 = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
-#UDPServerSocket2 = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
-#UDPServerSocket3 = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
+UDPServerSocket2 = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
+UDPServerSocket3 = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
 
 # Bind to address and ip
 
 UDPServerSocket1.bind((localIP, localPort1))
-#UDPServerSocket2.bind((localIP, localPort2))
-#UDPServerSocket3.bind((localIP, localPort3))
+UDPServerSocket2.bind((localIP, localPort2))
+UDPServerSocket3.bind((localIP, localPort3))
 
 print("UDP server up and ready to send a packet")
 
@@ -148,33 +148,33 @@ target_v = 0.2
 
 bytesAddressPair1 = UDPServerSocket1.recvfrom(bufferSize)
 print("Mouse 1 Address Received")
-#bytesAddressPair2 = UDPServerSocket2.recvfrom(bufferSize)
+bytesAddressPair2 = UDPServerSocket2.recvfrom(bufferSize)
 print("Mouse 2 Address Received")
-#bytesAddressPair3 = UDPServerSocket3.recvfrom(bufferSize)
+bytesAddressPair3 = UDPServerSocket3.recvfrom(bufferSize)
 print("Mouse 3 Address Received")
 
 
 message1 = bytesAddressPair1[0]
 address1 = bytesAddressPair1[1]
-#message2 = bytesAddressPair2[0]
-#address2 = bytesAddressPair2[1]
-#message3 = bytesAddressPair3[0]
-#address3 = bytesAddressPair3[1]
+message2 = bytesAddressPair2[0]
+address2 = bytesAddressPair2[1]
+message3 = bytesAddressPair3[0]
+address3 = bytesAddressPair3[1]
 
 
 clientMsg1 = "Message from Client1:{}".format(message1)
 clientIP1 = "Client1 IP Address:{}".format(address1)
-#clientMsg2 = "Message from Client2:{}".format(message2)
-#clientIP2 = "Client2 IP Address:{}".format(address2)
-#clientMsg3 = "Message from Client3:{}".format(message3)
-#clientIP3 = "Client3 IP Address:{}".format(address3)
+clientMsg2 = "Message from Client2:{}".format(message2)
+clientIP2 = "Client2 IP Address:{}".format(address2)
+clientMsg3 = "Message from Client3:{}".format(message3)
+clientIP3 = "Client3 IP Address:{}".format(address3)
 
 print(clientMsg1)
 print(clientIP1)
-#print(clientMsg2)
-#print(clientIP2)
-#print(clientMsg3)
-#print(clientIP3)
+print(clientMsg2)
+print(clientIP2)
+print(clientMsg3)
+print(clientIP3)
 
 # Give time for mice to setup
 time.sleep(5)
