@@ -102,7 +102,7 @@ def find_pose_from_tag(K, detection):
     r_fin = r.reshape((3,))
     return p_fin, r_fin
 
-
+"""
 localIP = ""
 
 localPort1 = 3333
@@ -110,7 +110,7 @@ localPort2 = 4444
 localPort3 = 5555
 
 bufferSize = 1024
-
+"""
 # Detector object
 at_detector = Detector(
     families="tag36h11",
@@ -121,7 +121,7 @@ at_detector = Detector(
     decode_sharpening=0.25,
     debug=0
 )
-
+"""
 # Create a datagram socket
 
 UDPServerSocket1 = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
@@ -175,7 +175,7 @@ print(clientIP3)
 time.sleep(5)
 
 # Listen for incoming datagrams
-
+"""
 while (True):
     # Get sound data
 
@@ -362,13 +362,14 @@ while (True):
                 cv2.putText(ud_img, "{}".format(text_loc), text_loc,
                             cv2.FONT_HERSHEY_COMPLEX, .5, (0, 0, 255), 1)
 
-            cv2.imshow("img", ud_img)
+        cv2.imshow("img", ud_img)
     except KeyboardInterrupt:
         vid.release()
         cv2.destroyAllWindows()
         print('Exiting')
         exit(1)
     cv2.waitKey(10)
+"""
     # fin_arr a list of lists. That way, each relevant array may be pulled with ease,
     # i.e the array indicating whether a certain mouse is in bounds is at index 0 and so on.
     # [[bool, bool, bool],[(tuple), (tuple), (tuple)],[(tuple), (tuple), (tuple), (tuple)]]
@@ -424,3 +425,4 @@ while (True):
     UDPServerSocket3.sendto(offset_pack3, address3)
 
     time.sleep(5)
+"""
