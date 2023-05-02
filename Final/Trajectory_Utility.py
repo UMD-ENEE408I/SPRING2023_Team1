@@ -14,7 +14,9 @@ def getTargetCoordinates(midpt_x, midpt_y, midpt_m, circle_x, circle_y, circle_r
 #Finds new theta and target_v headings for both tracking robots (should be coordinated with one another)
 #Tracking Robot 1: (x1,y1)
 #Tracking Robot 2: (x2,y2)
-def getTrackerHeadings(x1, y1, x2, y2, soundData):
+def getTrackerHeadings(coord1, coord2, soundData):
+    x1,y1 = coord1
+    x2,y2 = coord2
     midpt_x = (x1+x2)/2
     midpt_y = (y1+y2)/2
 
@@ -47,7 +49,11 @@ def getTrackerHeadings(x1, y1, x2, y2, soundData):
 #Tracking Robot 1: (x1,y1)
 #Tracking Robot 2: (x2,y2)
 #Evader Robot: (x3,y3)
-def getEvaderHeading(x1, y1, x2, y2, x3, y3, mids):
+def getEvaderHeading(coord1, coord2, coord3, mids):
+    x1,y1 = coord1
+    x2,y2 = coord2
+    x3,y3 = coord3
+
     mid_0 = mids[0]
     mid_1 = mids[1]
     mid_2 = mids[2]
