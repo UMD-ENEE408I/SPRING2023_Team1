@@ -204,15 +204,14 @@ if __name__ == '__main__':
                         print("mice_tags: ", mice_tags)
 
                         mouse_len = len(mice_tags)
-                        match mouse_len:
-                            case 1:
+			if mouse_len == 1:
                                 b_arr.update({0: [np.array((mice_tags[0][0] - corners[0][0], mice_tags[0][1] - corners[0][1])),
                                                   np.array(
                                                       (mice_tags[0][0] - corners[1][0], mice_tags[0][1] - corners[1][1])),
                                                   np.array(
                                                       (mice_tags[0][0] - corners[2][0], mice_tags[0][1] - corners[2][1])),
                                                   np.array((mice_tags[0][0] - corners[3][0], mice_tags[0][1] - corners[3][1]))]})
-                            case 2:
+                        elif mouse_len == 2:
                                 b_arr.update({0: [np.array((mice_tags[0][0] - corners[0][0], mice_tags[0][1] - corners[0][1])),
                                                   np.array(
                                                       (mice_tags[0][0] - corners[1][0], mice_tags[0][1] - corners[1][1])),
@@ -227,7 +226,7 @@ if __name__ == '__main__':
                                                       (mice_tags[1][0] - corners[2][0], mice_tags[1][1] - corners[2][1])),
                                                   np.array((mice_tags[1][0] - corners[3][0], mice_tags[1][1] - corners[3][1]))]})
 
-                            case 3:
+                        elif mouse_len == 3:
                                 b_arr.update({0: [np.array((mice_tags[0][0] - corners[0][0], mice_tags[0][1] - corners[0][1])),
                                                   np.array(
                                                       (mice_tags[0][0] - corners[1][0], mice_tags[0][1] - corners[1][1])),
@@ -248,7 +247,7 @@ if __name__ == '__main__':
                                                   np.array(
                                                       (mice_tags[2][0] - corners[2][0], mice_tags[2][1] - corners[2][1])),
                                                   np.array((mice_tags[2][0] - corners[3][0], mice_tags[2][1] - corners[3][1]))]})
-                            case _:
+                          else:
                                 print("Mouse length array OOB")
 
                         # print("b_arr: ", b_arr)
