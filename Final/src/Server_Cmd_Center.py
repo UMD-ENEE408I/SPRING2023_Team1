@@ -15,22 +15,22 @@ jetson = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/openc
 # dir = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\"
 # dir_wsl = "/mnt/c/Users/Dilan/Documents/GitHub/SPRING2023_Team1/DCF_stuff/opencv/data/raw/set_webcam"
 # dir = r"C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv"
-nick = 
-os.chdir(jetson)
+nick = "/Users/nicholasboomsma/Documents/ENEE408I/SPRING2023_Team1/DCF_stuff/opencv/data/raw/set_webcam"
+os.chdir(nick)
 
 # Straightening the camera feed
 jetson_DIM = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal_op/op_webcam/DIM.npy"
 jetson_K = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal_op/op_webcam/K.npy"
 jetson_D = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal_op/op_webcam/D.npy"
 
-nick_DIM = 
-nick_K = 
-nick_D = 
+nick_DIM = "/Users/nicholasboomsma/Documents/ENEE408I/SPRING2023_Team1/DCF_stuff/opencv/cal_op/op_webcam/DIM.npy"
+nick_K = "/Users/nicholasboomsma/Documents/ENEE408I/SPRING2023_Team1/DCF_stuff/opencv/cal_op/op_webcam/K.npy"
+nick_D = "/Users/nicholasboomsma/Documents/ENEE408I/SPRING2023_Team1/DCF_stuff/opencv/cal_op/op_webcam/D.npy"
 
 # Get params (APRILTAGS)
-DIM = np.load(jetson_DIM)
-K = np.load(jetson_K)
-D = np.load(jetson_D)
+DIM = np.load(nick_DIM)
+K = np.load(nick_K)
+D = np.load(nick_D)
 
 vid = cv2.VideoCapture(0)
 
