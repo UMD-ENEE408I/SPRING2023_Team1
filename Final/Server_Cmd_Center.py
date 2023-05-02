@@ -172,23 +172,6 @@ print(clientIP2)
 print(clientMsg3)
 print(clientIP3)
 
-# Get boundary corners
-# bound## tuples' first value is the x-pos, second value is the y-pos
-boundaries = getBoundaries()
-bound00 = boundaries[0:2]
-bound01 = boundaries[2:4]
-bound10 = boundaries[4:6]
-bound11 = boundaries[6:8]
-
-# Calculate midpoints for quadrants (notice mid_3 and mid_2 switch for easier calculation)
-mid_x = (bound00[0]+bound01[0]+bound10[0]+bound11[0])/4
-mid_y = (bound00[1]+bound01[1]+bound10[1]+bound11[1])/4
-mid_0 = ((bound00[0]+mid_x)/2, (bound00[1]+mid_y)/2)
-mid_1 = ((bound01[0]+mid_x)/2, (bound01[1]+mid_y)/2)
-mid_3 = ((bound10[0]+mid_x)/2, (bound10[1]+mid_y)/2)
-mid_2 = ((bound11[0]+mid_x)/2, (bound11[1]+mid_y)/2)
-mids = (mid_0, mid_1, mid_2, mid_3, mid_x, mid_y)
-
 # Give time for mice to setup
 time.sleep(5)
 
@@ -391,10 +374,36 @@ while (True):
         print('Exiting')
         exit(1)
     cv2.waitKey(10)
+    # fin_arr a list of lists. That way, each relevant array may be pulled with ease, 
+    # i.e the array indicating whether a certain mouse is in bounds is at index 0 and so on.
+    # [[bool, bool, bool],[(tuple), (tuple), (tuple)],[(tuple), (tuple), (tuple), (tuple)]]
+    # [[m1_oob, m2_oob, m3_oob], [(m1_coords), (m2_coords), (m3_coords)], [(corner0_coords), (corner1_coords), (corner2_coords), (corner3_coords)]]
+
+    # Get boundary corners
+    # bound## tuples' first value is the x-pos, second value is the y-pos
+    bound00 = fin_arr[2][0]
+    bound01 = fin_arr[2][1]
+    bound10 = fin_arr[2][3]
+    bound11 = fin_arr[2][2]
+
+    # Calculate midpoints for quadrants (notice mid_3 and mid_2 switch for easier calculation)
+    mid_x = (bound00[0]+bound01[0]+bound10[0]+bound11[0])/4
+    mid_y = (bound00[1]+bound01[1]+bound10[1]+bound11[1])/4
+    mid_0 = ((bound00[0]+mid_x)/2, (bound00[1]+mid_y)/2)
+    mid_1 = ((bound01[0]+mid_x)/2, (bound01[1]+mid_y)/2)
+    mid_3 = ((bound10[0]+mid_x)/2, (bound10[1]+mid_y)/2)
+    mid_2 = ((bound11[0]+mid_x)/2, (bound11[1]+mid_y)/2)
+    mids = (mid_0, mid_1, mid_2, mid_3, mid_x, mid_y)
+
+    # Mouse Location List
+    mouse_locs = fin_arr[1]
+
+    #PLACEHOLDER soundData VALUE FOR TESTING APRILTAGS
+    soundData = 1
 
     # Calculate headings for both tracking robots and evading robot
-    headingSet1 = util.getTrackerHeadings(x1, y1, x2, y2, soundData)
-    headingSet2 = util.getEvaderHeading(x1, y1, x2, y2, x3, y3, mids)
+    headingSet1 = util.getTrackerHeadings(mouse_locs[0], mouse_locs[1], soundData)
+    headingSet2 = util.getEvaderHeading(mouse_locs[0], mouse_locs[1], mouse_locs[2], mids)
 
     target_theta1 = headingSet1[0]
     target_v1 = headingSet1[1]
