@@ -17,7 +17,7 @@ char pbuff[255];
 // either use the ip address of the server or 
 // a network broadcast address
 const char * udpAddress = "192.168.2.122";
-const int udpPort = 4444; // Tracker 1: 3333, Tracker 2: 4444, Evader: 5555
+const int udpPort = 3333; // Tracker 1: 3333, Tracker 2: 4444, Evader: 5555
 
 // Are we currently connected?
 boolean connected = false;
