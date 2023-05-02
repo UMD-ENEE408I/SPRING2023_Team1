@@ -266,52 +266,50 @@ while (True):
                         print("mice_tags: ", mice_tags)
 
                         mouse_len = len(mice_tags)
-                        match mouse_len:
-                            case 1:
-                                b_arr.update({0: [np.array((mice_tags[0][0] - corners[0][0], mice_tags[0][1] - corners[0][1])),
-                                                  np.array(
-                                                      (mice_tags[0][0] - corners[1][0], mice_tags[0][1] - corners[1][1])),
-                                                  np.array(
-                                                      (mice_tags[0][0] - corners[2][0], mice_tags[0][1] - corners[2][1])),
-                                                  np.array((mice_tags[0][0] - corners[3][0], mice_tags[0][1] - corners[3][1]))]})
-                            case 2:
-                                b_arr.update({0: [np.array((mice_tags[0][0] - corners[0][0], mice_tags[0][1] - corners[0][1])),
-                                                  np.array(
-                                                      (mice_tags[0][0] - corners[1][0], mice_tags[0][1] - corners[1][1])),
-                                                  np.array(
-                                                      (mice_tags[0][0] - corners[2][0], mice_tags[0][1] - corners[2][1])),
-                                                  np.array((mice_tags[0][0] - corners[3][0], mice_tags[0][1] - corners[3][1]))]})
+                        if mouse_len == 1:
+                            b_arr.update({0: [np.array((mice_tags[0][0] - corners[0][0], mice_tags[0][1] - corners[0][1])),
+                                              np.array(
+                                                  (mice_tags[0][0] - corners[1][0], mice_tags[0][1] - corners[1][1])),
+                                              np.array(
+                                                  (mice_tags[0][0] - corners[2][0], mice_tags[0][1] - corners[2][1])),
+                                              np.array((mice_tags[0][0] - corners[3][0], mice_tags[0][1] - corners[3][1]))]})
+                        elif mouse_len == 2:
+                            b_arr.update({0: [np.array((mice_tags[0][0] - corners[0][0], mice_tags[0][1] - corners[0][1])),
+                                              np.array(
+                                                  (mice_tags[0][0] - corners[1][0], mice_tags[0][1] - corners[1][1])),
+                                              np.array(
+                                                  (mice_tags[0][0] - corners[2][0], mice_tags[0][1] - corners[2][1])),
+                                              np.array((mice_tags[0][0] - corners[3][0], mice_tags[0][1] - corners[3][1]))]})
 
-                                b_arr.update({1: [np.array((mice_tags[1][0] - corners[0][0], mice_tags[1][1] - corners[0][1])),
-                                                  np.array(
-                                                      (mice_tags[1][0] - corners[1][0], mice_tags[1][1] - corners[1][1])),
-                                                  np.array(
-                                                      (mice_tags[1][0] - corners[2][0], mice_tags[1][1] - corners[2][1])),
-                                                  np.array((mice_tags[1][0] - corners[3][0], mice_tags[1][1] - corners[3][1]))]})
+                            b_arr.update({1: [np.array((mice_tags[1][0] - corners[0][0], mice_tags[1][1] - corners[0][1])),
+                                              np.array(
+                                                  (mice_tags[1][0] - corners[1][0], mice_tags[1][1] - corners[1][1])),
+                                              np.array(
+                                                  (mice_tags[1][0] - corners[2][0], mice_tags[1][1] - corners[2][1])),
+                                              np.array((mice_tags[1][0] - corners[3][0], mice_tags[1][1] - corners[3][1]))]})
 
-                            case 3:
-                                b_arr.update({0: [np.array((mice_tags[0][0] - corners[0][0], mice_tags[0][1] - corners[0][1])),
-                                                  np.array(
-                                                      (mice_tags[0][0] - corners[1][0], mice_tags[0][1] - corners[1][1])),
-                                                  np.array(
-                                                      (mice_tags[0][0] - corners[2][0], mice_tags[0][1] - corners[2][1])),
-                                                  np.array((mice_tags[0][0] - corners[3][0], mice_tags[0][1] - corners[3][1]))]})
+                        elif mouse_len == 3:
+                            b_arr.update({0: [np.array((mice_tags[0][0] - corners[0][0], mice_tags[0][1] - corners[0][1])),
+                                              np.array(
+                                                  (mice_tags[0][0] - corners[1][0], mice_tags[0][1] - corners[1][1])),
+                                              np.array(
+                                                  (mice_tags[0][0] - corners[2][0], mice_tags[0][1] - corners[2][1])),
+                                              np.array((mice_tags[0][0] - corners[3][0], mice_tags[0][1] - corners[3][1]))]})
 
-                                b_arr.update({1: [np.array((mice_tags[1][0] - corners[0][0], mice_tags[1][1] - corners[0][1])),
-                                                  np.array(
-                                                      (mice_tags[1][0] - corners[1][0], mice_tags[1][1] - corners[1][1])),
-                                                  np.array(
-                                                      (mice_tags[1][0] - corners[2][0], mice_tags[1][1] - corners[2][1])),
-                                                  np.array((mice_tags[1][0] - corners[3][0], mice_tags[1][1] - corners[3][1]))]})
-
-                                b_arr.update({2: [np.array((mice_tags[2][0] - corners[0][0], mice_tags[2][1] - corners[0][1])),
-                                                  np.array(
-                                                      (mice_tags[2][0] - corners[1][0], mice_tags[2][1] - corners[1][1])),
-                                                  np.array(
-                                                      (mice_tags[2][0] - corners[2][0], mice_tags[2][1] - corners[2][1])),
-                                                  np.array((mice_tags[2][0] - corners[3][0], mice_tags[2][1] - corners[3][1]))]})
-                            case _:
-                                print("Mouse length array OOB")
+                            b_arr.update({1: [np.array((mice_tags[1][0] - corners[0][0], mice_tags[1][1] - corners[0][1])),
+                                              np.array(
+                                                  (mice_tags[1][0] - corners[1][0], mice_tags[1][1] - corners[1][1])),
+                                              np.array(
+                                                  (mice_tags[1][0] - corners[2][0], mice_tags[1][1] - corners[2][1])),
+                                              np.array((mice_tags[1][0] - corners[3][0], mice_tags[1][1] - corners[3][1]))]})
+                            b_arr.update({2: [np.array((mice_tags[2][0] - corners[0][0], mice_tags[2][1] - corners[0][1])),
+                                              np.array(
+                                                  (mice_tags[2][0] - corners[1][0], mice_tags[2][1] - corners[1][1])),
+                                              np.array(
+                                (mice_tags[2][0] - corners[2][0], mice_tags[2][1] - corners[2][1])),
+                                np.array((mice_tags[2][0] - corners[3][0], mice_tags[2][1] - corners[3][1]))]})
+                        else:
+                            print("Mouse length array OOB")
                         # print("b_arr: ", b_arr)
                         # print("b_arr[0]: ", b_arr[0])
                         # print("a_arr: ", a_arr)
@@ -371,7 +369,7 @@ while (True):
         print('Exiting')
         exit(1)
     cv2.waitKey(10)
-    # fin_arr a list of lists. That way, each relevant array may be pulled with ease, 
+    # fin_arr a list of lists. That way, each relevant array may be pulled with ease,
     # i.e the array indicating whether a certain mouse is in bounds is at index 0 and so on.
     # [[bool, bool, bool],[(tuple), (tuple), (tuple)],[(tuple), (tuple), (tuple), (tuple)]]
     # [[m1_oob, m2_oob, m3_oob], [(m1_coords), (m2_coords), (m3_coords)], [(corner0_coords), (corner1_coords), (corner2_coords), (corner3_coords)]]
@@ -395,12 +393,14 @@ while (True):
     # Mouse Location List
     mouse_locs = fin_arr[1]
 
-    #PLACEHOLDER soundData VALUE FOR TESTING APRILTAGS
+    # PLACEHOLDER soundData VALUE FOR TESTING APRILTAGS
     soundData = 1
 
     # Calculate headings for both tracking robots and evading robot
-    headingSet1 = util.getTrackerHeadings(mouse_locs[0], mouse_locs[1], soundData)
-    headingSet2 = util.getEvaderHeading(mouse_locs[0], mouse_locs[1], mouse_locs[2], mids)
+    headingSet1 = util.getTrackerHeadings(
+        mouse_locs[0], mouse_locs[1], soundData)
+    headingSet2 = util.getEvaderHeading(
+        mouse_locs[0], mouse_locs[1], mouse_locs[2], mids)
 
     target_theta1 = headingSet1[0]
     target_v1 = headingSet1[1]
