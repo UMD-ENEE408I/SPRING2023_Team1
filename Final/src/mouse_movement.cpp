@@ -18,7 +18,7 @@ char pbuff[255];
 // a network broadcast address
 // Nick: "192.168.2.122"
 const char * udpAddress = "192.168.2.255";
-const int udpPort = 3333; // Tracker 1: 3333, Tracker 2: 4444, Evader: 5555
+const int udpPort = 5555; // Tracker 1: 3333, Tracker 2: 4444, Evader: 5555
 
 // Are we currently connected?
 boolean connected = false;
