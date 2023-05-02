@@ -8,7 +8,6 @@ from pupil_apriltags import Detector
 import cv2
 import numpy as np
 import os
-import config as con
 
 # Change directory to a folder that will contain the chessboard pics (APRILTAGS)
 # laptop = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\misc_img"
@@ -183,7 +182,6 @@ while (True):
     # Get locations from apriltags
     k = cv2.waitKey(1)
     try:
-        con.data_arr.clear()
         detect_arr = dict()
         ret, img = vid.read()
         # Undistorted image
@@ -326,7 +324,6 @@ while (True):
                                 # print("a_arr and b_arr(AFTER): ", a_arr[x], b_arr[y])
                                 res_arr.append(np.dot(a_arr[x], b_arr[y][x]))
                         for x in range(0, len(res_arr)):
-                            con.data_arr.append(res_arr[x])
                             print(res_arr[x])
 
                         mouse_tt = tags_oob(res_arr)
