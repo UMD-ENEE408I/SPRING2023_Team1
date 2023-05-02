@@ -411,9 +411,13 @@ while (True):
 
     # Creating Packet to Send to Mouse
     # First value sent is the cam theta, the second value is the target_theta, and the third value is the velocity
-    offset_pack1 = struct.pack("fff", 0, target_theta1, target_v1)
-    offset_pack2 = struct.pack("fff", 0, -target_theta2, target_v2)
-    offset_pack3 = struct.pack("fff", 0, target_theta3, target_v3)
+    #offset_pack1 = struct.pack("fff", 0, target_theta1, target_v1)
+    #offset_pack2 = struct.pack("fff", 0, -target_theta2, target_v2)
+    #offset_pack3 = struct.pack("fff", 0, target_theta3, target_v3)
+
+    offset_pack1 = struct.pack("fff", 0, 0.0, 0.0)
+    offset_pack2 = struct.pack("fff", 0, 0.0, 0.0)
+    offset_pack3 = struct.pack("fff", 0, 0.0, 0.0)
 
     UDPServerSocket1.sendto(offset_pack1, address1)
     UDPServerSocket2.sendto(offset_pack2, address2)
