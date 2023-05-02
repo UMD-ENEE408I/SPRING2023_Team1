@@ -68,55 +68,51 @@ def getEvaderHeading(x1, y1, x2, y2, x3, y3, mids):
         close_x = x2
         close_y = y2
     
-    if(not outOfBound(x3, y3)):
-        quadClose = getQuadrant(close_x, close_y, mid_x, mid_y) # Quadrant Close Tracker is in
-        quad3 = getQuadrant(x3, y3, mid_x, mid_y) # Quadrant Evader is in
-
-        # Currently only care about Close Tracker and Evader
-        if((quadClose-quad3) == 0):
-            #Tracker 1 and Evader in same quadrant
-            # Find distance between robots and quadrant dividers
-            distClose_x = abs(close_x - mid_x)
-            distClose_y = abs(close_y - mid_y)
-            dist3_x = abs(x3 - mid_x)
-            dist3_y = abs(y3 - mid_y)
-            diff_x = dist3_x - distClose_x
-            diff_y = dist3_y - distClose_y
-
-            if(diff_x < diff_y):
-                if(quad3 == 0 or quad3 == 2):
-                    nextQuad = quad3 + 1
-                else:
-                    nextQuad = quad3 - 1
+    quadClose = getQuadrant(close_x, close_y, mid_x, mid_y) # Quadrant Close Tracker is in
+    quad3 = getQuadrant(x3, y3, mid_x, mid_y) # Quadrant Evader is in
+    # Currently only care about Close Tracker and Evader
+    if((quadClose-quad3) == 0):
+        #Tracker 1 and Evader in same quadrant
+        # Find distance between robots and quadrant dividers
+        distClose_x = abs(close_x - mid_x)
+        distClose_y = abs(close_y - mid_y)
+        dist3_x = abs(x3 - mid_x)
+        dist3_y = abs(y3 - mid_y)
+        diff_x = dist3_x - distClose_x
+        diff_y = dist3_y - distClose_y
+        if(diff_x < diff_y):
+            if(quad3 == 0 or quad3 == 2):
+                nextQuad = quad3 + 1
             else:
-                if(quad3 == 0 or quad3 == 2):
-                    nextQuad = (quad3 - 1) % 4
-                else:
-                    nextQuad = (quad3 + 1) % 4
-        elif(abs(quadClose-quad3) == 1 or abs(quadClose-quad3) == 3):
-            #Tracker 1 and Evader in lateral quadrants
-            diff = quadClose - quad3
-            nextQuad = (quad3 - diff) % 4
+                nextQuad = quad3 - 1
         else:
-            #Tracker 1 and Evader in diagonal quadrants
-            nextQuad = quad3
-
-        if(nextQuad == 0):
-            target_x = mid_0[0]
-            target_y = mid_0[1]
-        elif(nextQuad == 1):
-            target_x = mid_1[0]
-            target_y = mid_1[1]
-        elif(nextQuad == 2):
-            target_x = mid_2[0]
-            target_y = mid_2[1]
-        else:
-            target_x = mid_3[0]
-            target_y = mid_3[1]
+            if(quad3 == 0 or quad3 == 2):
+                nextQuad = (quad3 - 1) % 4
+            else:
+                nextQuad = (quad3 + 1) % 4
+    elif(abs(quadClose-quad3) == 1 or abs(quadClose-quad3) == 3):
+        #Tracker 1 and Evader in lateral quadrants
+        diff = quadClose - quad3
+        nextQuad = (quad3 - diff) % 4
+    else:
+        #Tracker 1 and Evader in diagonal quadrants
+        nextQuad = quad3
+    if(nextQuad == 0):
+        target_x = mid_0[0]
+        target_y = mid_0[1]
+    elif(nextQuad == 1):
+        target_x = mid_1[0]
+        target_y = mid_1[1]
+    elif(nextQuad == 2):
+        target_x = mid_2[0]
+        target_y = mid_2[1]
+    else:
+        target_x = mid_3[0]
+        target_y = mid_3[1]
 
     # Calculate target_v3 and target_theta3 based on target_x and target_y
     target_v3 = 0.1
-    if(quad3 == nextQuad and (not outOfBound(x3,y3))):
+    if(quad3 == nextQuad):
         target_v3 = 0.0
         target_theta3 = signedAngle(x3, y3, mid_x, mid_y)
     else:
