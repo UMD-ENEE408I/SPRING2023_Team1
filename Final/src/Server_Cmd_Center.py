@@ -15,12 +15,17 @@ jetson = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/openc
 # dir = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\"
 # dir_wsl = "/mnt/c/Users/Dilan/Documents/GitHub/SPRING2023_Team1/DCF_stuff/opencv/data/raw/set_webcam"
 # dir = r"C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv"
+nick = 
 os.chdir(jetson)
 
 # Straightening the camera feed
 jetson_DIM = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal_op/op_webcam/DIM.npy"
 jetson_K = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal_op/op_webcam/K.npy"
 jetson_D = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal_op/op_webcam/D.npy"
+
+nick_DIM = 
+nick_K = 
+nick_D = 
 
 # Get params (APRILTAGS)
 DIM = np.load(jetson_DIM)
