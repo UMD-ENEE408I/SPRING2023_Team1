@@ -362,7 +362,7 @@ while (True):
                 cv2.putText(ud_img, "{}".format(text_loc), text_loc,
                             cv2.FONT_HERSHEY_COMPLEX, .5, (0, 0, 255), 1)
 
-            cv2.imshow("img", ud_img)
+        cv2.imshow("img", ud_img)
     except KeyboardInterrupt:
         vid.release()
         cv2.destroyAllWindows()
