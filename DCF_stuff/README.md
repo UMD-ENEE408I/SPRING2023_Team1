@@ -49,7 +49,12 @@ def tags_oob(arr):
     return res
 ```  
 
-`tags_oob` will look through the projections array and look for a negative number. If a negative number is detected, we must identify which mouse it corresponds to, and change the array accordingly. 
+`tags_oob` will look through the projections array and look for a negative number. If a negative number is detected, we must identify which mouse it corresponds to, and change the array accordingly.  
+
+### **Tasks to be completed**  
+*Integration*  
+
+So far, all of my stuff is in a while loop. Once we start integration, we're just gonna paste everything into one file since we don't have time to come up with a more sophisticated implementation. We can save some overhead by removing the drawing functions of the `apriltags.py` file.  
 
 
 >DCF
