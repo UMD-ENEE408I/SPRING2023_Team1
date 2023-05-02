@@ -37,7 +37,6 @@ target_v = 0.2
 # Listen for incoming datagrams
 
 while(True):
-    bytesAddressPair = UDPServerSocket.recvfrom(bufferSize)
 
     message = bytesAddressPair[0]
 
@@ -57,6 +56,7 @@ while(True):
 
     time.sleep(5)
 
+    print("Change in direction")
     target_theta = -1.5
     target_v = 0.4
     # Send a packet to the mouse
