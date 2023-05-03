@@ -10,6 +10,20 @@ Hopefully, this personal log of occurences will prove useful down the line as we
 ### **Tasks Completed**
 *Finished serialization*  
 
+### *5-2*
+*Integration has begun*  
+
+We've finally gone ahead and started integration of all our components together. There were hiccups as expected but by the end of the lab period, we managed to get the apriltag portion and the networking portion working together. Some other things that were addressed were the actual placement of the webcam, which will be on one of those pillar-looking things that hang from the ceiling.  
+
+For the apriltag integration, most of the issues arose from the directory needing to be changed and the formatting of the code itself, since the code for the apriltags was in a different block relative to where it was placed in `Server_Cmd_Center.py`.  
+
+For the networking integration, we started with just getting one robot to communicate with a base station. The base station was at first Nick's laptop, then from there, we moved to the Jetson. Using `ifconfig`, we got the jetson's IP address and used it in `Server_Cmd_Center.py`. Once we could verify that the networking, well, worked, we moved on to adding more robots to the network, which was also successful.  
+
+Another wrinkle that had to be ironed out was the fact that Python 3.8 does not support switch statements, which was the version that we have on the jetson. Since I had been using the Python that I had installed on my laptop, that version was 3.11, so it handled everything fine. Rather than going through and having to update every library to make sure they worked in tandem with 3.11, I simply re wrote the `match` statement to an `if-else` block. Same crap, different toilet.  
+
+[comment]: <> (Hello)
+
+
 ### *5-1*  
 Serialization is finished. Integration will start tomorrow.  
 
@@ -52,10 +66,12 @@ def tags_oob(arr):
 `tags_oob` will look through the projections array and look for a negative number. If a negative number is detected, we must identify which mouse it corresponds to, and change the array accordingly.  
 
 ### **Tasks to be completed**  
-*Integration*  
+*5-1 Integration*  
 
 So far, all of my stuff is in a while loop. Once we start integration, we're just gonna paste everything into one file since we don't have time to come up with a more sophisticated implementation. We can save some overhead by removing the drawing functions of the `apriltags.py` file.  
 
+*5-2 Finish integration, begin testing*  
+So far, it looks like, at the very least, we will have all components of our code working together in the same file. This coming Thursday, we will be meeting again to hopefully finish integration and begin playing around with the system, seeing how the different parts of our code interact with each other. Fingers crossed we don't run into any catostophic failures or set backs **one week before the demo**. Right?  
 
 >DCF
 
@@ -329,7 +345,7 @@ From here, it would simply be up to the user to parse the information. If we had
 ## Week of 4-21-2023
 
 ### **Tasks Completed**
-*Gained comprehension of boundary detection*
+*Gained comprehension of boundary detection*  
 *Started implementation of boundary detection*
 
 ### *4-18*
