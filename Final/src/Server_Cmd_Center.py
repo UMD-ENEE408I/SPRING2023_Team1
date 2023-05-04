@@ -50,27 +50,33 @@ map1, map2 = cv2.fisheye.initUndistortRectifyMap(
 
 
 # Used to identify which tag is out of bounds (APRILTAGS)
+# [int * 12] -> [bool * 3]
 def tags_oob(arr):
-    tag00_i = [0, 3, 6, 9]
-    tag01_i = [1, 4, 7, 10]
-    tag02_i = [2, 5, 8, 11]
+    # The input array  is an array of 12 integers. We can think of them as four lists of three integers, 
+    # where every sublist contains the projections of the three mice onto the correpsonding vector
+
+    # [[proj_m0_v0, proj_m1_v0, proj_m2_v0], [proj_m0_v1, proj_m1_v1, proj_m2_v1], [proj_m0_v2, proj_m1_v2, proj_m2_v2], [proj_m0_v3, proj_m1_v3, proj_m2_v3]]
+    #  |---------vector 0 -> 1------------|  |---------vector 1 -> 2------------|  |---------vector 2 -> 3------------|  |---------vector 3 -> 0------------|
+    
+    # Since they are stored in this order, we can have cases for each mouse and each vector they may be involved in. 
+    mouse00_i = [0, 3, 6, 9]
+    mouse01_i = [1, 4, 7, 10]
+    mouse02_1 = [2, 5, 8, 11]
 
     res = [True, True, True]
     for x in range(len(arr)):
         # We have detected a tag to be outside of the arena, check for which tag it is.
         if arr[x] < 0:
             # Check which index x corresponds to
-            if x in tag00_i:
+            if x in mouse00_i:
                 res[0] = False
-            if x in tag01_i:
+            if x in mouse01_i:
                 res[1] = False
-            if x in tag02_i:
+            if x in mouse02_1:
                 res[2] = False
     return res
 
 # Used for apriltag detection, gives the rotation vector and the translation vectors n stuff (APRILTAGS)
-
-
 def find_pose_from_tag(K, detection):
 
     m_half_size = tag_size / 2
@@ -482,6 +488,13 @@ while (True):
                         fin_arr = [mouse_tt] + [mice_tags] + [corners]
                         print(fin_arr)
                         # "{}".format(res_arr)
+                        corners = []
+                        mice_tags = []
+                        b_arr = {}
+                        d_arr = []
+                        a_arr = []
+                        res_arr = []
+                        mouse_tt = []
                 # Gets back both the rotation and translation matrices from solvePNP
                 pose = find_pose_from_tag(K, res)
                 # This will take in our translation VECTOR and turn it into a translation MATRIX.
