@@ -2,9 +2,9 @@ import numpy as np
 import pyaudio as pa
 import struct
 import matplotlib.pyplot as plt
-import socket
 import time
-
+from scipy import signal
+from scipy import linalg
 
 # Start of PyAudio code which will record sound from two microphones
 p = pa.PyAudio()
@@ -13,11 +13,11 @@ p = pa.PyAudio()
 CHUNK = 1024
 FORMAT = pa.paInt16
 CHANNELS = 1
-RATE = 48000
+RATE = 44100
 
 # Checks to see how many audio input devices are being recognized by PyAudio
-# for i in range(p.get_device_count()):
-#     print(p.get_device_info_by_index(i))
+#for i in range(p.get_device_count()):
+#    print(p.get_device_info_by_index(i))
 
 # Starts two audio streams "stream1" and "stream2" corresponding to the two microphones
 # and sets the different parameters previously declared
@@ -60,7 +60,7 @@ line_fft2, = ax2.semilogx(x_fft, np.random.rand(CHUNK), 'b')
 ax2.set_xlim(20, RATE/2)
 ax2.set_ylim(-90, 5)
 
-fig.show()
+# fig.show()
 
 # START OF NETWORK CODE
 # 
@@ -108,14 +108,12 @@ mic2_buffer = []
 mic1_start_of_beep = -1.0
 mic2_start_of_beep = -1.0
 
-mic1_end_of_beep = -1.0
-mic2_end_of_beep = -1.0
-
 mic1_start_index = -2
 mic2_start_index = -2
 
-mic1_end_index = -2
-mic2_end_index = -2
+mic1_is_closer = 0
+mic2_is_closer = 0
+mic1_and_mic2_are_close = 0
 
 index = 0
 final_time_delay = 0.0
@@ -135,8 +133,7 @@ while True:
            or time.time() - mic1_start_of_beep < 2 or time.time() - mic2_start_of_beep < 2):
         
         print(f"{mic1_start_index} & {mic2_start_index}")
-        print(f"{mic1_end_index} & {mic2_end_index}")
-
+        
         # The variables data1 and data2 receive the bytes which contain actual sound data
         # from the two microphones
         # 
@@ -184,7 +181,6 @@ while True:
             mic2_start_index = index
         index += 1 # This index is used to calculate at what index do the microphones record the start of the beep
 
-
     # START OF CORRELATION CODE
     print(f"The correlation code is executing\n")
 
@@ -194,24 +190,23 @@ while True:
     N_after = int(1.5 / dt)
 
     print(f"Mic 1 start index is {mic1_start_index} and mic 2 start index is {mic2_start_index}")
-    print(f"Mic 1 end index is {mic1_end_index} and mic 2 end index is {mic2_end_index}")
-
+ 
     mic1_start_index = (mic1_start_index * len(dataInt1))
     mic2_start_index = (mic2_start_index * len(dataInt1))
 
-    mic1_buffer = np.concatenate(mic1_buffer)
-    mic2_buffer = np.concatenate(mic2_buffer)
+    np_mic1_buffer = np.concatenate(mic1_buffer)
+    np_mic2_buffer = np.concatenate(mic2_buffer)
 
-    print(mic1_buffer.shape)
+    print(np_mic1_buffer.shape)
 
-    signal1 = mic1_buffer[mic1_start_index - N_before: mic2_start_index + N_after]
-    signal2 = mic2_buffer[mic2_start_index - N_before: mic2_start_index + N_after]
+    signal1 = np_mic1_buffer[mic1_start_index - N_before: mic1_start_index + N_after]
+    signal2 = np_mic2_buffer[mic2_start_index - N_before: mic2_start_index + N_after]
 
     # Test plots to ensure functionality
-    plt.figure()
-    plt.plot(signal1)
-    plt.plot(signal2)
-    plt.show()
+    # plt.figure()
+    # plt.plot(signal1)
+    # plt.plot(signal2)
+    # plt.show()
 
     x1 = np.array(signal1)
     x2 = np.array(signal2)
@@ -219,36 +214,44 @@ while True:
     x1 = x1 / np.linalg.norm(x1) # normalize the signals
     x2 = x2 / np.linalg.norm(x2)
 
-    # print(f"The x1 array is {x1}") # These are test print statements to confirm functionality
-    # print('\n')
-    # print(f"The x2 array is {x2}")
+    print(f"The x1 array is {x1.shape}") # These are test print statements to confirm functionality
+    print(f"The x2 array is {x2.shape}")
 
     # Calculate the correlation and the corresponding timeshift corresponding to each index
-    C_x1x2 = np.correlate(x1, x2, mode='full')
+    C_x1x2 = signal.correlate(x1, x2, mode='full')
+    print(C_x1x2)
     t_shift_C = np.arange(-T+dt, T, dt)
+    print(t_shift_C)
 
     # Attempt to estimate the time shift using the correlation directly
     # without normalizing by how much x1 and x2 overlapped when calculating
     # each element of the correlation
     i_max_C = np.argmax(C_x1x2)
+    print(i_max_C)
     t_shift_hat = t_shift_C[i_max_C]
+    print(t_shift_hat)
 
     # Calculate the magnitude of the portion of x1 that overlapped with x2
     # and vice versa for each sample in C_x1x2
     C_normalization_x1 = np.zeros(C_x1x2.shape[0])
     C_normalization_x2 = np.zeros(C_x1x2.shape[0])
+    print(C_normalization_x1)
 
     center_index = int((C_x1x2.shape[0] + 1) / 2) - 1 # Index corresponding to zero shift
-    low_shift_index  = -int((C_x1x2.shape[0] + 1) / 2) + 1
-    high_shift_index =  int((C_x1x2.shape[0] + 1) / 2) - 1
-    for i in range(low_shift_index, high_shift_index + 1):
-        low_norm_index  = max(0, i)
-        high_norm_index = min(x1.shape[0], i + x1.shape[0])
-        C_normalization_x1[i+center_index] = np.linalg.norm(x1[low_norm_index:high_norm_index])
 
-        low_norm_index  = max(0, -i)
-        high_norm_index = min(x2.shape[0], -i + x2.shape[0])
-        C_normalization_x2[i+center_index] = np.linalg.norm(x2[low_norm_index:high_norm_index])
+    print('norming')
+    x1_ones = np.ones((x1.shape[0],))
+    x1_square = np.square(x1)
+    x1_sum_square = signal.correlate(x1_square, x1_ones, 'full')
+    C_normalization_x1 = np.sqrt(x1_sum_square)
+
+    x2_ones = np.ones((x2.shape[0],))
+    x2_square = np.square(x2)
+    x2_sum_square = signal.correlate(x2_square, x2_ones, 'full')
+    C_normalization_x2 = np.flip(np.sqrt(x2_sum_square))
+    print('normed')
+
+    print(f"Check {C_normalization_x2}")
 
     # Normalize the calculated correlation per shift
     C_x1x2_normalized_per_shift = C_x1x2 / (C_normalization_x1 * C_normalization_x2)
@@ -260,10 +263,21 @@ while True:
     max_indices_back = -int(((1 / f) / 2) / dt) + center_index
     max_indices_forward = int(((1 / f) / 2) / dt) + center_index
     i_max_C_normalized = np.argmax(C_x1x2_normalized_per_shift[max_indices_back:max_indices_forward + 1]) + max_indices_back
-    print('indices shifted', i_max_C_normalized - center_index)
+    # print('indices shifted', i_max_C_normalized - center_index)
     t_shift_hat_normalized = t_shift_C[i_max_C_normalized]
 
     final_time_delay = t_shift_hat_normalized + abs(mic1_start_of_beep - mic2_start_of_beep)
+
+    if (mic1_start_of_beep - mic2_start_of_beep > 0):
+        mic1_is_closer = 1
+        mic2_is_closer = 0
+    elif (mic1_start_of_beep - mic2_start_of_beep < 0):
+        mic1_is_closer = 0
+        mic2_is_closer = 1
+    elif (mic1_start_of_beep - mic2_start_of_beep == 0):
+        mic1_and_mic2_are_close = 1
+
+    print(f"Final time delay is {final_time_delay} and difference is {mic1_start_of_beep - mic2_start_of_beep}")
 
     # END OF CORRELATION CODE
 
@@ -283,9 +297,9 @@ while True:
     # END OF NETWORK CODE
 
     # Print statements which test functionality
-    # print(f"Mic 1 beep start is {mic1_start_of_beep} and mic 2 beep start is {mic2_start_of_beep}")
-    # print(f"Mic 1 beep start - mic 2 beep start is {mic1_start_of_beep - mic2_start_of_beep}")
-    # print(f"The final time delay is {final_time_delay} and t_shift_hat_normalized is {t_shift_hat_normalized}\n")
+    print(f"Mic 1 beep start is {mic1_start_of_beep} and mic 2 beep start is {mic2_start_of_beep}")
+    print(f"Mic 1 beep start - mic 2 beep start is {mic1_start_of_beep - mic2_start_of_beep}")
+    print(f"The final time delay is {final_time_delay} and t_shift_hat_normalized is {t_shift_hat_normalized}\n")
     
     # The following code only executes after the final time delay is calculated
     # After this occurs everything is reset so the 2nd while loop (which populates the buffer arrays)
@@ -296,14 +310,12 @@ while True:
     mic1_start_of_beep = -1.0
     mic2_start_of_beep = -1.0
 
-    mic1_end_of_beep = -1.0
-    mic2_end_of_beep = -1.0
-
     mic1_start_index = -2
     mic2_start_index = -2
 
-    mic1_end_index = -2
-    mic2_end_index = -2
+    mic1_is_closer = 0
+    mic2_is_closer = 0
+    mic1_and_mic2_are_close = 0
 
     index = 0
 
