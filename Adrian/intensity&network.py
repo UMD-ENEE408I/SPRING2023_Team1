@@ -1,4 +1,5 @@
 def correlation_algo(stream1, stream2):
+
     mic1_buffer = []
     mic2_buffer = []
 
@@ -154,7 +155,7 @@ def correlation_algo(stream1, stream2):
     # print('indices shifted', i_max_C_normalized - center_index)
     t_shift_hat_normalized = t_shift_C[i_max_C_normalized]
 
-    final_time_delay = t_shift_hat_normalized + abs(mic1_start_of_beep - mic2_start_of_beep)
+    final_time_delay = t_shift_hat_normalized
 
     # END OF CORRELATION CODE
 
@@ -244,20 +245,20 @@ ax2.set_ylim(-90, 5)
 
 # START OF TIME DELAY CALCULATION
 #
-# The following code calculates the time delay "error" between two different microphones
+# The following code calculates the time delay offset between two different microphones
 # The loop runs 10 times to calculate the average time delay "error"
 count = 0
-time_shift_list = []
+time_delay_list = []
 while (count < 10):
-    time_shift_list.append(correlation_algo(stream1, stream2))
+    time_delay_list.append(correlation_algo(stream1, stream2))
     count += 1
 
-avg_time_error = sum(time_shift_list)/len(time_shift_list)
+avg_time_offset = sum(time_delay_list)/len(time_delay_list)
 
 # The following code calculates the real time delay between two different microphones
-# The time delay "error" is subtracted from the final time delay to calculate which mic
+# The time delay offset is subtracted from the final time delay to calculate which mic
 # is closer to the sound source
 while True:
 
     final_time_delay = correlation_algo(stream1, stream2)
-    final_time_delay = final_time_delay - avg_time_error
+    final_time_delay = final_time_delay - avg_time_offset
