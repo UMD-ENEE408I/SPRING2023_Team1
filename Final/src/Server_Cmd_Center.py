@@ -4,6 +4,7 @@ import time
 import Trajectory_Utility as util
 import pyaudio as pa
 import matplotlib.pyplot as plt
+import sound_delay as sd
 
 # April tag stuff
 from pupil_apriltags import Detector
@@ -18,7 +19,7 @@ jetson = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/openc
 # dir_wsl = "/mnt/c/Users/Dilan/Documents/GitHub/SPRING2023_Team1/DCF_stuff/opencv/data/raw/set_webcam"
 # dir = r"C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv"
 nick = "/Users/nicholasboomsma/Documents/ENEE408I/SPRING2023_Team1/DCF_stuff/opencv/data/raw/set_webcam"
-os.chdir(jetson)
+os.chdir(nick)
 
 # Straightening the camera feed
 jetson_DIM = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal_op/op_webcam/DIM.npy"
@@ -30,9 +31,9 @@ nick_K = "/Users/nicholasboomsma/Documents/ENEE408I/SPRING2023_Team1/DCF_stuff/o
 nick_D = "/Users/nicholasboomsma/Documents/ENEE408I/SPRING2023_Team1/DCF_stuff/opencv/cal_op/op_webcam/D.npy"
 
 # Get params (APRILTAGS)
-DIM = np.load(jetson_DIM)
-K = np.load(jetson_K)
-D = np.load(jetson_D)
+DIM = np.load(nick_DIM)
+K = np.load(nick_K)
+D = np.load(nick_D)
 
 vid = cv2.VideoCapture(0)
 
@@ -164,21 +165,6 @@ line_fft2, = ax2.semilogx(x_fft, np.random.rand(CHUNK), 'b')
 ax2.set_xlim(20, RATE/2)
 ax2.set_ylim(-90, 5)
 
-mic1_buffer = []
-mic2_buffer = []
-
-mic1_start_of_beep = -1.0
-mic2_start_of_beep = -1.0
-
-mic1_start_index = -2
-mic2_start_index = -2
-
-mic_proximity = 0
-
-index = 0
-final_time_delay = 0.0
-dB_sound_threshold = -45
-
 # Server Setup
 localIP = ""
 
@@ -198,7 +184,7 @@ at_detector = Detector(
     decode_sharpening=0.25,
     debug=0
 )
-
+"""
 # Create a datagram socket
 
 UDPServerSocket1 = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
@@ -247,80 +233,26 @@ print(clientMsg2)
 print(clientIP2)
 print(clientMsg3)
 print(clientIP3)
+"""
 
 # Give time for mice to setup
 time.sleep(5)
+
+# The loop runs 10 times to calculate the average time delay "error"
+count = 0
+time_delay_list = []
+while (count < 10):
+    time_delay_list.append(sd.correlation_algo(stream1, stream2))
+    count += 1
+
+avg_time_offset = sum(time_delay_list)/len(time_delay_list)
 
 # Listen for incoming datagrams
 
 while (True):
     """ SOUND SECTION """
-    # This while loop will only run if any of the following four conditions are true:
-    # 1. Mic 1's start beep index has not been set
-    # 2. Mic 2's start beep index has not been set
-    # 3. Less than two seconds have passed since (current time) - (time at which mic 1's beep was recorded)
-    # 4. Less than two seconds have passed since (current time) - (time at which mic 2's beep was recorded)
-    while (mic1_start_index < 0 or mic2_start_index < 0 
-           or time.time() - mic1_start_of_beep < 2 or time.time() - mic2_start_of_beep < 2):
-        
-        print(f"{mic1_start_index} & {mic2_start_index}")
-        
-        # The variables data1 and data2 receive the bytes which contain actual sound data
-        # from the two microphones
-        # 
-        # This is then unpacked into dataInt1 and dataInt2
-        # 
-        # Intensity is then calculated by taking the fft of this sound data
-        # 
-        # Intensities not between 937.5 Hz to 1078.125 Hz are set to 0
-        data1 = stream1.read(CHUNK)
-        dataInt1 = struct.unpack(str(CHUNK) + 'h', data1)
-        intensity1 = np.abs(np.fft.fft(dataInt1))*2/(11000*CHUNK)
-        intensity1[0:20] = 0.0001
-        intensity1[24:] = 0.0001
-        # line_fft1.set_ydata(20*np.log10(intensity1))
-
-        data2 = stream2.read(CHUNK)
-        dataInt2 = struct.unpack(str(CHUNK) + 'h', data2)
-        intensity2 = np.abs(np.fft.fft(dataInt2))*2/(11000*CHUNK)
-        intensity2[0:20] = 0.0001
-        intensity2[24:] = 0.0001
-        # line_fft2.set_ydata(20*np.log10(intensity2))
-
-        # Arrays which contain the unpacked sound data from the microphones
-        mic1_buffer.append(dataInt1)
-        mic2_buffer.append(dataInt2)
-
-        # fig.canvas.draw()
-        # fig.canvas.flush_events()
-
-        # Average sound intensities 1 & 2 from 937.5 Hz to 1078.125 Hz
-        sum1 = (intensity1[20] + intensity1[21] + intensity1[22] + intensity1[23]) / 4
-        dB_sum1 = 20*np.log10(sum1)
-
-        sum2 = (intensity2[20] + intensity2[21] + intensity2[22] + intensity2[23]) / 4
-        dB_sum2 = 20*np.log10(sum2)
-
-        # Records the start of the beep for both mic 1 and mic 2
-        # In addition, it stores the index of the buffer arrays at which this occured
-        if (mic1_start_of_beep < 0.0 and dB_sum1 >= dB_sound_threshold):
-            mic1_start_of_beep = time.time()
-            mic1_start_index = index
-
-        if (mic2_start_of_beep < 0.0 and dB_sum2 >= dB_sound_threshold):
-            mic2_start_of_beep = time.time()
-            mic2_start_index = index
-        index += 1 # This index is used to calculate at what index do the microphones record the start of the beep
-
-    time_delay = mic1_start_of_beep - mic2_start_of_beep
-
-    if (time_delay > 0):
-        mic_proximity = 2 # Mic 2 is closer
-    elif (time_delay < 0):
-        mic_proximity = 1 # Mic 1 is closer
-    elif (time_delay == 0):
-        mic_proximity = 3 # Mic 1 and mic 2 are equidistant
-    print(f"Final time delay is {final_time_delay} and difference is {mic1_start_of_beep - mic2_start_of_beep}")
+    final_time_delay = sd.correlation_algo(stream1, stream2)
+    final_time_delay = final_time_delay - avg_time_offset
 
     """ APRILTAG SECTION """
     k = cv2.waitKey(1)
