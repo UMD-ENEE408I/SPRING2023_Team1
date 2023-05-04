@@ -1,129 +1,17 @@
-import numpy as np
-import pyaudio as pa
-import struct
-import matplotlib.pyplot as plt
-import time
-from scipy import signal
-from scipy import linalg
+def correlation_algo(stream1, stream2):
+    mic1_buffer = []
+    mic2_buffer = []
 
-# Start of PyAudio code which will record sound from two microphones
-p = pa.PyAudio()
+    mic1_start_of_beep = -1.0
+    mic2_start_of_beep = -1.0
 
-# Defines microphone parameters such as chunk size, frequency rate of mic, and data format 
-CHUNK = 1024
-FORMAT = pa.paInt16
-CHANNELS = 1
-RATE = 44100
+    mic1_start_index = -2
+    mic2_start_index = -2
 
-# Checks to see how many audio input devices are being recognized by PyAudio
-#for i in range(p.get_device_count()):
-#    print(p.get_device_info_by_index(i))
+    index = 0
+    final_time_delay = 0.0
+    dB_sound_threshold = -45
 
-# Starts two audio streams "stream1" and "stream2" corresponding to the two microphones
-# and sets the different parameters previously declared
-stream1 = p.open(
-    format = FORMAT,
-    channels = CHANNELS,
-    rate = RATE,
-    input = True,
-    output = True,
-    frames_per_buffer = CHUNK,
-    input_device_index = 1,
-)
-
-stream2 = p.open(
-    format = FORMAT,
-    channels = CHANNELS,
-    rate = RATE,
-    input = True,
-    output = True,
-    frames_per_buffer = CHUNK,
-    input_device_index = 2,
-)
-
-# Creates a matplotlib figure which will display the decibel rating of the two
-# sound intensities and their respective frequencies
-fig, (ax1, ax2) = plt.subplots(1, 2)
-ax1.set_title("Sound Intensity Recorded from Robot 1")
-ax1.set_xlabel("Frequency (Hz)")
-ax1.set_ylabel("Magnitude (dB)")
-x_fft = np.linspace(0, RATE, CHUNK)
-line_fft1, = ax1.semilogx(x_fft, np.random.rand(CHUNK), 'b')
-ax1.set_xlim(20, RATE/2)
-ax1.set_ylim(-90, 5)
-
-ax2.set_title("Sound Intensity Recorded from Robot 2")
-ax2.set_xlabel("Frequency (Hz)")
-ax2.set_ylabel("Magnitude (dB)")
-x_fft = np.linspace(0, RATE, CHUNK)
-line_fft2, = ax2.semilogx(x_fft, np.random.rand(CHUNK), 'b')
-ax2.set_xlim(20, RATE/2)
-ax2.set_ylim(-90, 5)
-
-# fig.show()
-
-# START OF NETWORK CODE
-# 
-# The following code involves the networking aspect which communicates with the robot
-# by creating packets to send to the robot
-
-# Home network settings
-# localIP = "192.168.1.249"
-# localPort = 3333
-# bufferSize = 1024
-
-# School network settings
-localIP = "192.168.2.102"
-localPort = 3333
-bufferSize = 1024
-
-"""# Create a packet to send to the mouse
-my_str = '0'
-msgFromServer = my_str.split(' ')
-list_int = [int(x) for x in msgFromServer]
-
-my_str2 = '1' 
-msgFromServer2 = my_str2.split(' ')
-list_int2 = [int(x) for x in msgFromServer2]
-
-val = struct.pack("b"*len(list_int),*list_int)
-val2 = struct.pack("b"*len(list_int2),*list_int2)
-
-# Create a datagram socket
-UDPServerSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
-
-# Bind to address and ip
-UDPServerSocket.bind((localIP, localPort))
-print("UDP server up and ready to send a packet")"""
-
-# END OF NETWORK CODE
-
-# START OF TIME DELAY CALCULATION
-#
-# The following code calculates the time delay between two different microphones
-
-mic1_buffer = []
-mic2_buffer = []
-
-mic1_start_of_beep = -1.0
-mic2_start_of_beep = -1.0
-
-mic1_start_index = -2
-mic2_start_index = -2
-
-mic1_is_closer = 0
-mic2_is_closer = 0
-mic1_and_mic2_are_close = 0
-
-index = 0
-final_time_delay = 0.0
-dB_sound_threshold = -45
-
-# Start of main loop
-while True:
-
-    # Start of second loop
-    #
     # This while loop will only run if any of the following four conditions are true:
     # 1. Mic 1's start beep index has not been set
     # 2. Mic 2's start beep index has not been set
@@ -268,33 +156,7 @@ while True:
 
     final_time_delay = t_shift_hat_normalized + abs(mic1_start_of_beep - mic2_start_of_beep)
 
-    if (mic1_start_of_beep - mic2_start_of_beep > 0):
-        mic1_is_closer = 1
-        mic2_is_closer = 0
-    elif (mic1_start_of_beep - mic2_start_of_beep < 0):
-        mic1_is_closer = 0
-        mic2_is_closer = 1
-    elif (mic1_start_of_beep - mic2_start_of_beep == 0):
-        mic1_and_mic2_are_close = 1
-
-    print(f"Final time delay is {final_time_delay} and difference is {mic1_start_of_beep - mic2_start_of_beep}")
-
     # END OF CORRELATION CODE
-
-    # START OF NETWORK CODE
-    # 
-    # Creating Packet to Send to Mouse
-    # bytesAddressPair = UDPServerSocket.recvfrom(bufferSize)
-    # message = bytesAddressPair[0]
-    # address = bytesAddressPair[1]
-    # clientMsg = "Message from Client: {}".format(message.decode())
-    # clientIP  = "Client IP Address: {}".format(address)
-    # print(clientMsg)
-    # print(clientIP)
-    # offset_pack = struct.pack("ff", float(dB_sum1), final_time_delay)
-    # UDPServerSocket.sendto(offset_pack, address)
-    #
-    # END OF NETWORK CODE
 
     # Print statements which test functionality
     print(f"Mic 1 beep start is {mic1_start_of_beep} and mic 2 beep start is {mic2_start_of_beep}")
@@ -313,10 +175,89 @@ while True:
     mic1_start_index = -2
     mic2_start_index = -2
 
-    mic1_is_closer = 0
-    mic2_is_closer = 0
-    mic1_and_mic2_are_close = 0
-
     index = 0
 
-    break # Ends the script, but is only in place to test functionality
+    return final_time_delay
+
+import numpy as np
+import pyaudio as pa
+import struct
+import matplotlib.pyplot as plt
+import time
+from scipy import signal
+from scipy import linalg
+
+# Start of PyAudio code which will record sound from two microphones
+p = pa.PyAudio()
+
+# Defines microphone parameters such as chunk size, frequency rate of mic, and data format 
+CHUNK = 1024
+FORMAT = pa.paInt16
+CHANNELS = 1
+RATE = 44100
+
+# Checks to see how many audio input devices are being recognized by PyAudio
+#for i in range(p.get_device_count()):
+#    print(p.get_device_info_by_index(i))
+
+# Starts two audio streams "stream1" and "stream2" corresponding to the two microphones
+# and sets the different parameters previously declared
+stream1 = p.open(
+    format = FORMAT,
+    channels = CHANNELS,
+    rate = RATE,
+    input = True,
+    output = True,
+    frames_per_buffer = CHUNK,
+    input_device_index = 1,
+)
+
+stream2 = p.open(
+    format = FORMAT,
+    channels = CHANNELS,
+    rate = RATE,
+    input = True,
+    output = True,
+    frames_per_buffer = CHUNK,
+    input_device_index = 2,
+)
+
+# Creates a matplotlib figure which will display the decibel rating of the two
+# sound intensities and their respective frequencies
+fig, (ax1, ax2) = plt.subplots(1, 2)
+ax1.set_title("Sound Intensity Recorded from Robot 1")
+ax1.set_xlabel("Frequency (Hz)")
+ax1.set_ylabel("Magnitude (dB)")
+x_fft = np.linspace(0, RATE, CHUNK)
+line_fft1, = ax1.semilogx(x_fft, np.random.rand(CHUNK), 'b')
+ax1.set_xlim(20, RATE/2)
+ax1.set_ylim(-90, 5)
+
+ax2.set_title("Sound Intensity Recorded from Robot 2")
+ax2.set_xlabel("Frequency (Hz)")
+ax2.set_ylabel("Magnitude (dB)")
+x_fft = np.linspace(0, RATE, CHUNK)
+line_fft2, = ax2.semilogx(x_fft, np.random.rand(CHUNK), 'b')
+ax2.set_xlim(20, RATE/2)
+ax2.set_ylim(-90, 5)
+# fig.show()
+
+# START OF TIME DELAY CALCULATION
+#
+# The following code calculates the time delay "error" between two different microphones
+# The loop runs 10 times to calculate the average time delay "error"
+count = 0
+time_shift_list = []
+while (count < 10):
+    time_shift_list.append(correlation_algo(stream1, stream2))
+    count += 1
+
+avg_time_error = sum(time_shift_list)/len(time_shift_list)
+
+# The following code calculates the real time delay between two different microphones
+# The time delay "error" is subtracted from the final time delay to calculate which mic
+# is closer to the sound source
+while True:
+
+    final_time_delay = correlation_algo(stream1, stream2)
+    final_time_delay = final_time_delay - avg_time_error
