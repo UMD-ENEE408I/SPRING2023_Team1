@@ -146,6 +146,15 @@ def getQuadrant(x, y, mid_x, mid_y):
         
 #Finds angle of vector from point (x1,y1) to (x2, y2)
 def signedAngle(x1, y1, x2, y2):
-    x = x2 - x1
-    y = y2 - y1
-    return math.tan(y/x)
+    normed_dot = (x2 * x1 + y2 * y1)
+    if (normed_dot > 1.0):
+        normed_dot = 1.0 #Possible because of numerical error
+    angle = math.acos(normed_dot)
+
+    #use cross product to find direction of rotation
+    #https://en.wikipedia.org/wiki/Cross_product#Coordinate_notation
+    s3 = x1 * y2 - x2 * y1
+    if (s3 < 0):
+        angle = -angle
+
+    return angle

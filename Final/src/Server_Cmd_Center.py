@@ -459,7 +459,7 @@ while (True):
         exit(1)
     cv2.waitKey(10)
 
-    print("Proximity Value: " + mic_proximity)
+    print("Final Time Delay: " + final_time_delay)
 """
     # fin_arr a list of lists. That way, each relevant array may be pulled with ease,
     # i.e the array indicating whether a certain mouse is in bounds is at index 0 and so on.
