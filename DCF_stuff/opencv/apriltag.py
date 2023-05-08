@@ -19,12 +19,12 @@ at_detector = Detector(
 )
 
 # Change directory to a folder that will contain the chessboard pics
-laptop = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\misc_img"
+laptop = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\data\\raw\\set_webcam"
 jetson = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/misc_img"
 dir = "C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv\\cal\\"
 dir_wsl = "/mnt/c/Users/Dilan/Documents/GitHub/SPRING2023_Team1/DCF_stuff/opencv/data/raw/set_webcam"
 # dir = r"C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv"
-os.chdir(jetson)
+os.chdir(laptop)
 
 # Straightening the camera feed
 jetson_DIM = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal_op/op_webcam/DIM.npy"
@@ -40,9 +40,9 @@ wsl_K = "/mnt/c/Users/Dilan/Documents/GitHub/SPRING2023_Team1/DCF_stuff/opencv/c
 wsl_D = "/mnt/c/Users/Dilan/Documents/GitHub/SPRING2023_Team1/DCF_stuff/opencv/cal_op/op_webcam/D.npy"
 
 # Get params
-DIM = np.load(jetson_DIM)
-K = np.load(jetson_K)
-D = np.load(jetson_D)
+DIM = np.load(laptop_DIM)
+K = np.load(laptop_K)
+D = np.load(laptop_D)
 
 balance = 0  # Set to 1 to show black space. Set to 0 to crop
 new_K = cv2.fisheye.estimateNewCameraMatrixForUndistortRectify(
@@ -110,7 +110,7 @@ def find_pose_from_tag(K, detection):
 
 
 if __name__ == '__main__':
-    vid = cv2.VideoCapture(0)
+    vid = cv2.VideoCapture(1)
 
     tag_size = 0.13  # tag size in meters
 
