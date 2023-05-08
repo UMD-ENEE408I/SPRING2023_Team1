@@ -210,7 +210,7 @@ stream1 = p.open(
     input = True,
     output = True,
     frames_per_buffer = CHUNK,
-    input_device_index = 1,
+    input_device_index = 25,
 )
 
 stream2 = p.open(
@@ -220,7 +220,7 @@ stream2 = p.open(
     input = True,
     output = True,
     frames_per_buffer = CHUNK,
-    input_device_index = 2,
+    input_device_index = 26,
 )
 
 # Creates a matplotlib figure which will display the decibel rating of the two

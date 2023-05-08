@@ -19,7 +19,7 @@ jetson = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/openc
 # dir_wsl = "/mnt/c/Users/Dilan/Documents/GitHub/SPRING2023_Team1/DCF_stuff/opencv/data/raw/set_webcam"
 # dir = r"C:\\Users\\Dilan\\Documents\\GitHub\\SPRING2023_Team1\\DCF_stuff\\opencv"
 nick = "/Users/nicholasboomsma/Documents/ENEE408I/SPRING2023_Team1/DCF_stuff/opencv/data/raw/set_webcam"
-os.chdir(nick)
+os.chdir(jetson)
 
 # Straightening the camera feed
 jetson_DIM = "/home/dilancf/Desktop/docs/spring2023/SPRING2023_Team1/DCF_stuff/opencv/cal_op/op_webcam/DIM.npy"
@@ -31,9 +31,9 @@ nick_K = "/Users/nicholasboomsma/Documents/ENEE408I/SPRING2023_Team1/DCF_stuff/o
 nick_D = "/Users/nicholasboomsma/Documents/ENEE408I/SPRING2023_Team1/DCF_stuff/opencv/cal_op/op_webcam/D.npy"
 
 # Get params (APRILTAGS)
-DIM = np.load(nick_DIM)
-K = np.load(nick_K)
-D = np.load(nick_D)
+DIM = np.load(jetson_DIM)
+K = np.load(jetson_K)
+D = np.load(jetson_D)
 
 vid = cv2.VideoCapture(0)
 
@@ -127,8 +127,8 @@ CHANNELS = 1
 RATE = 44100
 
 # Checks to see how many audio input devices are being recognized by PyAudio
-#for i in range(p.get_device_count()):
-#    print(p.get_device_info_by_index(i))
+for i in range(p.get_device_count()):
+    print(p.get_device_info_by_index(i))
 
 # Starts two audio streams "stream1" and "stream2" corresponding to the two microphones
 # and sets the different parameters previously declared
@@ -139,7 +139,7 @@ stream1 = p.open(
     input = True,
     output = True,
     frames_per_buffer = CHUNK,
-    input_device_index = 1,
+    input_device_index = 25,
 )
 
 stream2 = p.open(
@@ -149,7 +149,7 @@ stream2 = p.open(
     input = True,
     output = True,
     frames_per_buffer = CHUNK,
-    input_device_index = 2,
+    input_device_index = 26,
 )
 
 # Creates a matplotlib figure which will display the decibel rating of the two
