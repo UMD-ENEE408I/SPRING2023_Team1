@@ -266,8 +266,12 @@ if __name__ == '__main__':
                             print(res_arr[x])
 
                         mouse_tt = tags_oob(res_arr)
+                        
                         mice_tags = list(map(tuple, mice_tags))
                         corners = list(map(tuple, corners))
+
+                        cv2.circle(ud_img, (int(((corners[0][0]-corners[1][0]) + (corners[3][0]-corners[2][0]))/2), int(((corners[3][1] - corners[0][1]) + (corners[2][1] - corners[1][1]))/2)),
+                           5, (0, 0, 255), -1)
 
                         cv2.putText(ud_img, "{}".format(
                             mouse_tt),    (5, 350), cv2.FONT_HERSHEY_COMPLEX, .5, (0, 0, 255), 1)
